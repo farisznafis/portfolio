@@ -1,78 +1,125 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Portfolio</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <header>
-            <a href="#" class="logo">farisznafis</a>
-            <ul>
-                <li><a href="#" class="active">Home</a></li>
-                <li><a href="#sec">About</a></li>
-                <li><a href="#portfolio">Portfolio</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </header>
-        <section>
-            <img src="images/stars.png" id="stars">
-            <img src="images/moon.png" id="moon">
-            <img src="images/mountains_behind.png" id="mountains_behind">
-            <h2 id="text">Hello!</h2>
-            <a href="#sec" id="btn">Explore</a>
-            <img src="images/mountains_front.png" id="mountains_front">
-        </section>
-        <div id="sec" class="sec">
-            <h2>Halo! Namaku Faris Zaidan Nafis</h2>
-            <p>A computer science student who loves math, logic, games, music. Also, always participate in math competitions every year. Currently studying at Gadjah Mada University, one of the best universities in Indonesia. <br><br></p>
-        </div>
-        <div class="akademik">
-            <h1>Akademik</h1> <br>
-            <table>
-                <tr>
-                    <td><h4>Universitas Gadjah Mada</h4></td>
-                    <td id="tahun">2021 - sekarang</td>
-                </tr>
-                <tr>
-                    <td><h4>SMA Negeri 1 Depok</h4></td>
-                    <td id="tahun">2018 - 2021</td>
-                </tr>
-                <tr>
-                    <td><h4>SMP Darul Abidin</h4></td>
-                    <td id="tahun">2015 - 2018</td>
-                </tr>
-                <tr>
-                    <td><h4>SDIT Al-Muqorrobin</h4></td>
-                    <td id="tahun">2009 - 2015</td>
-                </tr>
-            </table>
-        </div>
+  <head>
+    <title>Parallax Scrolling Website</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="#" class="logo" id="logo">farisznafis</a>
+      <ul>
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#sec">About</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </header>
+    <section>
+      <img src="images/stars.png" id="stars" />
+      <img src="images/moon.png" id="moon" />
+      <img src="images/mountains_behind.png" id="mountains_behind" />
+      <h2 class="text" id="text">Hello!</h2>
+      <a href="#sec" id="btn">Explore</a>
+      <img src="images/mountains_front.png" class="front" id="mountains_front" />
+    </section>
+    <div id="sec" class="sec">
+      <h2>Halo! Namaku Faris Zaidan Nafis</h2>
+      <p>A computer science student who loves math, logic, games, music. Also, always participate in math competitions every year. Currently studying at Gadjah Mada University, one of the best universities in Indonesia. <br /><br /></p>
+    </div>
+    <div class="akademik">
+      <h1>Akademik</h1>
+      <br />
+      <table>
+        <tr>
+          <td><h4>Universitas Gadjah Mada</h4></td>
+          <td id="tahun">2021 - sekarang</td>
+        </tr>
+        <tr>
+          <td><h4>SMA Negeri 1 Depok</h4></td>
+          <td id="tahun">2018 - 2021</td>
+        </tr>
+        <tr>
+          <td><h4>SMP Darul Abidin</h4></td>
+          <td id="tahun">2015 - 2018</td>
+        </tr>
+        <tr>
+          <td><h4>SDIT Al-Muqorrobin</h4></td>
+          <td id="tahun">2009 - 2015</td>
+        </tr>
+      </table>
+    </div>
 
-        <div id="portfolio" class="portfolio">
-            <h1>Portfolio</h1><br><br>
-            <img src="images/al-fatih.jpg" alt="Penaklukkan Konstantinopel"><br><br>
-            <div id="al-fatih">
-                <h2>Muhammad Al-Fatih</h2>
-                <p>dalam lomba Salam Ukhuwah SMAN 5 Depok<br>(SAKHUSA) tahun 2019</p>
-            </div>
-            <img src="images/icaf.png" alt="ICAF">
-            <div id="icaf">
-                <h2>Ilmu Aktuaria dan Prospek Kerjanya</h2>
-                <p>dalam lomba Infographic Competition<br>Actuarial Fair (ICAF) tahun 2020</p>
-            </div>
+    <div id="portfolio" class="portfolio">
+      <h1>Portfolio</h1>
+      <br /><br />
+      <div class="content">
+        <div class="column left">
+          <img src="images/al-fatih.jpg" alt="Penaklukkan Konstantinopel" /><br /><br />
+          <img src="images/icaf.png" alt="ICAF" /><br /><br />
+          <img id="aska" src="images/askarasyam.jpg" alt="askarasyam" /><br /><br />
+          <img src="images/malin-kundang.jpg" alt="malin" /><br /><br />
+          <img src="images/feed.png" alt="feed" /> <br /><br />
         </div>
-        
-        <div id="contact">
-            <h1>Contact</h1>
-            <img src="images/ig.png" alt="Instagram"><br>
-            <p id="ig">@farisznafis</p>
-            <img src="images/linkedin.png" alt="LinkedIn"><br>
-            <p id="linkedin">linkedin.com/farisznafis</p>
-            <img src="images/wa.png" alt="Whatsapp"><br>
-            <p id="wa">089654822833</p>
-            <img src="images/line.png" alt="LINE">
-            <p id="line">halohaloo ; farisznafis</p>
-        </div>
+        <div class="column right"></div>
+      </div>
 
-    </body>
+      <div id="al-fatih">
+        <h2>Muhammad Al-Fatih</h2>
+        <p>dalam lomba Salam Ukhuwah SMAN 5 Depok<br />(SAKHUSA) tahun 2019</p>
+      </div>
+
+      <div id="icaf">
+        <h2>Ilmu Aktuaria<br />dan Prospek Kerjanya</h2>
+        <p>dalam lomba Infographic Competition<br />Actuarial Fair (ICAF) tahun 2020</p>
+      </div>
+
+      <div id="askarasyam">
+        <h2>Askarasyam</h2>
+        <p>membuat logo dalam acara Tafakkur Alam<br />pada tahun 2019</p>
+      </div>
+
+      <div id="malin">
+        <h2>Malin Kundang &<br />Tari Pasambahan</h2>
+        <p>dalam tugas Prakarya dan Kewirausahaan<br />saat SMA tahun 2019</p>
+
+        <div id="feed">
+          <h2>Feed Instagram</h2>
+          <p>remake logo Student Club dan masing-masing bidang,<br />membuat feed, dan filter Instagram.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="contact">
+      <h1>Contact</h1>
+      <img src="images/ig.png" alt="Instagram" /><br />
+      <p id="ig">@farisznafis</p>
+      <img src="images/linkedin.png" alt="LinkedIn" /><br />
+      <p id="linkedin">linkedin.com/farisznafis</p>
+      <img src="images/wa.png" alt="Whatsapp" /><br />
+      <p id="wa">(+62)89654822833</p>
+      <img src="images/line.png" alt="LINE" />
+      <p id="line">halohaloo ; farisznafis</p>
+    </div>
+
+    <script>
+      let stars = document.getElementById("stars");
+      let moon = document.getElementById("moon");
+      let mountains_behind = document.getElementById("mountains_behind");
+      let text = document.getElementById("text");
+      let btn = document.getElementById("btn");
+      let mountains_front = document.getElementById("mountains_front");
+      let logo = document.getElementById("logo");
+
+      window.addEventListener("scroll", function () {
+        let value = window.scrollY;
+        stars.style.left = value * 0.25 + "px";
+        moon.style.top = value * 1.05 + "px";
+        mountains_behind.style.top = value * 0.5 + "px";
+        mountains_front.style.top = value * 0 + "px";
+        text.style.marginTop = value * 1.5 + "px";
+        btn.style.marginTop = value * 1.5 + "px";
+        logo.style.top = value * 0.5 + "px";
+      });
+    </script>
+  </body>
 </html>
