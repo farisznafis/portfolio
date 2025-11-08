@@ -19,6 +19,13 @@
             "placeholder": ""
           }
         },
+        "middle_name": {
+          "type": "Text",
+          "config": {
+            "label": "Middle Name",
+            "placeholder": ""
+          }
+        },
         "last_name": {
           "type": "Text",
           "config": {

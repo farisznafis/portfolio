@@ -6,7 +6,7 @@
 			"first_name": {
 				"__TYPE__": "FieldContent",
 				"type": "Text",
-				"value": "Faris Zaidan"
+				"value": "Faris"
 			},
 			"last_name": {
 				"__TYPE__": "FieldContent",
@@ -17,6 +17,11 @@
 				"__TYPE__": "FieldContent",
 				"type": "Text",
 				"value": "Programmer"
+			},
+			"middle_name": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Zaidan"
 			}
 		},
 		"items": []
