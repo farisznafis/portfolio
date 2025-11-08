@@ -5,8 +5,13 @@ import DecryptedText from "./components/DecryptedText/DecryptedText";
 import LiquidEther from "./components/LiquidEther/LiquidEther";
 import TextPressure from "./components/TextPressure/TextPressure";
 
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+
 export default function Home() {
-	return (
+	const session = useSession();
+    const supabase = useSupabaseClient();
+    
+    return (
         <div className="min-h-screen overflow-x-hidden bg-[#06000F]">
             {/* 1c2f3b */}
             <nav className="h-40 w-screen bottom-0 z-50 fixed">
@@ -21,6 +26,21 @@ export default function Home() {
                             <li className="hover:underline cursor-pointer w-24 text-center">Projects</li>
                             <li className="hover:underline cursor-pointer w-24 text-center">Contact</li>
                         </ul>
+                    </div>
+                    <div>
+                        <div className="text-white">
+                            {session ? (
+                                <button
+                                    onClick={() => supabase.auth.signOut()}
+                                    className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md transition-colors"
+                                > Logout </button>
+                            ) : (
+                                <a
+                                    href="/login"
+                                    className="text-white hover:underline"
+                                > Login </a>
+                            )}
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -65,7 +85,7 @@ export default function Home() {
             <div className="container border mx-auto">
                 <div className="grid grid-cols-12">
                     <div className="col-span-6 items-center flex flex-row">
-                        <div className="flex flex-col p-8 text-5xl text-white border m-12 gap-2">
+                        {/* <div className="flex flex-col p-8 text-5xl text-white border m-12 gap-2">
                             <span>
                                 <DecryptedText
                                     text="Ahoy, matey!"
@@ -92,7 +112,7 @@ export default function Home() {
                                     sequential={true}
                                 />
                             </span>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="col-span-6 shadow-inner-bold bg-[#1C587A] rounded-4xl m-8 overflow-hidden">
                         <Lanyard position={[0, 0, 20]} gravity={[0, -100, 0]}/>
@@ -103,32 +123,7 @@ export default function Home() {
                 <div className="grid grid-cols-12">
                     <div className="col-span-6 items-center flex flex-row">
                         <div className="flex flex-col p-8 text-5xl text-white border m-12 gap-2">
-                            <span>
-                                <DecryptedText
-                                    text="Ahoy, matey!"
-                                    speed={100}
-                                    maxIterations={20}
-                                    characters="ABCD1234!?"
-                                    className="revealed"
-                                    parentClassName="all-letters"
-                                    encryptedClassName="encrypted"
-                                    animateOn="both"
-                                    sequential={true}
-                                />
-                            </span>
-                            <span>
-                                <DecryptedText
-                                    text="Set yer eyes on this"
-                                    speed={100}
-                                    maxIterations={20}
-                                    characters="ABCD1234!?"
-                                    className="revealed"
-                                    parentClassName="all-letters"
-                                    encryptedClassName="encrypted"
-                                    animateOn="both"
-                                    sequential={true}
-                                />
-                            </span>
+                            
                         </div>
                     </div>
                     
