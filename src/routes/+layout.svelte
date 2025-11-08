@@ -1,4 +1,5 @@
 <script>
+    import "../app.css";
 	import { PrismicPreview } from '@prismicio/svelte/kit';
 	import { page } from '$app/state';
 	import { repositoryName } from '$lib/prismicio';
