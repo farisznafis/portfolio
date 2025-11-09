@@ -21,6 +21,12 @@
 	function getRandomMaterial() {
 		return new THREE.MeshStandardMaterial(gsap.utils.random(materialParams));
 	}
+
+	function handleClick(event: MouseEvent) {
+		if ('object' in event && event.object instanceof THREE.Mesh) {
+			event.object.material = getRandomMaterial();
+		}
+	}
 </script>
 
 <Threlte.Group position={position.map((p) => p * 2) as [number, number, number]}>
@@ -30,6 +36,11 @@
 		rotationIntensity={6 * rate}
 		floatIntensity={5 * rate}
 	>
-		<Threlte.Mesh {geometry} material={getRandomMaterial()}></Threlte.Mesh>
+		<Threlte.Mesh
+			{geometry}
+			material={getRandomMaterial()}
+			interactive
+			on:click={handleClick}
+		></Threlte.Mesh>
 	</Float>
 </Threlte.Group>
