@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Content } from '@prismicio/client';
 	import type { SliceComponentProps } from '@prismicio/svelte';
+    import Scene from './Scene.svelte';
 
 	type Props = SliceComponentProps<Content.HeroSlice>;
 
@@ -15,7 +16,7 @@
     <div class="mx-auto w-full max-w-7xl">
         <div class="grid min-h-[65vh] grid-cols-1 items-center md:grid-cols-2">
             <div class="relative z-10 row-span-1 row-start-1 -my-10 aspect-[1/1.3] overflow-hidden md:col-span-1 md:col-start-2 md:mt-0">
-                Shape Scene
+                <Scene />
             </div>
             <div class="col-start-1 md:row-start-1">
                 <h1 class="mb-2 md:mb-8 text-[clamp(3rem,20vmin,13rem)] font-extrabold leading-none tracking-tighter text-nowrap">
