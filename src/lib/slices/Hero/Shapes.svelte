@@ -2,9 +2,10 @@
 	import { T as Threlte } from '@threlte/core';
 	import * as THREE from 'three';
 	import Geometry from './Geometry.svelte';
-    import { ContactShadows, Environment, interactivity } from '@threlte/extras';
+    import { ContactShadows, Environment, interactivity, transitions } from '@threlte/extras';
 
     interactivity();
+    transitions();
 </script>
 
 <Threlte.PerspectiveCamera
