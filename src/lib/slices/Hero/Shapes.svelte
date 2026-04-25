@@ -2,10 +2,10 @@
 	import { T as Threlte } from '@threlte/core';
 	import * as THREE from 'three';
 	import Geometry from './Geometry.svelte';
-    import { ContactShadows, Environment, interactivity, transitions } from '@threlte/extras';
+	import { ContactShadows, Environment, interactivity, transitions } from '@threlte/extras';
 
-    interactivity();
-    transitions();
+	interactivity();
+	transitions();
 </script>
 
 <Threlte.PerspectiveCamera
@@ -19,7 +19,7 @@
 
 <Environment url="smallroom.hdr" />
 <Threlte.DirectionalLight position={[0, 10, 30]} intensity={2}></Threlte.DirectionalLight>
-<ContactShadows position={[0, -3.7, 0]} opacity={0.65} scale={40} blur={1} fov={9}/>
+<ContactShadows position={[0, -3.7, 0]} opacity={0.65} scale={40} blur={1} fov={9} />
 
 <!-- Gem -->
 <Geometry position={[0, 0, 0]} rate={0.3} geometry={new THREE.IcosahedronGeometry(3)} />
@@ -33,16 +33,16 @@
 
 <!-- Soccer Ball -->
 <Geometry
-    position={[-1.4, 2, -4]}
-    rate={0.6}
-    geometry={new THREE.DodecahedronGeometry(1.5)}
+	position={[-1.4, 2, -4]}
+	rate={0.6}
+	geometry={new THREE.DodecahedronGeometry(1.5)}
 />
 
 <!-- Donut -->
 <Geometry
-    position={[-0.8, -0.75, 5]}
-    rate={0.5}
-    geometry={new THREE.TorusGeometry(0.6, 0.25, 16, 32)}
+	position={[-0.8, -0.75, 5]}
+	rate={0.5}
+	geometry={new THREE.TorusGeometry(0.6, 0.25, 16, 32)}
 />
 
 <!-- Diamond -->

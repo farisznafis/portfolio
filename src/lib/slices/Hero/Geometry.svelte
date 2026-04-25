@@ -1,20 +1,20 @@
 <script lang="ts">
 	import { T as Threlte } from '@threlte/core';
 	import { Float } from '@threlte/extras';
-	import * as THREE from 'three';
-	import gsap from 'gsap';
 	import { createTransition } from '@threlte/extras';
 	import { elasticOut } from 'svelte/easing';
+	import gsap from 'gsap';
+	import * as THREE from 'three';
 
 	export let position: [number, number, number] = [0, 0, 0];
 	export let geometry: THREE.BufferGeometry = new THREE.IcosahedronGeometry(3);
 	export let rate = 0.5;
 
-    const soundEffects = [
-        new Audio('/sounds/hit1.ogg'),
-        new Audio('/sounds/hit2.ogg'),
-        new Audio('/sounds/hit3.ogg'),
-    ]
+	const soundEffects = [
+		new Audio('/sounds/hit1.ogg'),
+		new Audio('/sounds/hit2.ogg'),
+		new Audio('/sounds/hit3.ogg')
+	];
 
 	let visible = false;
 
@@ -28,12 +28,12 @@
 		{ color: 0x2c3e50, roughness: 0.1, metalness: 0.5 }
 	];
 
-	function getRandomMaterial() {
+	function createRandomMaterial() {
 		return new THREE.MeshStandardMaterial(gsap.utils.random(materialParams));
 	}
 
 	function handleClick(event: MouseEvent) {
-        gsap.utils.random(soundEffects).play();
+		gsap.utils.random(soundEffects).play();
 		if ('object' in event && event.object instanceof THREE.Mesh) {
 			gsap.to(event.object.rotation, {
 				x: `+=${gsap.utils.random(0, 3)}`,
@@ -43,15 +43,17 @@
 				ease: 'elastic.out(1, 0.3)',
 				yoyo: true
 			});
-			event.object.material = getRandomMaterial();
+			event.object.material = createRandomMaterial();
 		}
 	}
 
 	const bounce = createTransition((ref) => {
+		const mesh = ref as THREE.Mesh;
+
 		return {
 			tick(t) {
 				if (t > 0) visible = true;
-				ref.scale.set(t, t, t);
+				mesh.scale.set(t, t, t);
 			},
 			easing: elasticOut,
 			duration: gsap.utils.random(800, 1200),
@@ -67,13 +69,13 @@
 		rotationIntensity={6 * rate}
 		floatIntensity={5 * rate}
 	>
-		<Threlte.Mesh
-			{visible}
-			{geometry}
-			in={bounce}
-			material={getRandomMaterial()}
-			interactive
-			on:click={handleClick}
-		></Threlte.Mesh>
+	<Threlte.Mesh
+		{visible}
+		{geometry}
+		in={bounce}
+		material={createRandomMaterial()}
+		interactive
+		on:click={handleClick}
+	></Threlte.Mesh>
 	</Float>
 </Threlte.Group>
