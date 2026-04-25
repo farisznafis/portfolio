@@ -1,14 +1,20 @@
 <script lang="ts">
 	import type { Content } from '@prismicio/client';
-	import Scene from './Scene.svelte';
+	import type { SliceComponentProps } from '@prismicio/svelte';
 	import { onMount } from 'svelte';
 	import gsap from 'gsap';
+	import Scene from './Scene.svelte';
 
-	export let slice: Content.HeroSlice;
+	type Props = SliceComponentProps<Content.HeroSlice>;
 
-	const first_name_letters = slice.primary.first_name?.split('') ?? '';
-	const middle_name_letters = slice.primary.middle_name?.split('') ?? '';
-	const last_name_letters = slice.primary.last_name?.split('') ?? '';
+	const { slice }: Props = $props();
+
+	const primary = slice.primary;
+
+	const firstNameLetters = primary.first_name ? Array.from(primary.first_name) : [];
+	const middleNameLetters = primary.middle_name ? Array.from(primary.middle_name) : [];
+	const lastNameLetters = primary.last_name ? Array.from(primary.last_name) : [];
+	const fullName = [primary.first_name, primary.middle_name, primary.last_name].filter(Boolean).join(' ');
 
 	onMount(() => {
 		const tl = gsap.timeline();
@@ -65,35 +71,32 @@
 			</div>
 			<div class="col-start-1 md:row-start-1">
 				<h1
-					class="mb-2 md:mb-2 text-[clamp(3rem,20vmin,13rem)] font-extrabold leading-none tracking-tighter text-nowrap"
-                    aria-label={slice.primary.first_name + " " + slice.primary.middle_name + " " + slice.primary.last_name}
+					class="mb-2 text-[clamp(3rem,20vmin,13rem)] font-extrabold leading-none tracking-tighter text-nowrap md:mb-2"
+					aria-label={fullName}
 				>
-					{#if first_name_letters.length && last_name_letters.length}
+					{#if firstNameLetters.length && lastNameLetters.length}
 						<span class="block text-slate-200">
-							{#each first_name_letters as letter}
+							{#each firstNameLetters as letter}
 								<span class="name-animation inline-block opacity-100">{letter}</span>
 							{/each}
-							<!-- {slice.primary.first_name} -->
 						</span>
 						<span class="block text-slate-400 -mt-[.2em]">
-							{#each middle_name_letters as letter}
+							{#each middleNameLetters as letter}
 								<span class="name-animation inline-block opacity-100">{letter}</span>
 							{/each}
-							<!-- {slice.primary.middle_name} -->
 						</span>
 						<span class="block text-slate-600 -mt-[.2em]">
-							{#each last_name_letters as letter}
+							{#each lastNameLetters as letter}
 								<span class="name-animation inline-block opacity-100">{letter}</span>
 							{/each}
-							<!-- {slice.primary.last_name} -->
 						</span>
 					{/if}
 				</h1>
 
 				<span
-					class="job-title block bg-linear-to-tr from-yellow-500 via-yellow-200 to-yellow-500 bg-clip-text text-transparent text-2xl font-bold uppercase tracking-[.2em] md:text-4xl opacity-0"
+					class="job-title block bg-linear-to-tr from-yellow-500 via-yellow-200 to-yellow-500 bg-clip-text text-2xl font-bold uppercase tracking-[.2em] text-transparent opacity-0 md:text-4xl"
 				>
-					{slice.primary.tagline}
+					{primary.tagline}
 				</span>
 			</div>
 		</div>

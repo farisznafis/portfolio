@@ -8,7 +8,7 @@
 	const { slice }: Props = $props();
 </script>
 
-<section class="container">
+<section class="mx-auto max-w-2xl px-4 py-24 text-slate-200 md:px-6">
 	<PrismicRichText
 		field={slice.primary.content}
 		components={{
@@ -16,13 +16,3 @@
 		}}
 	/>
 </section>
-
-<style>
-	.container {
-		max-width: 600px;
-		margin: 6em auto;
-		font-family:
-			-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
-			'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-	}
-</style>
