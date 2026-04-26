@@ -11,10 +11,10 @@
 	};
 </script>
 
-<header class="relative top-0 z-50 mx-auto max-w-7xl md:sticky md:top-0">
+<header class="relative top-0 z-50 mx-auto w-full max-w-6xl md:sticky md:top-0">
 	<nav>
 		<div
-			class="flex flex-col justify-between rounded-b-lg bg-slate-50 px-4 py-2 md:m-4 md:flex-row md:items-center md:rounded-2xl"
+			class="flex flex-col justify-between rounded-b-lg bg-slate-50 px-4 py-2 md:m-4 md:flex-row md:items-center md:rounded-md"
 		>
 			<div class="flex items-center justify-between">
 				<a

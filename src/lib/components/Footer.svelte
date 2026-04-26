@@ -8,10 +8,8 @@
 	export let settings: Content.SettingsDocument;
 </script>
 
-<footer class="text-slate-600">
-	<div
-		class="container mx-auto mt-20 flex max-w-6xl flex-col items-center justify-between gap-6 py-8 sm:flex-row"
-	>
+<footer class="mt-auto text-slate-600">
+	<div class="container mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 py-8 sm:flex-row">
 		<div class="name flex flex-col items-center justify-center gap-x-4 gap-y-2 sm:flex-row">
 			<a
 				href="/"

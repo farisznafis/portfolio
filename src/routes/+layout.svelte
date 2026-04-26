@@ -24,13 +24,15 @@
     {/if}
 </svelte:head>
 
-<div class="relative isolate min-h-screen overflow-hidden bg-slate-900">
+<div class="relative isolate h-dvh overflow-hidden bg-slate-900">
     <div class="background-gradient fixed inset-0 z-0"></div>
-    <div class="pointer-events-none fixed inset-0 z-10 bg-[url('/noisetexture.jpg')] opacity-20 mix-blend-soft-light"></div>
+    <div
+        class="pointer-events-none fixed inset-0 z-10 bg-[url('/noisetexture.jpg')] opacity-20 mix-blend-soft-light"
+    ></div>
 
-    <div class="relative z-20">
+    <div class="relative z-20 flex h-full flex-col">
         <Header settings={data.settings} />
-        <main>
+        <main class="flex-1 overflow-hidden">
             <slot />
         </main>
         <Footer settings={data.settings} />

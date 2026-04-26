@@ -5,6 +5,7 @@
 	import { elasticOut } from 'svelte/easing';
 	import gsap from 'gsap';
 	import * as THREE from 'three';
+	import type { IntersectionEvent } from '@threlte/extras';
 
 	export let position: [number, number, number] = [0, 0, 0];
 	export let geometry: THREE.BufferGeometry = new THREE.IcosahedronGeometry(3);
@@ -32,9 +33,10 @@
 		return new THREE.MeshStandardMaterial(gsap.utils.random(materialParams));
 	}
 
-	function handleClick(event: MouseEvent) {
+	function handleClick(event: IntersectionEvent<MouseEvent>) {
 		gsap.utils.random(soundEffects).play();
-		if ('object' in event && event.object instanceof THREE.Mesh) {
+
+		if (event.object instanceof THREE.Mesh) {
 			gsap.to(event.object.rotation, {
 				x: `+=${gsap.utils.random(0, 3)}`,
 				y: `+=${gsap.utils.random(0, 3)}`,
@@ -43,6 +45,7 @@
 				ease: 'elastic.out(1, 0.3)',
 				yoyo: true
 			});
+
 			event.object.material = createRandomMaterial();
 		}
 	}
@@ -74,8 +77,7 @@
 		{geometry}
 		in={bounce}
 		material={createRandomMaterial()}
-		interactive
-		on:click={handleClick}
-	></Threlte.Mesh>
+		onclick={handleClick}
+	/>
 	</Float>
 </Threlte.Group>
