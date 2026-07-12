@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+@theme {
+  /* Color tokens — the site's identity: deep navy night, teal accent, amber highlight */
+  --color-night: #080a0f;
+  --color-elevated: #0e1219;
+  --color-ink: #f2f6f7;
+  --color-muted: #96a2b0;
+  --color-accent: #00b5a5;
+  --color-accent-bright: #2ee6d6;
+  --color-amber: #ffc700;
+  --color-line: rgba(255, 255, 255, 0.1);
+  /* Text color used on top of accent-filled surfaces */
+  --color-on-accent: #05201d;
+
+  /* Type roles */
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Animations */
+  --animate-marquee: marquee 36s linear infinite;
+  --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgba(0, 181, 165, 0.45);
+    }
+    50% {
+      opacity: 0.75;
+      box-shadow: 0 0 0 6px rgba(0, 181, 165, 0);
+    }
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(0, 181, 165, 0.14), transparent 34rem),
+    radial-gradient(circle at 92% 12%, rgba(255, 199, 0, 0.09), transparent 30rem),
+    linear-gradient(135deg, #07090f 0%, #10131a 48%, #0d1117 100%);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: rgba(0, 181, 165, 0.34);
+  color: #ffffff;
+}
+
+/* Accessible focus ring, keyboard-only */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Skip link — hidden until focused */
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: -100%;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: top 200ms ease;
+}
+
+.skip-link:focus-visible {
+  top: 1rem;
+}
+
+@layer components {
+  /* Subtle blueprint grid, masked to fade downward */
+  .mesh-line {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: linear-gradient(to bottom, black, transparent 82%);
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent 82%);
+  }
+
+  /* Frosted panel used across cards */
+  .glass {
+    border: 1px solid var(--color-line);
+    background: rgba(10, 13, 19, 0.66);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(18px);
+  }
+
+  /* Gradient text for accented words */
+  .text-gradient {
+    background: linear-gradient(
+      100deg,
+      var(--color-accent) 0%,
+      var(--color-accent-bright) 55%,
+      var(--color-amber) 120%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  /* Pause marquee on hover for readability */
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+}
+
+/* Slim custom scrollbar to match the dark canvas */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-night);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  border: 2px solid var(--color-night);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+
+  .animate-pulse-dot {
+    animation: none;
+  }
+}
