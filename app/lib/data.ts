@@ -33,6 +33,40 @@ export const heroStats = [
   { value: 15, suffix: "+", label: "Clients & teams" },
 ] as const;
 
+/**
+ * Home page scroll-experience copy.
+ * Short, punchy content shown over the scroll-driven particle wave.
+ */
+export const homeIntro = {
+  kicker: "Creative Frontend Engineer",
+  line1: "I design and build",
+  line2: "interfaces that feel alive",
+  blurb:
+    "Motion, 3D, and product thinking woven into fast, memorable web experiences. Scroll to see what I mean.",
+} as const;
+
+export const homePillars = [
+  {
+    index: "01",
+    title: "Motion Design",
+    description:
+      "Purposeful animation that explains state, guides attention, and rewards curiosity — never decoration for its own sake.",
+  },
+  {
+    index: "02",
+    title: "3D & WebGL",
+    description:
+      "Shader-driven scenes, particle systems, and real-time 3D that stay smooth at 60fps on real devices.",
+  },
+  {
+    index: "03",
+    title: "Product UI",
+    description:
+      "Design systems, accessible components, and the unglamorous glue that turns a prototype into a shipped product.",
+  },
+] as const;
+
+
 export const marqueeStack = [
   "Next.js",
   "React",
