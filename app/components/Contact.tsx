@@ -1,12 +1,11 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Check, Loader2, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { site, socials } from "../lib/data";
-import { Reveal } from "./ui/Reveal";
-import { SectionHeading } from "./ui/SectionHeading";
+import { EASE } from "../lib/motion";
 
 type Status = "idle" | "sending" | "sent";
 
@@ -15,6 +14,7 @@ const FIELD_CLASSES =
 
 export function Contact() {
   const [status, setStatus] = useState<Status>("idle");
+  const reduce = useReducedMotion();
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -47,161 +47,216 @@ export function Contact() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="relative z-10 mx-auto max-w-6xl px-5 py-24 sm:py-32"
+      className="relative z-10 min-h-screen pt-28"
     >
-      <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
-        <div>
-          <SectionHeading
-            headingId="contact-heading"
-            eyebrow="Contact"
-            title="Let's build something memorable"
-            description="Have a project in mind, a role to fill, or just want to talk shop about motion on the web? My inbox is open."
-          />
-
-          <Reveal delay={0.2} className="mt-10">
-            <a
-              href={`mailto:${site.email}`}
-              className="group inline-flex items-center gap-2 font-display text-xl font-semibold text-ink transition-colors hover:text-accent sm:text-2xl"
+      <div className="mx-auto w-full max-w-6xl px-5 py-24 sm:py-32">
+        <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
+          <div>
+            {/* Heading with staggered entrance */}
+            <motion.p
+              className="font-mono text-xs uppercase tracking-[0.3em] text-accent"
+              initial={reduce ? {} : { opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.5 }}
+              transition={{ duration: 0.7, ease: EASE }}
             >
-              {site.email}
-              <ArrowUpRight
-                size={20}
-                aria-hidden="true"
-                className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              />
-            </a>
-          </Reveal>
+              Contact
+            </motion.p>
 
-          <Reveal delay={0.3} className="mt-10">
-            <ul className="divide-y divide-line border-y border-line">
-              {socials.map((social) => (
-                <li key={social.label}>
-                  <a
-                    href={social.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group flex items-center justify-between py-4 font-mono text-sm uppercase tracking-[0.2em] text-muted transition-colors hover:text-ink"
-                  >
-                    <span className="transition-transform duration-300 group-hover:translate-x-2">
-                      {social.label}
-                    </span>
-                    <ArrowUpRight
-                      size={16}
-                      aria-hidden="true"
-                      className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                    />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
+            <motion.h2
+              id="contact-heading"
+              className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
+              initial={reduce ? {} : { opacity: 0, y: 40, filter: "blur(6px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
+            >
+              Let&apos;s build something memorable
+            </motion.h2>
 
-        <Reveal delay={0.15}>
-          <form onSubmit={onSubmit} className="glass rounded-2xl p-7 sm:p-8">
-            <div className="grid gap-5 sm:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="contact-name"
-                  className="mb-2 block font-mono text-xs uppercase tracking-[0.2em] text-muted"
-                >
-                  Name
-                </label>
-                <input
-                  id="contact-name"
-                  name="name"
-                  type="text"
-                  required
-                  autoComplete="name"
-                  placeholder="Jane Doe"
-                  className={FIELD_CLASSES}
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="contact-email"
-                  className="mb-2 block font-mono text-xs uppercase tracking-[0.2em] text-muted"
-                >
-                  Email
-                </label>
-                <input
-                  id="contact-email"
-                  name="email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  placeholder="jane@company.com"
-                  className={FIELD_CLASSES}
-                />
-              </div>
-            </div>
-            <div className="mt-5">
-              <label
-                htmlFor="contact-message"
-                className="mb-2 block font-mono text-xs uppercase tracking-[0.2em] text-muted"
+            <motion.p
+              className="mt-4 leading-relaxed text-muted"
+              initial={reduce ? {} : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
+            >
+              Have a project in mind, a role to fill, or just want to talk shop
+              about motion on the web? My inbox is open.
+            </motion.p>
+
+            {/* Email link */}
+            <motion.div
+              className="mt-10"
+              initial={reduce ? {} : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.3, ease: EASE }}
+            >
+              <a
+                href={`mailto:${site.email}`}
+                className="group inline-flex items-center gap-2 font-display text-xl font-semibold text-ink transition-colors hover:text-accent sm:text-2xl"
               >
-                Message
-              </label>
-              <textarea
-                id="contact-message"
-                name="message"
-                required
-                rows={5}
-                placeholder="Tell me about your project…"
-                className={`${FIELD_CLASSES} resize-y`}
-              />
-            </div>
+                {site.email}
+                <ArrowUpRight
+                  size={20}
+                  aria-hidden="true"
+                  className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
+              </a>
+            </motion.div>
 
-            <button
-              type="submit"
-              disabled={status !== "idle"}
-              className="mt-7 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-accent px-6 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-bright disabled:cursor-default disabled:opacity-90 sm:w-auto"
+            {/* Social links */}
+            <motion.div
+              className="mt-10"
+              initial={reduce ? {} : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.4, ease: EASE }}
             >
-              <AnimatePresence mode="wait" initial={false}>
-                {status === "idle" && (
-                  <motion.span
-                    key="idle"
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    transition={{ duration: 0.18 }}
-                    className="inline-flex items-center gap-2"
+              <ul className="divide-y divide-line border-y border-line">
+                {socials.map((social, i) => (
+                  <motion.li
+                    key={social.label}
+                    initial={reduce ? {} : { opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.45 + i * 0.08, ease: EASE }}
                   >
-                    Send message <Send size={16} aria-hidden="true" />
-                  </motion.span>
-                )}
-                {status === "sending" && (
-                  <motion.span
-                    key="sending"
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    transition={{ duration: 0.18 }}
-                    className="inline-flex items-center gap-2"
+                    <a
+                      href={social.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group flex items-center justify-between py-4 font-mono text-sm uppercase tracking-[0.2em] text-muted transition-colors hover:text-ink"
+                    >
+                      <span className="transition-transform duration-300 group-hover:translate-x-2">
+                        {social.label}
+                      </span>
+                      <ArrowUpRight
+                        size={16}
+                        aria-hidden="true"
+                        className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                      />
+                    </a>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+
+          {/* Form — slides in from the right */}
+          <motion.div
+            initial={reduce ? {} : { opacity: 0, x: 60, filter: "blur(8px)" }}
+            whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 1, delay: 0.15, ease: EASE }}
+          >
+            <form onSubmit={onSubmit} className="glass rounded-2xl p-7 sm:p-8">
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label
+                    htmlFor="contact-name"
+                    className="mb-2 block font-mono text-xs uppercase tracking-[0.2em] text-muted"
                   >
-                    Opening mail app… <Loader2 size={16} aria-hidden="true" className="animate-spin" />
-                  </motion.span>
-                )}
-                {status === "sent" && (
-                  <motion.span
-                    key="sent"
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    transition={{ duration: 0.18 }}
-                    className="inline-flex items-center gap-2"
+                    Name
+                  </label>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    required
+                    autoComplete="name"
+                    placeholder="Jane Doe"
+                    className={FIELD_CLASSES}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="contact-email"
+                    className="mb-2 block font-mono text-xs uppercase tracking-[0.2em] text-muted"
                   >
-                    Message ready <Check size={16} aria-hidden="true" />
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </button>
-            <p aria-live="polite" className="sr-only">
-              {status === "sent" ? "Your email draft is ready in your mail app." : ""}
-            </p>
-          </form>
-        </Reveal>
+                    Email
+                  </label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    placeholder="jane@company.com"
+                    className={FIELD_CLASSES}
+                  />
+                </div>
+              </div>
+              <div className="mt-5">
+                <label
+                  htmlFor="contact-message"
+                  className="mb-2 block font-mono text-xs uppercase tracking-[0.2em] text-muted"
+                >
+                  Message
+                </label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  required
+                  rows={5}
+                  placeholder="Tell me about your project…"
+                  className={`${FIELD_CLASSES} resize-y`}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={status !== "idle"}
+                className="mt-7 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-accent px-6 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-bright disabled:cursor-default disabled:opacity-90 sm:w-auto"
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  {status === "idle" && (
+                    <motion.span
+                      key="idle"
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.18 }}
+                      className="inline-flex items-center gap-2"
+                    >
+                      Send message <Send size={16} aria-hidden="true" />
+                    </motion.span>
+                  )}
+                  {status === "sending" && (
+                    <motion.span
+                      key="sending"
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.18 }}
+                      className="inline-flex items-center gap-2"
+                    >
+                      Opening mail app… <Loader2 size={16} aria-hidden="true" className="animate-spin" />
+                    </motion.span>
+                  )}
+                  {status === "sent" && (
+                    <motion.span
+                      key="sent"
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.18 }}
+                      className="inline-flex items-center gap-2"
+                    >
+                      Message ready <Check size={16} aria-hidden="true" />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </button>
+              <p aria-live="polite" className="sr-only">
+                {status === "sent" ? "Your email draft is ready in your mail app." : ""}
+              </p>
+            </form>
+          </motion.div>
+        </div>
       </div>
+
     </section>
   );
 }

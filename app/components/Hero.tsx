@@ -1,137 +1,219 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowDown, ArrowUpRight, Mail } from "lucide-react";
-import { heroStats, marqueeStack, site } from "../lib/data";
-import { EASE } from "../lib/motion";
-import { Counter } from "./ui/Counter";
-import { Magnetic } from "./ui/Magnetic";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { ArrowUpRight, Mail } from "lucide-react";
+import { heroImages, marqueeStack, site } from "../lib/data";
 
-const HEADLINE: { word: string; gradient?: boolean }[] = [
-  { word: "Building" },
-  { word: "interfaces" },
-  { word: "that" },
-  { word: "feel" },
-  { word: "alive.", gradient: true },
-];
+// ─── Spotlight radius ────────────────────────────────────────────────────────
+const SPOTLIGHT_R = 260;
 
-export function Hero() {
-  const reduce = useReducedMotion();
+// ─── RevealLayer ─────────────────────────────────────────────────────────────
+/**
+ * Renders the second (reveal) image visible only inside a soft circular mask
+ * that follows the cursor. A hidden <canvas> draws a radial gradient at the
+ * cursor position; its dataURL drives the CSS mask on the reveal <div>.
+ *
+ * To swap in your own photos, update heroImages in app/lib/data.ts.
+ */
+function RevealLayer({
+  image,
+  cursorX,
+  cursorY,
+}: {
+  image: string;
+  cursorX: number;
+  cursorY: number;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const layerRef  = useRef<HTMLDivElement>(null);
+
+  // Keep canvas dimensions in sync with the viewport.
+  useEffect(() => {
+    const sync = () => {
+      const c = canvasRef.current;
+      if (!c) return;
+      c.width  = window.innerWidth;
+      c.height = window.innerHeight;
+    };
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, []);
+
+  // Re-draw the gradient mask every time the smoothed cursor moves.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const layer  = layerRef.current;
+    const ctx    = canvas?.getContext("2d");
+    if (!canvas || !layer || !ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const g = ctx.createRadialGradient(
+      cursorX, cursorY, 0,
+      cursorX, cursorY, SPOTLIGHT_R,
+    );
+    g.addColorStop(0,    "rgba(255,255,255,1)");
+    g.addColorStop(0.4,  "rgba(255,255,255,1)");
+    g.addColorStop(0.6,  "rgba(255,255,255,0.75)");
+    g.addColorStop(0.75, "rgba(255,255,255,0.4)");
+    g.addColorStop(0.88, "rgba(255,255,255,0.12)");
+    g.addColorStop(1,    "rgba(255,255,255,0)");
+
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(cursorX, cursorY, SPOTLIGHT_R, 0, Math.PI * 2);
+    ctx.fill();
+
+    const mask = `url(${canvas.toDataURL()})`;
+    layer.style.maskImage        = mask;
+    layer.style.webkitMaskImage  = mask;
+    layer.style.maskSize         = "100% 100%";
+    (layer.style as CSSStyleDeclaration & { webkitMaskSize: string }).webkitMaskSize = "100% 100%";
+  }, [cursorX, cursorY]);
 
   return (
-    <section
-      id="home"
-      aria-label="Introduction"
-      className="relative flex min-h-screen flex-col justify-between overflow-hidden pt-28"
-    >
-      {/* Blueprint grid, fading downward */}
-      <div className="mesh-line pointer-events-none absolute inset-0" aria-hidden="true" />
+    <>
+      {/* Hidden canvas — used only to generate the mask dataURL */}
+      <canvas
+        ref={canvasRef}
+        className="pointer-events-none absolute inset-0"
+        style={{ display: "none" }}
+        aria-hidden="true"
+      />
+      {/* Reveal image, shown only through the gradient mask above */}
+      <div
+        ref={layerRef}
+        className="pointer-events-none absolute inset-0 z-30 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${image})` }}
+        aria-hidden="true"
+      />
+    </>
+  );
+}
 
-      <div className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-5 pb-16">
-        <motion.div
-          initial={{ opacity: 0, y: reduce ? 0 : 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1, ease: EASE }}
-          className="flex flex-wrap items-center gap-x-5 gap-y-3"
-        >
-          <span className="inline-flex items-center gap-2 rounded-full border border-line bg-white/5 px-4 py-2 text-sm text-ink">
-            <span className="h-2 w-2 rounded-full bg-accent animate-pulse-dot" aria-hidden="true" />
-            {site.availability}
-          </span>
-          <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted">
-            {site.role} — {site.location}
-          </span>
-        </motion.div>
+// ─── Hero ────────────────────────────────────────────────────────────────────
+export function Hero() {
+  // Smoothed cursor position that feeds the spotlight.
+  const mouse  = useRef({ x: -999, y: -999 });
+  const smooth = useRef({ x: -999, y: -999 });
+  const rafRef = useRef<number>(0);
+  const [cursorPos, setCursorPos] = useState({ x: -999, y: -999 });
 
-        <h1 className="mt-8 max-w-5xl font-display text-5xl font-semibold leading-[1.02] tracking-tight text-ink sm:text-7xl lg:text-8xl">
-          {HEADLINE.map((item, index) => (
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      mouse.current = { x: e.clientX, y: e.clientY };
+    };
+    window.addEventListener("mousemove", onMove);
+
+    const loop = () => {
+      const dx = mouse.current.x - smooth.current.x;
+      const dy = mouse.current.y - smooth.current.y;
+      if (Math.abs(dx) > 0.08 || Math.abs(dy) > 0.08) {
+        smooth.current.x += dx * 0.1;
+        smooth.current.y += dy * 0.1;
+        setCursorPos({ x: smooth.current.x, y: smooth.current.y });
+      }
+      rafRef.current = requestAnimationFrame(loop);
+    };
+    rafRef.current = requestAnimationFrame(loop);
+
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  return (
+    <section id="home" aria-label="Introduction" className="relative w-full">
+
+      {/* ── Full-screen canvas ──────────────────────────────────────────────── */}
+      <div
+        className="relative w-full overflow-hidden bg-night"
+        style={{ height: "100dvh" }}
+      >
+
+        {/* Layer 1 — base image with Ken Burns zoom-out on load */}
+        <div
+          className="hero-zoom absolute inset-0 z-10 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${heroImages.base})` }}
+          aria-hidden="true"
+        />
+
+        {/* Layer 2 — spotlight-revealed second image */}
+        <RevealLayer
+          image={heroImages.reveal}
+          cursorX={cursorPos.x}
+          cursorY={cursorPos.y}
+        />
+
+        {/* Layer 3 — vignette for legibility */}
+        <div
+          className="pointer-events-none absolute inset-0 z-40 bg-gradient-to-t from-night/80 via-transparent to-night/50"
+          aria-hidden="true"
+        />
+
+        {/* ── Heading — top-center ─────────────────────────────────────────── */}
+        <div className="pointer-events-none absolute inset-x-0 top-[14%] z-50 flex flex-col items-center px-5 text-center">
+          <h1 className="font-display leading-[0.95] text-ink">
+            {/* Line 1 */}
             <span
-              key={item.word}
-              className="mr-[0.28em] inline-block overflow-hidden pb-1 align-bottom last:mr-0"
+              className="hero-anim hero-reveal block text-5xl font-semibold sm:text-7xl md:text-8xl"
+              style={{ letterSpacing: "-0.05em", animationDelay: "0.25s" }}
             >
-              <motion.span
-                className={item.gradient ? "text-gradient inline-block" : "inline-block"}
-                initial={{ y: reduce ? "0%" : "110%", opacity: reduce ? 0 : 1 }}
-                animate={{ y: "0%", opacity: 1 }}
-                transition={{ duration: 0.9, delay: 0.25 + index * 0.09, ease: EASE }}
-              >
-                {item.word}
-              </motion.span>
+              Building interfaces
             </span>
-          ))}
-        </h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.75, ease: EASE }}
-          className="mt-7 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
-        >
-          I&apos;m {site.name} — a frontend engineer who blends motion design, 3D, and
-          product thinking to ship web experiences people remember.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.9, ease: EASE }}
-          className="mt-10 flex flex-wrap items-center gap-3"
-        >
-          <Magnetic className="inline-block">
-            <a
-              href="#work"
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-bright"
+            {/* Line 2 */}
+            <span
+              className="hero-anim hero-reveal -mt-1 block text-5xl font-semibold sm:text-7xl md:text-8xl"
+              style={{ letterSpacing: "-0.08em", animationDelay: "0.42s" }}
             >
-              View my work <ArrowUpRight size={17} aria-hidden="true" />
-            </a>
-          </Magnetic>
-          <Magnetic className="inline-block">
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 rounded-full border border-line bg-white/5 px-6 py-3.5 text-sm font-semibold text-ink transition-colors hover:border-accent/50 hover:bg-white/10"
-            >
-              Get in touch <Mail size={17} aria-hidden="true" />
-            </a>
-          </Magnetic>
-        </motion.div>
+              that feel{" "}
+              <span className="text-gradient">alive.</span>
+            </span>
+          </h1>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1.1 }}
-          className="mt-16 flex flex-wrap items-end justify-between gap-8"
+        {/* ── Bottom-left — intro paragraph ────────────────────────────────── */}
+        <div
+          className="hero-anim hero-fade absolute bottom-14 left-10 z-50 hidden max-w-[260px] sm:block md:left-14"
+          style={{ animationDelay: "0.7s" }}
         >
-          <dl className="flex flex-wrap gap-10 sm:gap-14">
-            {heroStats.map((stat) => (
-              <div key={stat.label} className="flex flex-col">
-                <dt className="order-last font-mono text-xs uppercase tracking-[0.2em] text-muted">
-                  {stat.label}
-                </dt>
-                <dd className="m-0 font-display text-4xl font-semibold text-ink sm:text-5xl">
-                  <Counter value={stat.value} suffix={stat.suffix} />
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <p className="text-sm leading-relaxed text-ink/80">
+            I&apos;m {site.name} — a frontend engineer blending motion design,
+            3D, and product thinking to ship web experiences people remember.
+          </p>
+        </div>
 
-          <a
-            href="#work"
-            className="hidden items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-muted transition-colors hover:text-ink sm:inline-flex"
-          >
-            Scroll
-            <motion.span
-              aria-hidden="true"
-              animate={reduce ? undefined : { y: [0, 5, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-              className="inline-flex"
+        {/* ── Bottom-right — hint + CTAs ───────────────────────────────────── */}
+        <div
+          className="hero-anim hero-fade absolute bottom-10 left-5 right-5 z-50 flex max-w-full flex-col items-start gap-4 sm:bottom-24 sm:left-auto sm:right-10 sm:max-w-[260px] sm:gap-5 md:right-14"
+          style={{ animationDelay: "0.85s" }}
+        >
+          <p className="text-xs leading-relaxed text-ink/80 sm:text-sm">
+            Move your cursor across the scene to peel back the surface — the
+            same depth of craft sits beneath every interface I ship.
+          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href="/work"
+              className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-medium text-on-accent transition-all hover:scale-[1.03] hover:bg-accent-bright hover:shadow-lg hover:shadow-accent/30 active:scale-95"
             >
-              <ArrowDown size={14} />
-            </motion.span>
-          </a>
-        </motion.div>
+              View my work <ArrowUpRight size={16} aria-hidden="true" />
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 rounded-full border border-line bg-night/40 px-5 py-3 text-sm font-medium text-ink backdrop-blur-md transition-colors hover:border-accent/50 hover:bg-night/60"
+            >
+              Get in touch <Mail size={16} aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+
       </div>
 
-      {/* Stack marquee — the hero's baseline */}
+      {/* ── Stack marquee — below the full-screen canvas ──────────────────── */}
       <div className="marquee relative border-y border-line bg-white/[0.02] py-4">
         <div className="marquee-track animate-marquee flex w-max items-center gap-10">
           {[...marqueeStack, ...marqueeStack].map((item, index) => (
@@ -141,13 +223,12 @@ export function Hero() {
               className="flex items-center gap-10 whitespace-nowrap font-mono text-sm uppercase tracking-[0.25em] text-muted"
             >
               {item}
-              <span className="text-accent" aria-hidden="true">
-                ✦
-              </span>
+              <span className="text-accent" aria-hidden="true">✦</span>
             </span>
           ))}
         </div>
       </div>
+
     </section>
   );
 }

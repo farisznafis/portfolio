@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { Navbar } from "./components/Navbar";
+import { CursorGlow } from "./components/CursorGlow";
+import { Footer } from "./components/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,7 +24,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Faris Znafis — Creative Frontend Engineer",
+  title: {
+    default: "Faris Znafis — Creative Frontend Engineer",
+    template: "%s — Faris Znafis",
+  },
   description:
     "Portfolio of Faris Znafis, a creative frontend engineer crafting interactive, high-performance web experiences with Next.js, motion design, and 3D.",
   openGraph: {
@@ -42,7 +48,17 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
+        <CursorGlow />
+        <Navbar />
+        <main id="main" className="relative">
+          {children}
+        </main>
+        <Footer />
+      </body>
     </html>
   );
 }

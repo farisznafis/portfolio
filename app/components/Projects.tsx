@@ -11,81 +11,101 @@ import {
   type ProjectCategory,
 } from "../lib/data";
 import { EASE } from "../lib/motion";
-import { SectionHeading } from "./ui/SectionHeading";
 import { TiltCard } from "./ui/TiltCard";
 
 export function Projects() {
   const [category, setCategory] = useState<ProjectCategory>("All");
+  const reduce = useReducedMotion();
   const visible =
-    category === "All" ? projects : projects.filter((project) => project.category === category);
+    category === "All" ? projects : projects.filter((p) => p.category === category);
 
   return (
     <section
       id="work"
       aria-labelledby="work-heading"
-      className="relative z-10 mx-auto max-w-6xl px-5 py-24 sm:py-32"
+      className="relative z-10 min-h-screen pt-28"
     >
-      <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-        <SectionHeading
-          headingId="work-heading"
-          eyebrow="Selected work"
-          title="Projects built with motion and purpose"
-          description="A mix of product interfaces, web apps, and interactive experiments. Each one shipped, measured, and polished."
-        />
-        <div role="group" aria-label="Filter projects by category" className="flex flex-wrap gap-2">
-          {projectCategories.map((item) => (
-            <button
-              key={item}
-              type="button"
-              onClick={() => setCategory(item)}
-              aria-pressed={category === item}
-              className={clsx(
-                "relative rounded-full border px-4 py-2.5 font-mono text-xs uppercase tracking-wider transition-colors",
-                category === item
-                  ? "border-accent text-on-accent"
-                  : "border-line text-muted hover:border-white/30 hover:text-ink",
-              )}
+      <div className="mx-auto w-full max-w-6xl px-5 py-24 sm:py-32">
+        {/* Header row */}
+        <motion.div
+          className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between"
+          initial={reduce ? {} : { opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, ease: EASE }}
+        >
+          <div className="max-w-2xl">
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
+              Selected work
+            </p>
+            <h2
+              id="work-heading"
+              className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
             >
-              {category === item && (
-                <motion.span
-                  layoutId="filter-pill"
-                  className="absolute inset-0 rounded-full bg-accent"
-                  transition={{ type: "spring", stiffness: 400, damping: 34 }}
-                />
-              )}
-              <span className="relative z-10">{item}</span>
-            </button>
-          ))}
-        </div>
+              Projects built with motion and purpose
+            </h2>
+            <p className="mt-4 leading-relaxed text-muted">
+              A mix of product interfaces, web apps, and interactive
+              experiments. Each one shipped, measured, and polished.
+            </p>
+          </div>
+          <div role="group" aria-label="Filter projects by category" className="flex flex-wrap gap-2">
+            {projectCategories.map((item) => (
+              <button
+                key={item}
+                type="button"
+                onClick={() => setCategory(item)}
+                aria-pressed={category === item}
+                className={clsx(
+                  "relative rounded-full border px-4 py-2.5 font-mono text-xs uppercase tracking-wider transition-colors",
+                  category === item
+                    ? "border-accent text-on-accent"
+                    : "border-line text-muted hover:border-white/30 hover:text-ink",
+                )}
+              >
+                {category === item && (
+                  <motion.span
+                    layoutId="filter-pill"
+                    className="absolute inset-0 rounded-full bg-accent"
+                    transition={{ type: "spring", stiffness: 400, damping: 34 }}
+                  />
+                )}
+                <span className="relative z-10">{item}</span>
+              </button>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Project grid */}
+        <motion.div layout className="mt-12 grid gap-5 sm:grid-cols-2">
+          <AnimatePresence mode="popLayout">
+            {visible.map((project, index) => (
+              <ProjectCard key={project.title} project={project} index={index} />
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
 
-      <motion.div layout className="mt-12 grid gap-5 sm:grid-cols-2">
-        <AnimatePresence mode="popLayout">
-          {visible.map((project) => (
-            <ProjectCard key={project.title} project={project} />
-          ))}
-        </AnimatePresence>
-      </motion.div>
     </section>
   );
 }
 
-function ProjectCard({ project }: { project: Project }) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const reduce = useReducedMotion();
   const isTeal = project.tone === "accent";
 
   return (
     <motion.article
       layout
-      initial={{ opacity: 0, y: reduce ? 0 : 26 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={reduce ? {} : { opacity: 0, y: 50, filter: "blur(4px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       viewport={{ once: true, amount: 0.15 }}
       exit={{ opacity: 0, scale: 0.97 }}
-      transition={{ duration: 0.55, ease: EASE }}
+      transition={{ duration: 0.8, delay: index * 0.1, ease: EASE }}
       className={clsx("h-full", project.featured && "sm:col-span-2")}
     >
       <TiltCard className="group glass h-full overflow-hidden rounded-2xl">
-        {/* Generated thumbnail — swap for a real screenshot when available */}
+        {/* Thumbnail */}
         <div
           className={clsx(
             "relative overflow-hidden border-b border-line",
@@ -110,15 +130,12 @@ function ProjectCard({ project }: { project: Project }) {
             <span className="absolute bottom-4 right-6 select-none font-display text-7xl font-bold tracking-tight text-white/[0.06] sm:text-8xl">
               {project.initials}
             </span>
-            {/* Browser chrome hint */}
             <div className="absolute left-5 top-5 flex gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
               <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
               <span className={clsx("h-2.5 w-2.5 rounded-full", isTeal ? "bg-accent/70" : "bg-amber/70")} />
             </div>
           </div>
-
-          {/* Hover preview overlay */}
           <a
             href={project.demo}
             target="_blank"

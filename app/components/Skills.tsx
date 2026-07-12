@@ -3,8 +3,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { skillGroups } from "../lib/data";
 import { EASE } from "../lib/motion";
-import { Reveal } from "./ui/Reveal";
-import { SectionHeading } from "./ui/SectionHeading";
 
 export function Skills() {
   const reduce = useReducedMotion();
@@ -13,19 +11,43 @@ export function Skills() {
     <section
       id="skills"
       aria-labelledby="skills-heading"
-      className="relative z-10 mx-auto max-w-6xl px-5 py-24 sm:py-32"
+      className="relative z-10 min-h-screen pt-28"
     >
-      <SectionHeading
-        headingId="skills-heading"
-        eyebrow="Skills"
-        title="Tools I reach for every day"
-        description="Grouped by how I actually use them — foundations, the layer that brings life, and the practices that keep everything shippable."
-      />
+      <div className="mx-auto w-full max-w-6xl px-5 py-24 sm:py-32">
+        {/* Heading */}
+        <motion.div
+          className="max-w-2xl"
+          initial={reduce ? {} : { opacity: 0, y: 40, filter: "blur(6px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.9, ease: EASE }}
+        >
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
+            Skills
+          </p>
+          <h2
+            id="skills-heading"
+            className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
+          >
+            Tools I reach for every day
+          </h2>
+          <p className="mt-4 leading-relaxed text-muted">
+            Grouped by how I actually use them — foundations, the layer that
+            brings life, and the practices that keep everything shippable.
+          </p>
+        </motion.div>
 
-      <div className="mt-12 grid gap-5 md:grid-cols-3">
-        {skillGroups.map((group, groupIndex) => (
-          <Reveal key={group.title} delay={groupIndex * 0.1} className="h-full">
-            <div className="glass h-full rounded-2xl p-6 transition-colors hover:border-accent/40 sm:p-7">
+        {/* Skill cards */}
+        <div className="mt-12 grid gap-5 md:grid-cols-3">
+          {skillGroups.map((group, groupIndex) => (
+            <motion.div
+              key={group.title}
+              className="glass h-full rounded-2xl p-6 transition-colors hover:border-accent/40 sm:p-7"
+              initial={reduce ? {} : { opacity: 0, y: 50, scale: 0.96 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.15 + groupIndex * 0.12, ease: EASE }}
+            >
               <p className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
                 0{groupIndex + 1}
               </p>
@@ -37,7 +59,15 @@ export function Skills() {
                   <li key={skill.name}>
                     <div className="flex items-baseline justify-between gap-3">
                       <span className="text-sm font-medium text-ink">{skill.name}</span>
-                      <span className="font-mono text-xs text-muted">{skill.level}%</span>
+                      <motion.span
+                        className="font-mono text-xs text-muted"
+                        initial={reduce ? {} : { opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.4, delay: 0.4 + skillIndex * 0.1 }}
+                      >
+                        {skill.level}%
+                      </motion.span>
                     </div>
                     <div
                       role="meter"
@@ -54,8 +84,8 @@ export function Skills() {
                         whileInView={{ scaleX: 1 }}
                         viewport={{ once: true, amount: 0.6 }}
                         transition={{
-                          duration: 1,
-                          delay: 0.15 + skillIndex * 0.08,
+                          duration: 1.2,
+                          delay: 0.3 + skillIndex * 0.1,
                           ease: EASE,
                         }}
                       />
@@ -63,10 +93,11 @@ export function Skills() {
                   </li>
                 ))}
               </ul>
-            </div>
-          </Reveal>
-        ))}
+            </motion.div>
+          ))}
+        </div>
       </div>
+
     </section>
   );
 }

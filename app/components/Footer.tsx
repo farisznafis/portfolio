@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowUp } from "lucide-react";
 import { site } from "../lib/data";
 
@@ -11,9 +12,9 @@ export function Footer() {
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
           Next.js · Tailwind · Motion
         </p>
-        <a
-          href="#home"
-          aria-label="Back to top"
+        <Link
+          href="/"
+          aria-label="Back to home"
           className="group inline-flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white/5 text-ink transition-colors hover:border-accent/60 hover:text-accent"
         >
           <ArrowUp
@@ -21,7 +22,7 @@ export function Footer() {
             aria-hidden="true"
             className="transition-transform duration-300 group-hover:-translate-y-0.5"
           />
-        </a>
+        </Link>
       </div>
     </footer>
   );
