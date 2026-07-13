@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { useActiveSection } from "../../hooks/useActiveSection";
-import { EASE } from "../../lib/motion";
+import { SPRING } from "../../lib/motion";
 
 const SECTIONS = [
   { id: "home", label: "Home" },
@@ -39,7 +39,7 @@ export function PageIndicator() {
               <motion.span
                 layoutId="page-dot-glow"
                 className="absolute inset-0 rounded-full"
-                transition={{ type: "spring", stiffness: 350, damping: 28 }}
+                transition={SPRING.glow}
               />
             )}
           </a>

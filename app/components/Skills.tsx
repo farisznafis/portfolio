@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { skillGroups } from "../lib/data";
 import { EASE } from "../lib/motion";
+import { MaskedText } from "./ui/MaskedText";
 
 export function Skills() {
   const reduce = useReducedMotion();
@@ -29,7 +30,7 @@ export function Skills() {
             id="skills-heading"
             className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
           >
-            Tools I reach for every day
+            <MaskedText text="Tools I reach for every day" delay={0.1} />
           </h2>
           <p className="mt-4 leading-relaxed text-muted">
             Grouped by how I actually use them — foundations, the layer that

@@ -5,6 +5,7 @@ import { useRef } from "react";
 import clsx from "clsx";
 import { experience } from "../lib/data";
 import { EASE } from "../lib/motion";
+import { MaskedText } from "./ui/MaskedText";
 
 export function Experience() {
   const timelineRef = useRef<HTMLDivElement>(null);
@@ -37,7 +38,7 @@ export function Experience() {
             id="experience-heading"
             className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
           >
-            The road so far
+            <MaskedText text="The road so far" delay={0.1} />
           </h2>
           <p className="mt-4 leading-relaxed text-muted">
             From freelance MVPs to leading frontend on products used by

@@ -10,7 +10,9 @@ import {
   type Project,
   type ProjectCategory,
 } from "../lib/data";
-import { EASE } from "../lib/motion";
+import { EASE, PARALLAX, SPRING } from "../lib/motion";
+import { MaskedText } from "./ui/MaskedText";
+import { Parallax } from "./ui/Parallax";
 import { TiltCard } from "./ui/TiltCard";
 
 export function Projects() {
@@ -42,7 +44,7 @@ export function Projects() {
               id="work-heading"
               className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
             >
-              Projects built with motion and purpose
+              <MaskedText text="Projects built with motion and purpose" delay={0.1} />
             </h2>
             <p className="mt-4 leading-relaxed text-muted">
               A mix of product interfaces, web apps, and interactive
@@ -67,7 +69,7 @@ export function Projects() {
                   <motion.span
                     layoutId="filter-pill"
                     className="absolute inset-0 rounded-full bg-accent"
-                    transition={{ type: "spring", stiffness: 400, damping: 34 }}
+                    transition={SPRING.pill}
                   />
                 )}
                 <span className="relative z-10">{item}</span>
@@ -121,15 +123,17 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 : "bg-gradient-to-br from-amber/20 via-night to-elevated",
             )}
           >
-            <div
-              className={clsx(
-                "absolute -right-16 -top-16 h-56 w-56 rounded-full blur-3xl",
-                isTeal ? "bg-accent/20" : "bg-amber/15",
-              )}
-            />
-            <span className="absolute bottom-4 right-6 select-none font-display text-7xl font-bold tracking-tight text-white/[0.06] sm:text-8xl">
-              {project.initials}
-            </span>
+            <Parallax className="absolute inset-0" strength={PARALLAX.subtle}>
+              <div
+                className={clsx(
+                  "absolute -right-16 -top-16 h-56 w-56 rounded-full blur-3xl",
+                  isTeal ? "bg-accent/20" : "bg-amber/15",
+                )}
+              />
+              <span className="absolute bottom-4 right-6 select-none font-display text-7xl font-bold tracking-tight text-white/[0.06] sm:text-8xl">
+                {project.initials}
+              </span>
+            </Parallax>
             <div className="absolute left-5 top-5 flex gap-1.5">
               <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
               <span className="h-2.5 w-2.5 rounded-full bg-white/15" />

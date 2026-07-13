@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { heroImages, marqueeStack, site } from "../lib/data";
+import { MaskedText } from "./ui/MaskedText";
+import { RolloverText } from "./ui/RolloverText";
 
 // ─── Spotlight radius ────────────────────────────────────────────────────────
 const SPOTLIGHT_R = 260;
@@ -157,20 +159,24 @@ export function Hero() {
         {/* ── Heading — top-center ─────────────────────────────────────────── */}
         <div className="pointer-events-none absolute inset-x-0 top-[14%] z-50 flex flex-col items-center px-5 text-center">
           <h1 className="font-display leading-[0.95] text-ink">
-            {/* Line 1 */}
+            {/* Line 1 — masked word reveal */}
             <span
-              className="hero-anim hero-reveal block text-5xl font-semibold sm:text-7xl md:text-8xl"
-              style={{ letterSpacing: "-0.05em", animationDelay: "0.25s" }}
+              className="block text-5xl font-semibold sm:text-7xl md:text-8xl"
+              style={{ letterSpacing: "-0.05em" }}
             >
-              Building interfaces
+              <MaskedText text="Building interfaces" onMount delay={0.25} />
             </span>
-            {/* Line 2 */}
+            {/* Line 2 — masked word reveal with gradient accent */}
             <span
-              className="hero-anim hero-reveal -mt-1 block text-5xl font-semibold sm:text-7xl md:text-8xl"
-              style={{ letterSpacing: "-0.08em", animationDelay: "0.42s" }}
+              className="-mt-1 block text-5xl font-semibold sm:text-7xl md:text-8xl"
+              style={{ letterSpacing: "-0.08em" }}
             >
-              that feel{" "}
-              <span className="text-gradient">alive.</span>
+              <MaskedText
+                text="that feel alive."
+                onMount
+                delay={0.42}
+                accentWords={["alive."]}
+              />
             </span>
           </h1>
         </div>
@@ -198,15 +204,15 @@ export function Hero() {
           <div className="flex flex-wrap items-center gap-3">
             <Link
               href="/work"
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-medium text-on-accent transition-all hover:scale-[1.03] hover:bg-accent-bright hover:shadow-lg hover:shadow-accent/30 active:scale-95"
+              className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-medium text-on-accent transition-all hover:scale-[1.03] hover:bg-accent-bright hover:shadow-lg hover:shadow-accent/30 active:scale-95"
             >
-              View my work <ArrowUpRight size={16} aria-hidden="true" />
+              <RolloverText text="View my work" /> <ArrowUpRight size={16} aria-hidden="true" />
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 rounded-full border border-line bg-night/40 px-5 py-3 text-sm font-medium text-ink backdrop-blur-md transition-colors hover:border-accent/50 hover:bg-night/60"
+              className="group inline-flex items-center gap-2 rounded-full border border-line bg-night/40 px-5 py-3 text-sm font-medium text-ink backdrop-blur-md transition-colors hover:border-accent/50 hover:bg-night/60"
             >
-              Get in touch <Mail size={16} aria-hidden="true" />
+              <RolloverText text="Get in touch" /> <Mail size={16} aria-hidden="true" />
             </Link>
           </div>
         </div>

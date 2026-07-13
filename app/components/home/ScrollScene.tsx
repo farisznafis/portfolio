@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { homeIntro, homePillars, heroStats } from "../../lib/data";
+import { RolloverText } from "../ui/RolloverText";
 
 // The WebGL canvas is client-only and code-split so it never blocks first paint.
 const Scene = dynamic(() => import("./Scene"), {
@@ -50,8 +51,8 @@ export function ScrollScene() {
     >
       {/* Sticky stage — 3D wave + the current 2D beat */}
       <div className="sticky top-0 h-screen w-full overflow-hidden" style={{ height: "100dvh" }}>
-        {/* 3D particle wave */}
-        <div className="absolute inset-0 z-0">
+        {/* 3D particle wave — decorative, hidden from assistive tech */}
+        <div className="absolute inset-0 z-0" aria-hidden="true">
           <Scene progressRef={progressRef} />
         </div>
 
@@ -139,15 +140,15 @@ export function ScrollScene() {
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/work"
-                className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-medium text-on-accent transition-all hover:scale-[1.03] hover:bg-accent-bright hover:shadow-lg hover:shadow-accent/30 active:scale-95"
+                className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-medium text-on-accent transition-all hover:scale-[1.03] hover:bg-accent-bright hover:shadow-lg hover:shadow-accent/30 active:scale-95"
               >
-                Explore my work <ArrowRight size={16} aria-hidden="true" />
+                <RolloverText text="Explore my work" /> <ArrowRight size={16} aria-hidden="true" />
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-night/40 px-6 py-3 text-sm font-medium text-ink backdrop-blur-md transition-colors hover:border-accent/50 hover:bg-night/60"
+                className="group inline-flex items-center gap-2 rounded-full border border-line bg-night/40 px-6 py-3 text-sm font-medium text-ink backdrop-blur-md transition-colors hover:border-accent/50 hover:bg-night/60"
               >
-                Get in touch
+                <RolloverText text="Get in touch" />
               </Link>
             </div>
           </div>

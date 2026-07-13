@@ -44,6 +44,16 @@
   }
 }
 
+/* Motion tokens — CSS mirror of app/lib/motion.ts (EASE, DUR, STAGGER).
+   Keep both in sync when tuning. */
+:root {
+  --ease-signature: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-micro: 400ms;
+  --duration-fast: 600ms;
+  --duration-base: 700ms;
+  --stagger-chars: 18ms;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -287,6 +297,42 @@ a {
   transform: scaleX(0);
 }
 
+
+/* ─── Per-character text rollover ─────────────────────────────────────────
+   Two stacked copies of each character inside a 1-line mask; hovering the
+   nearest .group (or focusing it) slides the second copy up. Transform-only,
+   so it stays on the compositor. */
+
+.rollover-char {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+  vertical-align: text-bottom;
+}
+
+.rollover-char-inner {
+  display: block;
+  transition: transform var(--duration-micro) var(--ease-signature);
+  transition-delay: calc(var(--char-index, 0) * var(--stagger-chars));
+  will-change: transform;
+}
+
+.rollover-char-inner::before,
+.rollover-char-inner::after {
+  content: attr(data-char);
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+
+.group:hover .rollover-char-inner,
+.group:focus-visible .rollover-char-inner,
+a:focus-visible .rollover-char-inner,
+button:focus-visible .rollover-char-inner {
+  transform: translateY(-1em);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -309,5 +355,16 @@ a {
 
   .hr-animated {
     transform: scaleX(1);
+  }
+
+  .rollover-char-inner {
+    transition: none;
+  }
+
+  .group:hover .rollover-char-inner,
+  .group:focus-visible .rollover-char-inner,
+  a:focus-visible .rollover-char-inner,
+  button:focus-visible .rollover-char-inner {
+    transform: none;
   }
 }

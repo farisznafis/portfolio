@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { site, socials } from "../lib/data";
 import { EASE } from "../lib/motion";
+import { MaskedText } from "./ui/MaskedText";
 
 type Status = "idle" | "sending" | "sent";
 
@@ -63,16 +64,12 @@ export function Contact() {
               Contact
             </motion.p>
 
-            <motion.h2
+            <h2
               id="contact-heading"
               className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
-              initial={reduce ? {} : { opacity: 0, y: 40, filter: "blur(6px)" }}
-              whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.9, delay: 0.1, ease: EASE }}
             >
-              Let&apos;s build something memorable
-            </motion.h2>
+              <MaskedText text={"Let\u2019s build something memorable"} delay={0.1} />
+            </h2>
 
             <motion.p
               className="mt-4 leading-relaxed text-muted"

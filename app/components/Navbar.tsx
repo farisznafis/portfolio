@@ -1,13 +1,16 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
 import { Github, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import clsx from "clsx";
 import { site } from "../lib/data";
+import { DUR, EASE, SPRING, STAGGER } from "../lib/motion";
 import { Magnetic } from "./ui/Magnetic";
+import { RolloverText } from "./ui/RolloverText";
+import { ScrollProgress } from "./ui/ScrollProgress";
 
 const NAV_LINKS = [
   { href: "/work", label: "Work" },
@@ -17,9 +20,27 @@ const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ] as const;
 
+/** Mobile menu choreography — container staggers its links in. */
+const menuListVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: STAGGER.menu, delayChildren: 0.05 },
+  },
+};
+
+const menuItemVariants: Variants = {
+  hidden: { opacity: 0, y: 14 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: DUR.fast, ease: EASE },
+  },
+};
+
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const reduce = useReducedMotion();
 
   return (
     <header className="fixed inset-x-0 top-0 z-40">
@@ -48,7 +69,7 @@ export function Navbar() {
                     href={link.href}
                     aria-current={isActive ? "page" : undefined}
                     className={clsx(
-                      "relative inline-block rounded-full px-4 py-2 text-sm transition-colors",
+                      "group relative inline-block rounded-full px-4 py-2 text-sm transition-colors",
                       isActive ? "text-ink" : "text-muted hover:text-ink",
                     )}
                   >
@@ -56,10 +77,10 @@ export function Navbar() {
                       <motion.span
                         layoutId="nav-pill"
                         className="absolute inset-0 rounded-full bg-white/8"
-                        transition={{ type: "spring", stiffness: 400, damping: 34 }}
+                        transition={SPRING.pill}
                       />
                     )}
-                    <span className="relative">{link.label}</span>
+                    <RolloverText className="relative" text={link.label} />
                   </Link>
                 </li>
               );
@@ -92,8 +113,8 @@ export function Navbar() {
           </div>
         </nav>
 
-        {/* Progress bar — thin accent line at nav bottom */}
-        <div className="h-px bg-line" />
+        {/* Scroll progress — the page timeline rendered as a thin accent line */}
+        <ScrollProgress />
       </div>
 
       {/* Mobile nav */}
@@ -107,11 +128,16 @@ export function Navbar() {
             transition={{ duration: 0.22, ease: "easeOut" }}
             className="border-b border-line bg-night/95 backdrop-blur-xl md:hidden"
           >
-            <ul className="space-y-1 px-5 py-4">
+            <motion.ul
+              className="space-y-1 px-5 py-4"
+              initial={reduce ? "visible" : "hidden"}
+              animate="visible"
+              variants={menuListVariants}
+            >
               {NAV_LINKS.map((link) => {
                 const isActive = pathname === link.href;
                 return (
-                  <li key={link.href}>
+                  <motion.li key={link.href} variants={menuItemVariants}>
                     <Link
                       href={link.href}
                       onClick={() => setOpen(false)}
@@ -124,10 +150,10 @@ export function Navbar() {
                     >
                       {link.label}
                     </Link>
-                  </li>
+                  </motion.li>
                 );
               })}
-            </ul>
+            </motion.ul>
           </motion.div>
         )}
       </AnimatePresence>
