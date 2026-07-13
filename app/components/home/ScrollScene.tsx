@@ -165,6 +165,9 @@ export function ScrollScene() {
  * A single 2D beat, absolutely centered on the sticky stage. Its opacity and
  * vertical drift are driven by four scroll keyframes: [fadeInStart, fullIn,
  * fullOut, fadeOutEnd]. Only the active beat is visible + interactive.
+ *
+ * Keyframes at or beyond 1 mean "never fade out" (the final beat): they are
+ * clamped away because scroll-driven offsets must stay within [0, 1].
  */
 function Beat({
   progress,
@@ -176,9 +179,16 @@ function Beat({
   children: React.ReactNode;
 }) {
   const [a, b, c, d] = range;
-  const opacity = useTransform(progress, [a, b, c, d], [0, 1, 1, 0]);
-  const y = useTransform(progress, [a, b, c, d], [60, 0, 0, -60]);
-  const scale = useTransform(progress, [a, b, c, d], [0.96, 1, 1, 1.02]);
+  // A beat whose fade-out sits at/after the end of the scroll never exits.
+  const persists = c >= 1 || d > 1;
+  const offsets = persists ? [a, b] : [a, b, c, d];
+  const opacity = useTransform(progress, offsets, persists ? [0, 1] : [0, 1, 1, 0]);
+  const y = useTransform(progress, offsets, persists ? [60, 0] : [60, 0, 0, -60]);
+  const scale = useTransform(
+    progress,
+    offsets,
+    persists ? [0.96, 1] : [0.96, 1, 1, 1.02],
+  );
   // Disable pointer events unless the beat is on screen
   const pointer = useTransform(opacity, (o) => (o > 0.5 ? "auto" : "none"));
 
