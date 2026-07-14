@@ -220,7 +220,7 @@ export function Hero() {
       </div>
 
       {/* ── Stack marquee — below the full-screen canvas ──────────────────── */}
-      <div className="marquee relative border-y border-line bg-white/[0.02] py-4">
+      <div className="marquee relative overflow-hidden border-y border-line bg-white/[0.02] py-4">
         <div className="marquee-track animate-marquee flex w-max items-center gap-10">
           {[...marqueeStack, ...marqueeStack].map((item, index) => (
             <span

@@ -61,7 +61,6 @@ const vertexShader = /* glsl */ `
 `;
 
 const fragmentShader = /* glsl */ `
-  precision mediump float;
   uniform vec3  uColorA;
   uniform vec3  uColorB;
   uniform float uProgress;
