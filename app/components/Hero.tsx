@@ -138,7 +138,7 @@ export function Hero() {
 
         {/* Layer 1 — base image with Ken Burns zoom-out on load */}
         <div
-          className="hero-zoom absolute inset-0 z-10 bg-cover bg-center bg-no-repeat"
+          className="hero-zoom absolute inset-0 z-10 bg-cover bg-center bg-no-repeat top-0"
           style={{ backgroundImage: `url(${heroImages.base})` }}
           aria-hidden="true"
         />
