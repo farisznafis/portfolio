@@ -87,7 +87,7 @@ function RevealLayer({
       {/* Reveal image, shown only through the gradient mask above */}
       <div
         ref={layerRef}
-        className="pointer-events-none absolute inset-0 z-30 bg-cover bg-center bg-no-repeat"
+        className="pointer-events-none absolute inset-0 z-30 bg-cover bg-top bg-no-repeat"
         style={{ backgroundImage: `url(${image})` }}
         aria-hidden="true"
       />
@@ -138,7 +138,7 @@ export function Hero() {
 
         {/* Layer 1 — base image with Ken Burns zoom-out on load */}
         <div
-          className="hero-zoom absolute inset-0 z-10 bg-cover bg-center bg-no-repeat top-0"
+          className="hero-zoom absolute inset-0 z-10 bg-cover bg-top bg-no-repeat top-4"
           style={{ backgroundImage: `url(${heroImages.base})` }}
           aria-hidden="true"
         />
@@ -152,7 +152,7 @@ export function Hero() {
 
         {/* Layer 3 — vignette for legibility */}
         <div
-          className="pointer-events-none absolute inset-0 z-40 bg-gradient-to-t from-night/80 via-transparent to-night/50"
+          className="pointer-events-none absolute inset-0 z-40 bg-linear-to-t from-night/80 via-transparent to-night/50"
           aria-hidden="true"
         />
 
