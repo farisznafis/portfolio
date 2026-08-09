@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Github } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import clsx from "clsx";
 import { projectMeta, type Project, type ProjectCategory } from "../lib/data";
@@ -108,7 +109,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       viewport={{ once: true, amount: 0.15 }}
       exit={{ opacity: 0, scale: 0.97 }}
       transition={{ duration: 0.8, delay: index * 0.1, ease: EASE }}
-      className={clsx("h-full", project.featured && "sm:col-span-2")}
+      className={clsx("relative h-full", project.featured && "sm:col-span-2")}
     >
       <TiltCard className="group glass h-full overflow-hidden rounded-2xl">
         {/* Thumbnail */}
@@ -144,17 +145,14 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               <span className={clsx("h-2.5 w-2.5 rounded-full", isTeal ? "bg-accent/70" : "bg-amber/70")} />
             </div>
           </div>
-          <a
-            href={project.demo}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={content.projects.openDemo.replace("{title}", project.title)}
-            className="absolute inset-0 flex items-center justify-center bg-night/60 opacity-0 backdrop-blur-sm transition-opacity duration-300 focus-visible:opacity-100 group-hover:opacity-100"
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 flex items-center justify-center bg-night/60 opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100"
           >
             <span className="inline-flex translate-y-2 items-center gap-2 rounded-full border border-line bg-white/10 px-5 py-2.5 text-sm font-semibold text-ink transition-transform duration-300 group-hover:translate-y-0">
               {content.projects.viewProject} <ArrowUpRight size={16} aria-hidden="true" />
             </span>
-          </a>
+          </div>
         </div>
 
         <div className="p-6 sm:p-7">
@@ -182,7 +180,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             ))}
           </ul>
 
-          <div className="mt-6 flex items-center gap-4 text-sm font-semibold">
+          <div className="relative z-30 mt-6 flex items-center gap-4 text-sm font-semibold">
             <a
               href={project.demo}
               target="_blank"
@@ -206,6 +204,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             </a>
           </div>
         </div>
+
+        {/* Whole-card link to the case study page (single keyboard tab stop) */}
+        <Link
+          href={`/work/${project.key}`}
+          aria-label={content.projectDetail.open.replace("{title}", project.title)}
+          className="absolute inset-0 z-20 rounded-2xl"
+        />
       </TiltCard>
     </motion.article>
   );

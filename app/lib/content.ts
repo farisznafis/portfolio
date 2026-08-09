@@ -19,6 +19,7 @@ export type ProjectItem = {
   year: string;
   role: string;
   description: string;
+  highlights: string[];
 };
 
 export interface Content {
@@ -65,6 +66,16 @@ export interface Content {
     source: string;
     categories: Record<ProjectCategory, string>;
     items: ProjectItem[];
+  };
+  projectDetail: {
+    back: string;
+    overview: string;
+    highlights: string;
+    techStack: string;
+    prev: string;
+    next: string;
+    open: string;
+    navAria: string;
   };
   skills: {
     eyebrow: string;
@@ -218,6 +229,11 @@ export const en: Content = {
         role: "Frontend Lead",
         description:
           "Real-time analytics platform for marketing teams — 40+ dashboard views, a themeable design system, and virtualized data grids that stay smooth at 10k rows.",
+        highlights: [
+          "40+ dashboard views in one themeable design system",
+          "Virtualized data grids that stay smooth at 10,000 rows",
+          "Design tokens piped from Figma to production",
+        ],
       },
       {
         key: "orbit",
@@ -227,6 +243,11 @@ export const en: Content = {
         role: "Creative Developer",
         description:
           "A WebGL product configurator with physically-based materials, camera choreography, and 60fps transitions between build steps.",
+        highlights: [
+          "Physically-based materials rendered in real time",
+          "Camera choreography that guides each build step",
+          "60fps transitions between configuration states",
+        ],
       },
       {
         key: "pulse",
@@ -236,6 +257,11 @@ export const en: Content = {
         role: "Frontend Engineer",
         description:
           "Headless commerce storefront scoring 98+ on Lighthouse — optimistic cart, edge-rendered product pages, and A/B-tested checkout flows.",
+        highlights: [
+          "98+ Lighthouse on product pages and checkout",
+          "Optimistic cart backed by a headless storefront API",
+          "A/B-tested checkout flows shipping every week",
+        ],
       },
       {
         key: "kinetic",
@@ -245,6 +271,11 @@ export const en: Content = {
         role: "Designer & Developer",
         description:
           "A playground of kinetic typography experiments — scroll-driven text, variable-font choreography, and shader-based distortion effects.",
+        highlights: [
+          "Scroll-driven kinetic typography experiments",
+          "Variable-font choreography across multiple axes",
+          "Shader-based distortion effects on live text",
+        ],
       },
       {
         key: "atlas",
@@ -254,8 +285,23 @@ export const en: Content = {
         role: "Design Engineer",
         description:
           "Component library and token pipeline powering three products — 60+ accessible components, Storybook docs, and automated visual regression.",
+        highlights: [
+          "60+ accessible React components",
+          "Token pipeline from Figma to production CSS",
+          "Storybook docs with automated visual regression",
+        ],
       },
     ],
+  },
+  projectDetail: {
+    back: "Back to work",
+    overview: "Overview",
+    highlights: "Key highlights",
+    techStack: "Tech stack",
+    prev: "Previous project",
+    next: "Next project",
+    open: "Open {title} case study",
+    navAria: "Project navigation",
   },
   skills: {
     eyebrow: "Skills",
@@ -503,6 +549,11 @@ export const ja: Content = {
         role: "フロントエンドリード",
         description:
           "マーケティングチーム向けのリアルタイム分析プラットフォーム。40以上のダッシュボードビュー、テーマ変更可能なデザインシステム、1万行でも滑らかに動く仮想化データグリッド。",
+        highlights: [
+          "1つのテーマ変更可能なデザインシステムに40以上のダッシュボードビュー",
+          "1万行でも滑らかに動く仮想化データグリッド",
+          "Figmaから本番環境まで届くデザイントークンパイプライン",
+        ],
       },
       {
         key: "orbit",
@@ -512,6 +563,11 @@ export const ja: Content = {
         role: "クリエイティブデベロッパー",
         description:
           "物理ベースのマテリアル、カメラの演出、ビルドステップ間を60fpsで遷移するWebGLプロダクトコンフィギュレーター。",
+        highlights: [
+          "リアルタイムでレンダリングされる物理ベースマテリアル",
+          "各ビルドステップを導くカメラ・コレオグラフィー",
+          "設定状態間を60fpsで遷移",
+        ],
       },
       {
         key: "pulse",
@@ -521,6 +577,11 @@ export const ja: Content = {
         role: "フロントエンドエンジニア",
         description:
           "Lighthouseで98以上を記録するヘッドレスコマースストアフロント。楽観的カート、エッジレンダリングの商品ページ、A/Bテスト済みのチェックアウトフロー。",
+        highlights: [
+          "商品ページとチェックアウトでLighthouse 98以上",
+          "ヘッドレスストアフロントAPIによる楽観的カート",
+          "毎週リリースされるA/Bテスト済みチェックアウトフロー",
+        ],
       },
       {
         key: "kinetic",
@@ -530,6 +591,11 @@ export const ja: Content = {
         role: "デザイナー & デベロッパー",
         description:
           "キネティックタイポグラフィの実験プレイグラウンド。スクロール駆動のテキスト、可変フォントの演出、シェーダーによる歪みエフェクト。",
+        highlights: [
+          "スクロール駆動のキネティックタイポグラフィ実験",
+          "複数軸にわたる可変フォントの演出",
+          "ライブテキストに適用するシェーダー歪みエフェクト",
+        ],
       },
       {
         key: "atlas",
@@ -539,8 +605,23 @@ export const ja: Content = {
         role: "デザインエンジニア",
         description:
           "3つのプロダクトを支えるコンポーネントライブラリとトークンパイプライン。60以上のアクセシブルなコンポーネント、Storybookドキュメント、自動ビジュアルリグレッション。",
+        highlights: [
+          "60以上のアクセシブルなReactコンポーネント",
+          "Figmaから本番CSSまでのトークンパイプライン",
+          "自動ビジュアルリグレッションを備えたStorybookドキュメント",
+        ],
       },
     ],
+  },
+  projectDetail: {
+    back: "実績に戻る",
+    overview: "概要",
+    highlights: "主なポイント",
+    techStack: "使用技術",
+    prev: "前のプロジェクト",
+    next: "次のプロジェクト",
+    open: "{title}のケーススタディを開く",
+    navAria: "プロジェクトのナビゲーション",
   },
   skills: {
     eyebrow: "スキル",

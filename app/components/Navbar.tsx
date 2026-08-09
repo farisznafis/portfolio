@@ -70,7 +70,8 @@ export function Navbar() {
           {/* Desktop nav */}
           <ul className="hidden items-center gap-1 md:flex">
             {NAV_LINKS.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive =
+                pathname === link.href || pathname.startsWith(`${link.href}/`);
               return (
                 <li key={link.href}>
                   <Link
@@ -176,7 +177,8 @@ export function Navbar() {
               variants={menuListVariants}
             >
               {NAV_LINKS.map((link) => {
-                const isActive = pathname === link.href;
+                const isActive =
+                  pathname === link.href || pathname.startsWith(`${link.href}/`);
                 return (
                   <motion.li key={link.href} variants={menuItemVariants}>
                     <Link
