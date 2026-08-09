@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { homeIntro, homePillars, heroStats } from "../../lib/data";
+import { useLang } from "../../lib/i18n";
 import { RolloverText } from "../ui/RolloverText";
 
 // The WebGL canvas is client-only and code-split so it never blocks first paint.
@@ -24,6 +24,7 @@ export function ScrollScene() {
   const reduce = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
+  const { content } = useLang();
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -45,7 +46,7 @@ export function ScrollScene() {
   return (
     <section
       ref={containerRef}
-      aria-label="Interactive introduction"
+      aria-label={content.hero.ariaSection}
       className="relative bg-night"
       style={{ height: "420vh" }}
     >
@@ -66,15 +67,15 @@ export function ScrollScene() {
         <Beat progress={scrollYProgress} range={[0.0, 0.06, 0.2, 0.26]}>
           <div className="mx-auto max-w-4xl px-6 text-center">
             <p className="font-mono text-xs uppercase tracking-[0.35em] text-accent sm:text-sm">
-              {homeIntro.kicker}
+              {content.home.intro.kicker}
             </p>
             <h2 className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl md:text-7xl">
-              {homeIntro.line1}
+              {content.home.intro.line1}
               <br />
-              <span className="text-gradient">{homeIntro.line2}</span>
+              <span className="text-gradient">{content.home.intro.line2}</span>
             </h2>
             <p className="mx-auto mt-7 max-w-xl text-sm leading-relaxed text-ink/70 sm:text-base">
-              {homeIntro.blurb}
+              {content.home.intro.blurb}
             </p>
           </div>
         </Beat>
@@ -83,10 +84,10 @@ export function ScrollScene() {
         <Beat progress={scrollYProgress} range={[0.28, 0.36, 0.5, 0.58]}>
           <div className="mx-auto w-full max-w-5xl px-6">
             <p className="mb-10 text-center font-mono text-xs uppercase tracking-[0.35em] text-accent">
-              What I do
+              {content.home.whatIDo}
             </p>
             <div className="grid gap-5 md:grid-cols-3">
-              {homePillars.map((pillar) => (
+              {content.home.pillars.map((pillar) => (
                 <div
                   key={pillar.title}
                   className="glass rounded-2xl p-6 text-left sm:p-7"
@@ -110,10 +111,10 @@ export function ScrollScene() {
         <Beat progress={scrollYProgress} range={[0.6, 0.68, 0.8, 0.88]}>
           <div className="mx-auto w-full max-w-4xl px-6">
             <p className="mb-12 text-center font-mono text-xs uppercase tracking-[0.35em] text-accent">
-              By the numbers
+              {content.home.byTheNumbers}
             </p>
             <dl className="grid grid-cols-1 gap-10 text-center sm:grid-cols-3">
-              {heroStats.map((stat) => (
+              {content.home.stats.map((stat) => (
                 <div key={stat.label} className="flex flex-col items-center">
                   <dd className="m-0 font-display text-5xl font-bold text-ink sm:text-6xl md:text-7xl">
                     <span className="text-gradient">
@@ -134,21 +135,21 @@ export function ScrollScene() {
         <Beat progress={scrollYProgress} range={[0.9, 0.95, 1.01, 1.02]}>
           <div className="mx-auto max-w-2xl px-6 text-center">
             <h2 className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl">
-              Let&apos;s make something{" "}
-              <span className="text-gradient">unforgettable.</span>
+              {content.home.make1}{" "}
+              <span className="text-gradient">{content.home.make2}</span>
             </h2>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/work"
                 className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-medium text-on-accent transition-all hover:scale-[1.03] hover:bg-accent-bright hover:shadow-lg hover:shadow-accent/30 active:scale-95"
               >
-                <RolloverText text="Explore my work" /> <ArrowRight size={16} aria-hidden="true" />
+                <RolloverText text={content.home.explore} /> <ArrowRight size={16} aria-hidden="true" />
               </Link>
               <Link
                 href="/contact"
                 className="group inline-flex items-center gap-2 rounded-full border border-line bg-night/40 px-6 py-3 text-sm font-medium text-ink backdrop-blur-md transition-colors hover:border-accent/50 hover:bg-night/60"
               >
-                <RolloverText text="Get in touch" />
+                <RolloverText text={content.home.getInTouch} />
               </Link>
             </div>
           </div>
@@ -204,13 +205,14 @@ function Beat({
 
 function ScrollHint({ progress }: { progress: MotionValue<number> }) {
   const opacity = useTransform(progress, [0, 0.04], [1, 0]);
+  const { content } = useLang();
   return (
     <motion.div
       style={{ opacity }}
       className="pointer-events-none absolute bottom-8 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-2"
     >
       <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/60">
-        Scroll
+        {content.home.scroll}
       </span>
       <span className="flex h-9 w-5 items-start justify-center rounded-full border border-ink/30 p-1">
         <motion.span
@@ -225,25 +227,26 @@ function ScrollHint({ progress }: { progress: MotionValue<number> }) {
 
 /** Calm, non-animated version for reduced-motion users. */
 function StaticFallback() {
+  const { content } = useLang();
   return (
     <section
-      aria-label="Introduction"
+      aria-label={content.hero.ariaSection}
       className="relative border-t border-line bg-night px-6 py-24"
     >
       <div className="mx-auto max-w-4xl text-center">
         <p className="font-mono text-xs uppercase tracking-[0.35em] text-accent">
-          {homeIntro.kicker}
+          {content.home.intro.kicker}
         </p>
         <h2 className="mt-6 font-display text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
-          {homeIntro.line1} <span className="text-gradient">{homeIntro.line2}</span>
+          {content.home.intro.line1} <span className="text-gradient">{content.home.intro.line2}</span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl leading-relaxed text-muted">
-          {homeIntro.blurb}
+          {content.home.intro.blurb}
         </p>
       </div>
 
       <div className="mx-auto mt-16 grid max-w-5xl gap-5 md:grid-cols-3">
-        {homePillars.map((pillar) => (
+        {content.home.pillars.map((pillar) => (
           <div key={pillar.title} className="glass rounded-2xl p-6 sm:p-7">
             <p className="font-mono text-xs tracking-[0.25em] text-accent">{pillar.index}</p>
             <h3 className="mt-3 font-display text-xl font-semibold text-ink">{pillar.title}</h3>
@@ -253,7 +256,7 @@ function StaticFallback() {
       </div>
 
       <dl className="mx-auto mt-16 grid max-w-4xl grid-cols-1 gap-10 text-center sm:grid-cols-3">
-        {heroStats.map((stat) => (
+        {content.home.stats.map((stat) => (
           <div key={stat.label} className="flex flex-col items-center">
             <dd className="m-0 font-display text-5xl font-bold text-gradient">
               {stat.value}
@@ -271,13 +274,13 @@ function StaticFallback() {
           href="/work"
           className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-medium text-on-accent transition-colors hover:bg-accent-bright"
         >
-          Explore my work <ArrowRight size={16} aria-hidden="true" />
+          {content.home.explore} <ArrowRight size={16} aria-hidden="true" />
         </Link>
         <Link
           href="/contact"
           className="inline-flex items-center gap-2 rounded-full border border-line bg-white/5 px-6 py-3 text-sm font-medium text-ink transition-colors hover:border-accent/50"
         >
-          Get in touch
+          {content.home.getInTouch}
         </Link>
       </div>
     </section>

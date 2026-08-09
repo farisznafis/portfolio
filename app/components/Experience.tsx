@@ -3,13 +3,14 @@
 import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { useRef } from "react";
 import clsx from "clsx";
-import { experience } from "../lib/data";
+import { useLang } from "../lib/i18n";
 import { EASE } from "../lib/motion";
 import { MaskedText } from "./ui/MaskedText";
 
 export function Experience() {
   const timelineRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+  const { content } = useLang();
   const { scrollYProgress } = useScroll({
     target: timelineRef,
     offset: ["start 75%", "end 65%"],
@@ -32,17 +33,16 @@ export function Experience() {
           transition={{ duration: 0.9, ease: EASE }}
         >
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-            Experience
+            {content.experience.eyebrow}
           </p>
           <h2
             id="experience-heading"
             className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
           >
-            <MaskedText text="The road so far" delay={0.1} />
+            <MaskedText text={content.experience.heading} delay={0.1} />
           </h2>
           <p className="mt-4 leading-relaxed text-muted">
-            From freelance MVPs to leading frontend on products used by
-            hundreds of teams.
+            {content.experience.subtitle}
           </p>
         </motion.div>
 
@@ -57,7 +57,7 @@ export function Experience() {
           />
 
           <ol className="space-y-14">
-            {experience.map((item, index) => (
+            {content.experience.items.map((item, index) => (
               <motion.li
                 key={`${item.company}-${item.period}`}
                 className="relative pl-10"
@@ -77,7 +77,7 @@ export function Experience() {
                   {item.period}
                   {item.current && (
                     <span className="ml-3 rounded-full border border-accent/40 bg-accent/10 px-2.5 py-0.5 normal-case tracking-normal text-accent">
-                      Now
+                      {content.experience.now}
                     </span>
                   )}
                 </p>
@@ -94,7 +94,7 @@ export function Experience() {
                     </li>
                   ))}
                 </ul>
-                <ul className="mt-5 flex flex-wrap gap-2" aria-label="Technologies used">
+                <ul className="mt-5 flex flex-wrap gap-2" aria-label={content.experience.techAria}>
                   {item.stack.map((tech) => (
                     <li
                       key={tech}

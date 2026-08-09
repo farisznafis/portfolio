@@ -4,11 +4,21 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Mail } from "lucide-react";
 import { heroImages, marqueeStack, site } from "../lib/data";
+import { useLang } from "../lib/i18n";
 import { MaskedText } from "./ui/MaskedText";
 import { RolloverText } from "./ui/RolloverText";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 
 // ─── Spotlight radius ────────────────────────────────────────────────────────
 const SPOTLIGHT_R = 260;
+
+// ─── Cursor parallax config ──────────────────────────────────────────────────
+const PARALLAX_MAX    = 28;  // max px travel at full cursor offset
+const BASE_PARALLAX   = 1;   // base image depth
+const REVEAL_PARALLAX = 1.35;
+const UI_PARALLAX     = 0.25;
+const BASE_SCALE      = 1.06; // oversize so edges never reveal gaps
+const REVEAL_SCALE    = 1.09;
 
 // ─── RevealLayer ─────────────────────────────────────────────────────────────
 /**
@@ -102,10 +112,14 @@ export function Hero() {
   const smooth = useRef({ x: -999, y: -999 });
   const rafRef = useRef<number>(0);
   const [cursorPos, setCursorPos] = useState({ x: -999, y: -999 });
+  const [interacted, setInteracted] = useState(false);
+  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const { content } = useLang();
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       mouse.current = { x: e.clientX, y: e.clientY };
+      setInteracted(true);
     };
     window.addEventListener("mousemove", onMove);
 
@@ -127,8 +141,26 @@ export function Hero() {
     };
   }, []);
 
+  // Parallax offset for a given depth factor, derived from the already-smoothed
+  // cursor position. Zeroed until the pointer first moves (initial -999 guard)
+  // and under prefers-reduced-motion.
+  const parallax = (depth: number) => {
+    if (!interacted || prefersReducedMotion) return { x: 0, y: 0 };
+    const nx = Math.max(-1, Math.min(1, cursorPos.x / window.innerWidth - 0.5));
+    const ny = Math.max(-1, Math.min(1, cursorPos.y / window.innerHeight - 0.5));
+    return { x: nx * PARALLAX_MAX * depth, y: ny * PARALLAX_MAX * depth };
+  };
+
+  const baseOffset   = parallax(BASE_PARALLAX);
+  const revealOffset = parallax(REVEAL_PARALLAX);
+  const uiOffset     = parallax(-UI_PARALLAX);
+  const imageStyle   = (o: { x: number; y: number }, s: number) =>
+    `translate3d(${o.x}px, ${o.y}px, 0) scale(${s})`;
+  const uiStyle      = (o: { x: number; y: number }) =>
+    `translate3d(${o.x}px, ${o.y}px, 0)`;
+
   return (
-    <section id="home" aria-label="Introduction" className="relative w-full">
+    <section id="home" aria-label={content.hero.ariaSection} className="relative w-full">
 
       {/* ── Full-screen canvas ──────────────────────────────────────────────── */}
       <div
@@ -138,17 +170,29 @@ export function Hero() {
 
         {/* Layer 1 — base image with Ken Burns zoom-out on load */}
         <div
-          className="hero-zoom absolute inset-0 z-10 bg-cover bg-top bg-no-repeat top-4"
-          style={{ backgroundImage: `url(${heroImages.base})` }}
+          className="absolute inset-0 z-10"
+          style={{ transform: imageStyle(baseOffset, BASE_SCALE), willChange: "transform" }}
           aria-hidden="true"
-        />
+        >
+          <div
+            className="hero-zoom absolute inset-0 bg-cover bg-top bg-no-repeat top-2"
+            style={{ backgroundImage: `url(${heroImages.base})` }}
+            aria-hidden="true"
+          />
+        </div>
 
         {/* Layer 2 — spotlight-revealed second image */}
-        <RevealLayer
-          image={heroImages.reveal}
-          cursorX={cursorPos.x}
-          cursorY={cursorPos.y}
-        />
+        <div
+          className="absolute inset-0 z-20"
+          style={{ transform: imageStyle(revealOffset, REVEAL_SCALE), willChange: "transform" }}
+          aria-hidden="true"
+        >
+          <RevealLayer
+            image={heroImages.reveal}
+            cursorX={cursorPos.x}
+            cursorY={cursorPos.y}
+          />
+        </div>
 
         {/* Layer 3 — vignette for legibility */}
         <div
@@ -157,63 +201,76 @@ export function Hero() {
         />
 
         {/* ── Heading — top-center ─────────────────────────────────────────── */}
-        <div className="pointer-events-none absolute inset-x-0 top-[14%] z-50 flex flex-col items-center px-5 text-center">
-          <h1 className="font-display leading-[0.95] text-ink">
-            {/* Line 1 — masked word reveal */}
-            <span
-              className="block text-5xl font-semibold sm:text-7xl md:text-8xl"
-              style={{ letterSpacing: "-0.05em" }}
-            >
-              <MaskedText text="Building interfaces" onMount delay={0.25} />
-            </span>
-            {/* Line 2 — masked word reveal with gradient accent */}
-            <span
-              className="-mt-1 block text-5xl font-semibold sm:text-7xl md:text-8xl"
-              style={{ letterSpacing: "-0.08em" }}
-            >
-              <MaskedText
-                text="that feel alive."
-                onMount
-                delay={0.42}
-                accentWords={["alive."]}
-              />
-            </span>
-          </h1>
+        <div
+          className="pointer-events-none absolute inset-0 z-50"
+          style={{ transform: uiStyle(uiOffset), willChange: "transform" }}
+        >
+          <div className="absolute inset-x-0 top-[14%] flex flex-col items-center px-5 text-center">
+            <h1 className="font-display leading-[0.95] text-ink">
+              {/* Line 1 — masked word reveal */}
+              <span
+                className="block text-5xl font-semibold sm:text-7xl md:text-8xl"
+                style={{ letterSpacing: "-0.05em" }}
+              >
+                <MaskedText text={content.hero.line1} onMount delay={0.25} />
+              </span>
+              {/* Line 2 — masked word reveal with gradient accent */}
+              <span
+                className="-mt-1 block text-5xl font-semibold sm:text-7xl md:text-8xl"
+                style={{ letterSpacing: "-0.08em" }}
+              >
+                <MaskedText
+                  text={content.hero.line2}
+                  onMount
+                  delay={0.42}
+                  accentWords={content.hero.accentWords}
+                />
+              </span>
+            </h1>
+          </div>
         </div>
 
         {/* ── Bottom-left — intro paragraph ────────────────────────────────── */}
         <div
-          className="hero-anim hero-fade absolute bottom-14 left-10 z-50 hidden max-w-[260px] sm:block md:left-14"
-          style={{ animationDelay: "0.7s" }}
+          className="pointer-events-none absolute inset-0 z-50 hidden sm:block"
+          style={{ transform: uiStyle(uiOffset), willChange: "transform" }}
         >
-          <p className="text-sm leading-relaxed text-ink/80">
-            I&apos;m {site.name} — a frontend engineer blending motion design,
-            3D, and product thinking to ship web experiences people remember.
-          </p>
+          <div
+            className="hero-anim hero-fade absolute bottom-14 left-10 max-w-[260px] md:left-14"
+            style={{ animationDelay: "0.7s" }}
+          >
+            <p className="text-sm leading-relaxed text-ink/80">
+              {content.hero.intro.replace("{name}", site.name)}
+            </p>
+          </div>
         </div>
 
         {/* ── Bottom-right — hint + CTAs ───────────────────────────────────── */}
         <div
-          className="hero-anim hero-fade absolute bottom-10 left-5 right-5 z-50 flex max-w-full flex-col items-start gap-4 sm:bottom-24 sm:left-auto sm:right-10 sm:max-w-[260px] sm:gap-5 md:right-14"
-          style={{ animationDelay: "0.85s" }}
+          className="pointer-events-none absolute inset-0 z-50"
+          style={{ transform: uiStyle(uiOffset), willChange: "transform" }}
         >
-          <p className="text-xs leading-relaxed text-ink/80 sm:text-sm">
-            Move your cursor across the scene to peel back the surface — the
-            same depth of craft sits beneath every interface I ship.
-          </p>
-          <div className="flex flex-wrap items-center gap-3">
-            <Link
-              href="/work"
-              className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-medium text-on-accent transition-all hover:scale-[1.03] hover:bg-accent-bright hover:shadow-lg hover:shadow-accent/30 active:scale-95"
-            >
-              <RolloverText text="View my work" /> <ArrowUpRight size={16} aria-hidden="true" />
-            </Link>
-            <Link
-              href="/contact"
-              className="group inline-flex items-center gap-2 rounded-full border border-line bg-night/40 px-5 py-3 text-sm font-medium text-ink backdrop-blur-md transition-colors hover:border-accent/50 hover:bg-night/60"
-            >
-              <RolloverText text="Get in touch" /> <Mail size={16} aria-hidden="true" />
-            </Link>
+          <div
+            className="hero-anim hero-fade absolute bottom-10 left-5 right-5 flex max-w-full flex-col items-start gap-4 sm:bottom-24 sm:left-auto sm:right-10 sm:max-w-[260px] sm:gap-5 md:right-14"
+            style={{ animationDelay: "0.85s" }}
+          >
+            <p className="text-xs leading-relaxed text-ink/80 sm:text-sm">
+              {content.hero.hint}
+            </p>
+            <div className="pointer-events-auto flex flex-wrap items-center gap-3">
+              <Link
+                href="/work"
+                className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-medium text-on-accent transition-all hover:scale-[1.03] hover:bg-accent-bright hover:shadow-lg hover:shadow-accent/30 active:scale-95"
+              >
+                <RolloverText text={content.hero.ctaWork} /> <ArrowUpRight size={16} aria-hidden="true" />
+              </Link>
+              <Link
+                href="/contact"
+                className="group inline-flex items-center gap-2 rounded-full border border-line bg-night/40 px-5 py-3 text-sm font-medium text-ink backdrop-blur-md transition-colors hover:border-accent/50 hover:bg-night/60"
+              >
+                <RolloverText text={content.hero.ctaTouch} /> <Mail size={16} aria-hidden="true" />
+              </Link>
+            </div>
           </div>
         </div>
 

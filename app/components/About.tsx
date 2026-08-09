@@ -2,21 +2,23 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { Accessibility, Gauge, Sparkles } from "lucide-react";
-import { aboutPrinciples, site } from "../lib/data";
+import { site } from "../lib/data";
+import { useLang } from "../lib/i18n";
 import { EASE } from "../lib/motion";
 import { MaskedText } from "./ui/MaskedText";
 
 const PRINCIPLE_ICONS = [Gauge, Sparkles, Accessibility];
 
-const PROFILE_FACTS = [
-  { label: "Name", value: site.name },
-  { label: "Based in", value: site.location },
-  { label: "Focus", value: "Interactive product UI" },
-  { label: "Currently", value: "Senior Frontend Engineer" },
-] as const;
-
 export function About() {
   const reduce = useReducedMotion();
+  const { content } = useLang();
+
+  const facts = [
+    { label: content.about.factLabels.name, value: site.name },
+    { label: content.about.factLabels.basedIn, value: site.location },
+    { label: content.about.factLabels.focus, value: content.about.focusValue },
+    { label: content.about.factLabels.currently, value: content.about.currentlyValue },
+  ] as const;
 
   return (
     <section
@@ -34,7 +36,7 @@ export function About() {
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.7, ease: EASE }}
           >
-            About
+            {content.about.eyebrow}
           </motion.p>
 
           {/* Heading */}
@@ -42,7 +44,7 @@ export function About() {
             id="about-heading"
             className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
           >
-            <MaskedText text="Engineer by discipline, designer at heart" delay={0.1} />
+            <MaskedText text={content.about.heading} delay={0.1} />
           </h2>
 
           {/* Animated separator line */}
@@ -64,21 +66,20 @@ export function About() {
             transition={{ duration: 0.9, delay: 0.2, ease: EASE }}
           >
             <p>
-              I started out cutting PSDs into pixel-perfect pages, and never lost that obsession
-              with detail. Over the last six years it grew into something bigger:{" "}
-              <span className="text-ink">building product interfaces that move with intent</span> —
-              where every transition explains state, and every hover rewards curiosity.
+              {content.about.p1a}
+              <span className="text-ink">{content.about.p1Strong}</span>
+              {content.about.p1b}
             </p>
             <p>
-              Today I work across the whole frontend surface: design systems, WebGL moments,
-              performance budgets, and the unglamorous glue in between. My favorite projects sit{" "}
-              <span className="text-ink">right where engineering rigor meets craft</span>.
+              {content.about.p2a}
+              <span className="text-ink">{content.about.p2Strong}</span>
+              {content.about.p2b}
             </p>
           </motion.div>
 
           {/* Principle cards */}
           <div className="mt-10 grid gap-4 sm:grid-cols-3">
-            {aboutPrinciples.map((principle, index) => {
+            {content.about.principles.map((principle, index) => {
               const Icon = PRINCIPLE_ICONS[index] ?? Sparkles;
               return (
                 <motion.div
@@ -116,10 +117,10 @@ export function About() {
         >
           <div className="glass rounded-2xl p-7 sm:p-8">
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-              Profile
+              {content.about.profileLabel}
             </p>
             <dl className="mt-6 divide-y divide-line">
-              {PROFILE_FACTS.map((fact, i) => (
+              {facts.map((fact, i) => (
                 <motion.div
                   key={fact.label}
                   className="flex items-baseline justify-between gap-6 py-4"
@@ -136,8 +137,7 @@ export function About() {
               ))}
             </dl>
             <blockquote className="mt-6 border-l-2 border-accent pl-4 text-sm italic leading-relaxed text-muted">
-              &ldquo;The best interfaces disappear — what remains is how they made you
-              feel.&rdquo;
+              {content.about.blockquote}
             </blockquote>
           </div>
         </motion.div>

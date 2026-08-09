@@ -4,12 +4,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Github } from "lucide-react";
 import { useState } from "react";
 import clsx from "clsx";
-import {
-  projectCategories,
-  projects,
-  type Project,
-  type ProjectCategory,
-} from "../lib/data";
+import { projectMeta, type Project, type ProjectCategory } from "../lib/data";
+import { useLang } from "../lib/i18n";
 import { EASE, PARALLAX, SPRING } from "../lib/motion";
 import { MaskedText } from "./ui/MaskedText";
 import { Parallax } from "./ui/Parallax";
@@ -18,6 +14,14 @@ import { TiltCard } from "./ui/TiltCard";
 export function Projects() {
   const [category, setCategory] = useState<ProjectCategory>("All");
   const reduce = useReducedMotion();
+  const { content } = useLang();
+
+  // Merge localized copy with language-neutral metadata (links, stack, tone).
+  const projects: Project[] = content.projects.items.map((item) => ({
+    ...projectMeta[item.key],
+    ...item,
+  }));
+
   const visible =
     category === "All" ? projects : projects.filter((p) => p.category === category);
 
@@ -38,21 +42,20 @@ export function Projects() {
         >
           <div className="max-w-2xl">
             <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-              Selected work
+              {content.projects.eyebrow}
             </p>
             <h2
               id="work-heading"
               className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
             >
-              <MaskedText text="Projects built with motion and purpose" delay={0.1} />
+              <MaskedText text={content.projects.heading} delay={0.1} />
             </h2>
             <p className="mt-4 leading-relaxed text-muted">
-              A mix of product interfaces, web apps, and interactive
-              experiments. Each one shipped, measured, and polished.
+              {content.projects.subtitle}
             </p>
           </div>
-          <div role="group" aria-label="Filter projects by category" className="flex flex-wrap gap-2">
-            {projectCategories.map((item) => (
+          <div role="group" aria-label={content.projects.filterAria} className="flex flex-wrap gap-2">
+            {(Object.keys(content.projects.categories) as ProjectCategory[]).map((item) => (
               <button
                 key={item}
                 type="button"
@@ -72,7 +75,7 @@ export function Projects() {
                     transition={SPRING.pill}
                   />
                 )}
-                <span className="relative z-10">{item}</span>
+                <span className="relative z-10">{content.projects.categories[item]}</span>
               </button>
             ))}
           </div>
@@ -95,6 +98,7 @@ export function Projects() {
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const reduce = useReducedMotion();
   const isTeal = project.tone === "accent";
+  const { content } = useLang();
 
   return (
     <motion.article
@@ -144,18 +148,20 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             href={project.demo}
             target="_blank"
             rel="noreferrer"
-            aria-label={`Open live demo of ${project.title}`}
+            aria-label={content.projects.openDemo.replace("{title}", project.title)}
             className="absolute inset-0 flex items-center justify-center bg-night/60 opacity-0 backdrop-blur-sm transition-opacity duration-300 focus-visible:opacity-100 group-hover:opacity-100"
           >
             <span className="inline-flex translate-y-2 items-center gap-2 rounded-full border border-line bg-white/10 px-5 py-2.5 text-sm font-semibold text-ink transition-transform duration-300 group-hover:translate-y-0">
-              View project <ArrowUpRight size={16} aria-hidden="true" />
+              {content.projects.viewProject} <ArrowUpRight size={16} aria-hidden="true" />
             </span>
           </a>
         </div>
 
         <div className="p-6 sm:p-7">
           <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-xs uppercase tracking-[0.2em] text-muted">
-            <span className={isTeal ? "text-accent" : "text-amber"}>{project.category}</span>
+            <span className={isTeal ? "text-accent" : "text-amber"}>
+              {content.projects.categories[project.category]}
+            </span>
             <span>
               {project.year} · {project.role}
             </span>
@@ -165,7 +171,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           </h3>
           <p className="mt-3 leading-relaxed text-muted">{project.description}</p>
 
-          <ul className="mt-5 flex flex-wrap gap-2" aria-label="Technology stack">
+          <ul className="mt-5 flex flex-wrap gap-2" aria-label={content.projects.techAria}>
             {project.stack.map((tech) => (
               <li
                 key={tech}
@@ -183,7 +189,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               rel="noreferrer"
               className="group/link inline-flex items-center gap-1.5 text-ink transition-colors hover:text-accent"
             >
-              Live demo
+              {content.projects.liveDemo}
               <ArrowUpRight
                 size={15}
                 aria-hidden="true"
@@ -196,7 +202,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               rel="noreferrer"
               className="inline-flex items-center gap-1.5 text-muted transition-colors hover:text-ink"
             >
-              <Github size={15} aria-hidden="true" /> Source
+              <Github size={15} aria-hidden="true" /> {content.projects.source}
             </a>
           </div>
         </div>

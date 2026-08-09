@@ -5,6 +5,7 @@ import { ArrowUpRight, Check, Loader2, Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { site, socials } from "../lib/data";
+import { useLang } from "../lib/i18n";
 import { EASE } from "../lib/motion";
 import { MaskedText } from "./ui/MaskedText";
 
@@ -16,6 +17,7 @@ const FIELD_CLASSES =
 export function Contact() {
   const [status, setStatus] = useState<Status>("idle");
   const reduce = useReducedMotion();
+  const { content } = useLang();
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -32,7 +34,9 @@ export function Contact() {
     const data = new FormData(form);
     const name = String(data.get("name") ?? "");
     const message = String(data.get("message") ?? "");
-    const subject = encodeURIComponent(`Portfolio inquiry from ${name}`);
+    const subject = encodeURIComponent(
+      content.contact.mailSubject.replace("{name}", name),
+    );
     const body = encodeURIComponent(message);
 
     setStatus("sending");
@@ -61,14 +65,14 @@ export function Contact() {
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.7, ease: EASE }}
             >
-              Contact
+              {content.contact.eyebrow}
             </motion.p>
 
             <h2
               id="contact-heading"
               className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
             >
-              <MaskedText text={"Let\u2019s build something memorable"} delay={0.1} />
+              <MaskedText text={content.contact.heading} delay={0.1} />
             </h2>
 
             <motion.p
@@ -78,8 +82,7 @@ export function Contact() {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.7, delay: 0.2, ease: EASE }}
             >
-              Have a project in mind, a role to fill, or just want to talk shop
-              about motion on the web? My inbox is open.
+              {content.contact.intro}
             </motion.p>
 
             {/* Email link */}
@@ -155,7 +158,7 @@ export function Contact() {
                     htmlFor="contact-name"
                     className="mb-2 block font-mono text-xs uppercase tracking-[0.2em] text-muted"
                   >
-                    Name
+                    {content.contact.name}
                   </label>
                   <input
                     id="contact-name"
@@ -163,7 +166,7 @@ export function Contact() {
                     type="text"
                     required
                     autoComplete="name"
-                    placeholder="Jane Doe"
+                    placeholder={content.contact.namePlaceholder}
                     className={FIELD_CLASSES}
                   />
                 </div>
@@ -172,7 +175,7 @@ export function Contact() {
                     htmlFor="contact-email"
                     className="mb-2 block font-mono text-xs uppercase tracking-[0.2em] text-muted"
                   >
-                    Email
+                    {content.contact.email}
                   </label>
                   <input
                     id="contact-email"
@@ -180,7 +183,7 @@ export function Contact() {
                     type="email"
                     required
                     autoComplete="email"
-                    placeholder="jane@company.com"
+                    placeholder={content.contact.emailPlaceholder}
                     className={FIELD_CLASSES}
                   />
                 </div>
@@ -190,14 +193,14 @@ export function Contact() {
                   htmlFor="contact-message"
                   className="mb-2 block font-mono text-xs uppercase tracking-[0.2em] text-muted"
                 >
-                  Message
+                  {content.contact.message}
                 </label>
                 <textarea
                   id="contact-message"
                   name="message"
                   required
                   rows={5}
-                  placeholder="Tell me about your project…"
+                  placeholder={content.contact.messagePlaceholder}
                   className={`${FIELD_CLASSES} resize-y`}
                 />
               </div>
@@ -217,7 +220,7 @@ export function Contact() {
                       transition={{ duration: 0.18 }}
                       className="inline-flex items-center gap-2"
                     >
-                      Send message <Send size={16} aria-hidden="true" />
+                      {content.contact.send} <Send size={16} aria-hidden="true" />
                     </motion.span>
                   )}
                   {status === "sending" && (
@@ -229,7 +232,7 @@ export function Contact() {
                       transition={{ duration: 0.18 }}
                       className="inline-flex items-center gap-2"
                     >
-                      Opening mail app… <Loader2 size={16} aria-hidden="true" className="animate-spin" />
+                      {content.contact.opening} <Loader2 size={16} aria-hidden="true" className="animate-spin" />
                     </motion.span>
                   )}
                   {status === "sent" && (
@@ -241,13 +244,13 @@ export function Contact() {
                       transition={{ duration: 0.18 }}
                       className="inline-flex items-center gap-2"
                     >
-                      Message ready <Check size={16} aria-hidden="true" />
+                      {content.contact.ready} <Check size={16} aria-hidden="true" />
                     </motion.span>
                   )}
                 </AnimatePresence>
               </button>
               <p aria-live="polite" className="sr-only">
-                {status === "sent" ? "Your email draft is ready in your mail app." : ""}
+                {status === "sent" ? content.contact.readyAria : ""}
               </p>
             </form>
           </motion.div>

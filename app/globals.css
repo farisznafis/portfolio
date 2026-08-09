@@ -74,6 +74,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Japanese mode — Noto Sans JP takes over the font faces so CJK glyphs
+   render consistently on every device. */
+html[lang="ja"] body {
+  font-family: var(--font-noto-sans-jp), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+html[lang="ja"] .font-display {
+  font-family: var(--font-noto-sans-jp), var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+
 button,
 a {
   -webkit-tap-highlight-color: transparent;

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Inter, JetBrains_Mono, Noto_Sans_JP, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "./components/Navbar";
 import { CursorGlow } from "./components/CursorGlow";
 import { Footer } from "./components/Footer";
+import { LanguageProvider } from "./lib/i18n";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,6 +22,14 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
   display: "swap",
+});
+
+const notoSansJP = Noto_Sans_JP({
+  variable: "--font-noto-sans-jp",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -46,18 +55,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${notoSansJP.variable}`}
     >
       <body>
-        <a href="#main" className="skip-link">
-          Skip to content
-        </a>
-        <CursorGlow />
-        <Navbar />
-        <main id="main" className="relative">
-          {children}
-        </main>
-        <Footer />
+        <LanguageProvider>
+          <a href="#main" className="skip-link">
+            Skip to content
+          </a>
+          <CursorGlow />
+          <Navbar />
+          <main id="main" className="relative">
+            {children}
+          </main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

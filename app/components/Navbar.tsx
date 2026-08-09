@@ -7,18 +7,25 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import clsx from "clsx";
 import { site } from "../lib/data";
+import type { Lang } from "../lib/content";
+import { useLang } from "../lib/i18n";
 import { DUR, EASE, SPRING, STAGGER } from "../lib/motion";
 import { Magnetic } from "./ui/Magnetic";
 import { RolloverText } from "./ui/RolloverText";
 import { ScrollProgress } from "./ui/ScrollProgress";
 
 const NAV_LINKS = [
-  { href: "/work", label: "Work" },
-  { href: "/about", label: "About" },
-  { href: "/skills", label: "Skills" },
-  { href: "/experience", label: "Experience" },
-  { href: "/contact", label: "Contact" },
+  { href: "/work", key: "work" },
+  { href: "/about", key: "about" },
+  { href: "/skills", key: "skills" },
+  { href: "/experience", key: "experience" },
+  { href: "/contact", key: "contact" },
 ] as const;
+
+const LANGS: { value: Lang; label: string }[] = [
+  { value: "en", label: "EN" },
+  { value: "ja", label: "日本語" },
+];
 
 /** Mobile menu choreography — container staggers its links in. */
 const menuListVariants: Variants = {
@@ -41,19 +48,20 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const reduce = useReducedMotion();
+  const { lang, setLang, content } = useLang();
 
   return (
     <header className="fixed inset-x-0 top-0 z-40">
       <div className="border-b border-line bg-night/70 backdrop-blur-xl">
         <nav
-          aria-label="Primary"
+          aria-label={content.nav.ariaPrimary}
           className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5"
         >
           {/* Logo */}
           <Link
             href="/"
             className="font-display text-sm font-bold tracking-[0.3em] text-ink"
-            aria-label={`${site.name} — home`}
+            aria-label={`${site.name} — ${content.nav.ariaLogo}`}
           >
             {site.shortName}
             <span className="text-accent">.</span>
@@ -80,7 +88,7 @@ export function Navbar() {
                         transition={SPRING.pill}
                       />
                     )}
-                    <RolloverText className="relative" text={link.label} />
+                    <RolloverText className="relative" text={content.nav.links[link.key]} />
                   </Link>
                 </li>
               );
@@ -94,18 +102,51 @@ export function Navbar() {
                 href={site.github}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="GitHub profile"
+                aria-label={content.nav.ariaGithub}
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white/5 text-ink transition-colors hover:border-accent/60 hover:text-accent"
               >
                 <Github size={17} />
               </a>
             </Magnetic>
+
+            {/* Language toggle — EN / 日本語 */}
+            <div
+              role="group"
+              aria-label={content.nav.ariaLang}
+              className="flex h-10 items-center gap-0.5 rounded-full border border-line bg-white/5 p-0.5"
+            >
+              {LANGS.map((option) => {
+                const isActive = lang === option.value;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setLang(option.value)}
+                    aria-pressed={isActive}
+                    className={clsx(
+                      "relative h-full rounded-full px-2.5 text-xs font-semibold transition-colors",
+                      isActive ? "text-on-accent" : "text-muted hover:text-ink",
+                    )}
+                  >
+                    {isActive && (
+                      <motion.span
+                        layoutId="lang-pill"
+                        className="absolute inset-0 rounded-full bg-accent"
+                        transition={SPRING.pill}
+                      />
+                    )}
+                    <span className="relative z-10">{option.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-controls="mobile-nav"
-              aria-label={open ? "Close menu" : "Open menu"}
+              aria-label={open ? content.nav.ariaClose : content.nav.ariaMenu}
               className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white/5 text-ink md:hidden"
             >
               {open ? <X size={18} /> : <Menu size={18} />}
@@ -148,7 +189,7 @@ export function Navbar() {
                           : "text-muted hover:text-ink",
                       )}
                     >
-                      {link.label}
+                      {content.nav.links[link.key]}
                     </Link>
                   </motion.li>
                 );

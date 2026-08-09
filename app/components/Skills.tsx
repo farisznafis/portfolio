@@ -1,12 +1,13 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { skillGroups } from "../lib/data";
+import { useLang } from "../lib/i18n";
 import { EASE } from "../lib/motion";
 import { MaskedText } from "./ui/MaskedText";
 
 export function Skills() {
   const reduce = useReducedMotion();
+  const { content } = useLang();
 
   return (
     <section
@@ -24,23 +25,22 @@ export function Skills() {
           transition={{ duration: 0.9, ease: EASE }}
         >
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-            Skills
+            {content.skills.eyebrow}
           </p>
           <h2
             id="skills-heading"
             className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
           >
-            <MaskedText text="Tools I reach for every day" delay={0.1} />
+            <MaskedText text={content.skills.heading} delay={0.1} />
           </h2>
           <p className="mt-4 leading-relaxed text-muted">
-            Grouped by how I actually use them — foundations, the layer that
-            brings life, and the practices that keep everything shippable.
+            {content.skills.subtitle}
           </p>
         </motion.div>
 
         {/* Skill cards */}
         <div className="mt-12 grid gap-5 md:grid-cols-3">
-          {skillGroups.map((group, groupIndex) => (
+          {content.skills.groups.map((group, groupIndex) => (
             <motion.div
               key={group.title}
               className="glass h-full rounded-2xl p-6 transition-colors hover:border-accent/40 sm:p-7"
@@ -75,7 +75,7 @@ export function Skills() {
                       aria-valuenow={skill.level}
                       aria-valuemin={0}
                       aria-valuemax={100}
-                      aria-label={`${skill.name} proficiency`}
+                      aria-label={content.skills.proficiency.replace("{skill}", skill.name)}
                       className="mt-2 h-1 overflow-hidden rounded-full bg-white/8"
                     >
                       <motion.div
