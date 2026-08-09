@@ -15,7 +15,7 @@ export function Footer() {
           © {new Date().getFullYear()} {site.name}. {content.footer.rights}
         </p>
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted">
-          Next.js · Tailwind · Motion
+          Next.js / Tailwind / Motion
         </p>
         <Link
           href="/"

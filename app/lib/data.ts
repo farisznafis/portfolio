@@ -61,6 +61,7 @@ export type ProjectKey = "lumen" | "orbit" | "pulse" | "kinetic" | "atlas";
 export type ProjectMeta = {
   initials: string;
   stack: string[];
+  /** TODO: replace with the real live-demo URLs for each project. */
   demo: string;
   repo: string;
   tone: "accent" | "amber";
@@ -80,7 +81,7 @@ export const projectMeta: Record<ProjectKey, ProjectMeta> = {
   lumen: {
     initials: "LA",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Recharts", "Zustand"],
-    demo: "https://example.com",
+    demo: "#",
     repo: "https://github.com/farisznafis",
     tone: "accent",
     featured: true,
@@ -88,29 +89,44 @@ export const projectMeta: Record<ProjectKey, ProjectMeta> = {
   orbit: {
     initials: "OC",
     stack: ["Three.js", "React Three Fiber", "GSAP", "WebGL"],
-    demo: "https://example.com",
+    demo: "#",
     repo: "https://github.com/farisznafis",
     tone: "amber",
   },
   pulse: {
     initials: "PS",
     stack: ["Next.js", "Storefront API", "Stripe", "Tailwind CSS"],
-    demo: "https://example.com",
+    demo: "#",
     repo: "https://github.com/farisznafis",
     tone: "accent",
   },
   kinetic: {
     initials: "KT",
     stack: ["GSAP", "Canvas API", "Variable Fonts"],
-    demo: "https://example.com",
+    demo: "#",
     repo: "https://github.com/farisznafis",
     tone: "amber",
   },
   atlas: {
     initials: "AD",
     stack: ["React", "TypeScript", "Storybook", "Radix UI"],
-    demo: "https://example.com",
+    demo: "#",
     repo: "https://github.com/farisznafis",
     tone: "accent",
   },
 };
+
+/** Display order for the case-study pages and the next-project loop. */
+export const projectOrder: readonly ProjectKey[] = [
+  "lumen",
+  "orbit",
+  "pulse",
+  "kinetic",
+  "atlas",
+];
+
+/** Returns the next project in the loop, for the case-study footer. */
+export function nextProject(key: ProjectKey): ProjectKey {
+  const index = projectOrder.indexOf(key);
+  return projectOrder[(index + 1) % projectOrder.length];
+}

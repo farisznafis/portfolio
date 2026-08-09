@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Noto_Sans_JP, Space_Grotesk } from "next/font/google";
+import { Geist, JetBrains_Mono, Noto_Sans_JP, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "./components/Navbar";
 import { CursorGlow } from "./components/CursorGlow";
 import { Footer } from "./components/Footer";
 import { LanguageProvider } from "./lib/i18n";
 
-const inter = Inter({
+const geist = Geist({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-geist",
   display: "swap",
 });
 
@@ -34,13 +34,13 @@ const notoSansJP = Noto_Sans_JP({
 
 export const metadata: Metadata = {
   title: {
-    default: "Faris Znafis — Creative Frontend Engineer",
-    template: "%s — Faris Znafis",
+    default: "Faris Znafis | Creative Frontend Engineer",
+    template: "%s | Faris Znafis",
   },
   description:
     "Portfolio of Faris Znafis, a creative frontend engineer crafting interactive, high-performance web experiences with Next.js, motion design, and 3D.",
   openGraph: {
-    title: "Faris Znafis — Creative Frontend Engineer",
+    title: "Faris Znafis | Creative Frontend Engineer",
     description:
       "Interactive, high-performance web experiences with Next.js, motion design, and 3D.",
     type: "website",
@@ -55,7 +55,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${notoSansJP.variable}`}
+      className={`${geist.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${notoSansJP.variable}`}
     >
       <body>
         <LanguageProvider>

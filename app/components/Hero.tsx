@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Mail } from "lucide-react";
+import { motion, useMotionValue, useTransform, type MotionValue } from "framer-motion";
 import { heroImages, marqueeStack, site } from "../lib/data";
 import { useLang } from "../lib/i18n";
 import { MaskedText } from "./ui/MaskedText";
@@ -20,11 +21,16 @@ const UI_PARALLAX     = 0.25;
 const BASE_SCALE      = 1.06; // oversize so edges never reveal gaps
 const REVEAL_SCALE    = 1.09;
 
+const INITIAL = -999; // cursor guard: no parallax until the pointer first moves
+
 // ─── RevealLayer ─────────────────────────────────────────────────────────────
 /**
  * Renders the second (reveal) image visible only inside a soft circular mask
  * that follows the cursor. A hidden <canvas> draws a radial gradient at the
  * cursor position; its dataURL drives the CSS mask on the reveal <div>.
+ *
+ * Redraws are driven by the shared motion values, coalesced to one draw per
+ * animation frame — no React re-renders happen on cursor movement.
  *
  * To swap in your own photos, update heroImages in app/lib/data.ts.
  */
@@ -34,8 +40,8 @@ function RevealLayer({
   cursorY,
 }: {
   image: string;
-  cursorX: number;
-  cursorY: number;
+  cursorX: MotionValue<number>;
+  cursorY: MotionValue<number>;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const layerRef  = useRef<HTMLDivElement>(null);
@@ -53,36 +59,60 @@ function RevealLayer({
     return () => window.removeEventListener("resize", sync);
   }, []);
 
-  // Re-draw the gradient mask every time the smoothed cursor moves.
+  // Re-draw the gradient mask whenever the smoothed cursor moves. Change
+  // events can fire twice per frame (x and y); coalesce via rAF.
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const layer  = layerRef.current;
-    const ctx    = canvas?.getContext("2d");
-    if (!canvas || !layer || !ctx) return;
+    let scheduled = false;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const draw = () => {
+      const canvas = canvasRef.current;
+      const layer  = layerRef.current;
+      const ctx    = canvas?.getContext("2d");
+      if (!canvas || !layer || !ctx) return;
 
-    const g = ctx.createRadialGradient(
-      cursorX, cursorY, 0,
-      cursorX, cursorY, SPOTLIGHT_R,
-    );
-    g.addColorStop(0,    "rgba(255,255,255,1)");
-    g.addColorStop(0.4,  "rgba(255,255,255,1)");
-    g.addColorStop(0.6,  "rgba(255,255,255,0.75)");
-    g.addColorStop(0.75, "rgba(255,255,255,0.4)");
-    g.addColorStop(0.88, "rgba(255,255,255,0.12)");
-    g.addColorStop(1,    "rgba(255,255,255,0)");
+      const cx = cursorX.get();
+      const cy = cursorY.get();
 
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(cursorX, cursorY, SPOTLIGHT_R, 0, Math.PI * 2);
-    ctx.fill();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const mask = `url(${canvas.toDataURL()})`;
-    layer.style.maskImage        = mask;
-    layer.style.webkitMaskImage  = mask;
-    layer.style.maskSize         = "100% 100%";
-    (layer.style as CSSStyleDeclaration & { webkitMaskSize: string }).webkitMaskSize = "100% 100%";
+      const g = ctx.createRadialGradient(
+        cx, cy, 0,
+        cx, cy, SPOTLIGHT_R,
+      );
+      g.addColorStop(0,    "rgba(255,255,255,1)");
+      g.addColorStop(0.4,  "rgba(255,255,255,1)");
+      g.addColorStop(0.6,  "rgba(255,255,255,0.75)");
+      g.addColorStop(0.75, "rgba(255,255,255,0.4)");
+      g.addColorStop(0.88, "rgba(255,255,255,0.12)");
+      g.addColorStop(1,    "rgba(255,255,255,0)");
+
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(cx, cy, SPOTLIGHT_R, 0, Math.PI * 2);
+      ctx.fill();
+
+      const mask = `url(${canvas.toDataURL()})`;
+      layer.style.maskImage        = mask;
+      layer.style.webkitMaskImage  = mask;
+      layer.style.maskSize         = "100% 100%";
+      (layer.style as CSSStyleDeclaration & { webkitMaskSize: string }).webkitMaskSize = "100% 100%";
+    };
+
+    const schedule = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(() => {
+        scheduled = false;
+        draw();
+      });
+    };
+
+    const unsubscribeX = cursorX.on("change", schedule);
+    const unsubscribeY = cursorY.on("change", schedule);
+    return () => {
+      unsubscribeX();
+      unsubscribeY();
+    };
   }, [cursorX, cursorY]);
 
   return (
@@ -105,21 +135,28 @@ function RevealLayer({
   );
 }
 
+/** Normalized parallax offset (-1..1) for a motion value, zero before first move. */
+function useParallaxAxis(value: MotionValue<number>) {
+  return useTransform(value, (v) => {
+    if (v === INITIAL) return 0;
+    return Math.max(-1, Math.min(1, v / window.innerWidth - 0.5));
+  });
+}
+
 // ─── Hero ────────────────────────────────────────────────────────────────────
 export function Hero() {
-  // Smoothed cursor position that feeds the spotlight.
-  const mouse  = useRef({ x: -999, y: -999 });
-  const smooth = useRef({ x: -999, y: -999 });
+  // Smoothed cursor position as motion values: updates never re-render React.
+  const mouse  = useRef({ x: INITIAL, y: INITIAL });
+  const smooth = useRef({ x: INITIAL, y: INITIAL });
   const rafRef = useRef<number>(0);
-  const [cursorPos, setCursorPos] = useState({ x: -999, y: -999 });
-  const [interacted, setInteracted] = useState(false);
+  const smoothX = useMotionValue(INITIAL);
+  const smoothY = useMotionValue(INITIAL);
   const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const { content } = useLang();
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       mouse.current = { x: e.clientX, y: e.clientY };
-      setInteracted(true);
     };
     window.addEventListener("mousemove", onMove);
 
@@ -129,7 +166,8 @@ export function Hero() {
       if (Math.abs(dx) > 0.08 || Math.abs(dy) > 0.08) {
         smooth.current.x += dx * 0.1;
         smooth.current.y += dy * 0.1;
-        setCursorPos({ x: smooth.current.x, y: smooth.current.y });
+        smoothX.set(smooth.current.x);
+        smoothY.set(smooth.current.y);
       }
       rafRef.current = requestAnimationFrame(loop);
     };
@@ -139,39 +177,30 @@ export function Hero() {
       window.removeEventListener("mousemove", onMove);
       cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [smoothX, smoothY]);
 
-  // Parallax offset for a given depth factor, derived from the already-smoothed
-  // cursor position. Zeroed until the pointer first moves (initial -999 guard)
-  // and under prefers-reduced-motion.
-  const parallax = (depth: number) => {
-    if (!interacted || prefersReducedMotion) return { x: 0, y: 0 };
-    const nx = Math.max(-1, Math.min(1, cursorPos.x / window.innerWidth - 0.5));
-    const ny = Math.max(-1, Math.min(1, cursorPos.y / window.innerHeight - 0.5));
-    return { x: nx * PARALLAX_MAX * depth, y: ny * PARALLAX_MAX * depth };
-  };
+  // Parallax offsets per depth, derived from the already-smoothed cursor.
+  // Zeroed under prefers-reduced-motion and until the pointer first moves.
+  const nx = useParallaxAxis(smoothX);
+  const ny = useParallaxAxis(smoothY);
 
-  const baseOffset   = parallax(BASE_PARALLAX);
-  const revealOffset = parallax(REVEAL_PARALLAX);
-  const uiOffset     = parallax(-UI_PARALLAX);
-  const imageStyle   = (o: { x: number; y: number }, s: number) =>
-    `translate3d(${o.x}px, ${o.y}px, 0) scale(${s})`;
-  const uiStyle      = (o: { x: number; y: number }) =>
-    `translate3d(${o.x}px, ${o.y}px, 0)`;
+  const baseX   = useTransform(nx, (v) => (prefersReducedMotion ? 0 : v * PARALLAX_MAX * BASE_PARALLAX));
+  const baseY   = useTransform(ny, (v) => (prefersReducedMotion ? 0 : v * PARALLAX_MAX * BASE_PARALLAX));
+  const revealX = useTransform(nx, (v) => (prefersReducedMotion ? 0 : v * PARALLAX_MAX * REVEAL_PARALLAX));
+  const revealY = useTransform(ny, (v) => (prefersReducedMotion ? 0 : v * PARALLAX_MAX * REVEAL_PARALLAX));
+  const uiX     = useTransform(nx, (v) => (prefersReducedMotion ? 0 : v * PARALLAX_MAX * -UI_PARALLAX));
+  const uiY     = useTransform(ny, (v) => (prefersReducedMotion ? 0 : v * PARALLAX_MAX * -UI_PARALLAX));
 
   return (
     <section id="home" aria-label={content.hero.ariaSection} className="relative w-full">
 
       {/* ── Full-screen canvas ──────────────────────────────────────────────── */}
-      <div
-        className="relative w-full overflow-hidden bg-night"
-        style={{ height: "100dvh" }}
-      >
+      <div className="relative w-full overflow-hidden bg-night" style={{ height: "100dvh" }}>
 
         {/* Layer 1 — base image with Ken Burns zoom-out on load */}
-        <div
+        <motion.div
           className="absolute inset-0 z-10"
-          style={{ transform: imageStyle(baseOffset, BASE_SCALE), willChange: "transform" }}
+          style={{ x: baseX, y: baseY, scale: BASE_SCALE, willChange: "transform" }}
           aria-hidden="true"
         >
           <div
@@ -179,20 +208,16 @@ export function Hero() {
             style={{ backgroundImage: `url(${heroImages.base})` }}
             aria-hidden="true"
           />
-        </div>
+        </motion.div>
 
         {/* Layer 2 — spotlight-revealed second image */}
-        <div
+        <motion.div
           className="absolute inset-0 z-20"
-          style={{ transform: imageStyle(revealOffset, REVEAL_SCALE), willChange: "transform" }}
+          style={{ x: revealX, y: revealY, scale: REVEAL_SCALE, willChange: "transform" }}
           aria-hidden="true"
         >
-          <RevealLayer
-            image={heroImages.reveal}
-            cursorX={cursorPos.x}
-            cursorY={cursorPos.y}
-          />
-        </div>
+          <RevealLayer image={heroImages.reveal} cursorX={smoothX} cursorY={smoothY} />
+        </motion.div>
 
         {/* Layer 3 — vignette for legibility */}
         <div
@@ -201,9 +226,9 @@ export function Hero() {
         />
 
         {/* ── Heading — top-center ─────────────────────────────────────────── */}
-        <div
+        <motion.div
           className="pointer-events-none absolute inset-0 z-50"
-          style={{ transform: uiStyle(uiOffset), willChange: "transform" }}
+          style={{ x: uiX, y: uiY, willChange: "transform" }}
         >
           <div className="absolute inset-x-0 top-[14%] flex flex-col items-center px-5 text-center">
             <h1 className="font-display leading-[0.95] text-ink">
@@ -228,12 +253,12 @@ export function Hero() {
               </span>
             </h1>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Bottom-left — intro paragraph ────────────────────────────────── */}
-        <div
+        <motion.div
           className="pointer-events-none absolute inset-0 z-50 hidden sm:block"
-          style={{ transform: uiStyle(uiOffset), willChange: "transform" }}
+          style={{ x: uiX, y: uiY, willChange: "transform" }}
         >
           <div
             className="hero-anim hero-fade absolute bottom-14 left-10 max-w-[260px] md:left-14"
@@ -243,12 +268,12 @@ export function Hero() {
               {content.hero.intro.replace("{name}", site.name)}
             </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Bottom-right — hint + CTAs ───────────────────────────────────── */}
-        <div
+        <motion.div
           className="pointer-events-none absolute inset-0 z-50"
-          style={{ transform: uiStyle(uiOffset), willChange: "transform" }}
+          style={{ x: uiX, y: uiY, willChange: "transform" }}
         >
           <div
             className="hero-anim hero-fade absolute bottom-10 left-5 right-5 flex max-w-full flex-col items-start gap-4 sm:bottom-24 sm:left-auto sm:right-10 sm:max-w-[260px] sm:gap-5 md:right-14"
@@ -272,7 +297,7 @@ export function Hero() {
               </Link>
             </div>
           </div>
-        </div>
+        </motion.div>
 
       </div>
 

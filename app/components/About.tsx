@@ -24,25 +24,14 @@ export function About() {
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="relative z-10 min-h-screen pt-28 border-y border-line bg-white/[0.02]"
+      className="relative z-10 min-h-[100dvh] pt-28 border-y border-line bg-white/[0.02]"
     >
       <div className="mx-auto grid w-full max-w-6xl gap-14 px-5 py-24 sm:py-32 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
         <div>
-          {/* Eyebrow */}
-          <motion.p
-            className="font-mono text-xs uppercase tracking-[0.3em] text-accent"
-            initial={reduce ? {} : { opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.7, ease: EASE }}
-          >
-            {content.about.eyebrow}
-          </motion.p>
-
           {/* Heading */}
           <h2
             id="about-heading"
-            className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
+            className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
           >
             <MaskedText text={content.about.heading} delay={0.1} />
           </h2>
@@ -77,34 +66,36 @@ export function About() {
             </p>
           </motion.div>
 
-          {/* Principle cards */}
-          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          {/* Principles — hairline list, no cards */}
+          <ul className="mt-10 border-t border-line">
             {content.about.principles.map((principle, index) => {
               const Icon = PRINCIPLE_ICONS[index] ?? Sparkles;
               return (
-                <motion.div
+                <motion.li
                   key={principle.title}
-                  className="group h-full rounded-xl border border-line bg-white/[0.03] p-5 transition-colors hover:border-accent/40"
-                  initial={reduce ? {} : { opacity: 0, y: 30, scale: 0.95 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  className="flex gap-4 border-b border-line py-5 sm:gap-5"
+                  initial={reduce ? {} : { opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.7, delay: 0.3 + index * 0.1, ease: EASE }}
+                  transition={{ duration: 0.6, delay: 0.25 + index * 0.1, ease: EASE }}
                 >
                   <Icon
                     size={20}
                     aria-hidden="true"
-                    className="text-accent transition-transform duration-300 group-hover:-translate-y-0.5"
+                    className="mt-0.5 shrink-0 text-accent"
                   />
-                  <h3 className="mt-4 font-display text-base font-semibold text-ink">
-                    {principle.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">
-                    {principle.description}
-                  </p>
-                </motion.div>
+                  <div>
+                    <h3 className="font-display text-base font-semibold text-ink">
+                      {principle.title}
+                    </h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                      {principle.description}
+                    </p>
+                  </div>
+                </motion.li>
               );
             })}
-          </div>
+          </ul>
         </div>
 
         {/* Profile sheet */}
@@ -116,10 +107,7 @@ export function About() {
           transition={{ duration: 1, delay: 0.15, ease: EASE }}
         >
           <div className="glass rounded-2xl p-7 sm:p-8">
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-              {content.about.profileLabel}
-            </p>
-            <dl className="mt-6 divide-y divide-line">
+            <dl className="divide-y divide-line">
               {facts.map((fact, i) => (
                 <motion.div
                   key={fact.label}

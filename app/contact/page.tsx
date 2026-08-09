@@ -5,7 +5,7 @@ import { PageTransition } from "../components/ui/PageTransition";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Faris Znafis — for projects, roles, or a chat about motion on the web.",
+    "Get in touch with Faris Znafis for projects, roles, or a chat about motion on the web.",
 };
 
 export default function ContactPage() {

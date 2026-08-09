@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
+import clsx from "clsx";
 import { useLang } from "../../lib/i18n";
 import { RolloverText } from "../ui/RolloverText";
 
@@ -51,7 +52,7 @@ export function ScrollScene() {
       style={{ height: "420vh" }}
     >
       {/* Sticky stage — 3D wave + the current 2D beat */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden" style={{ height: "100dvh" }}>
+      <div className="sticky top-0 h-[100dvh] w-full overflow-hidden">
         {/* 3D particle wave — decorative, hidden from assistive tech */}
         <div className="absolute inset-0 z-0" aria-hidden="true">
           <Scene progressRef={progressRef} />
@@ -72,7 +73,7 @@ export function ScrollScene() {
             <h2 className="mt-6 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl md:text-7xl">
               {content.home.intro.line1}
               <br />
-              <span className="text-gradient">{content.home.intro.line2}</span>
+              <span className="text-accent">{content.home.intro.line2}</span>
             </h2>
             <p className="mx-auto mt-7 max-w-xl text-sm leading-relaxed text-ink/70 sm:text-base">
               {content.home.intro.blurb}
@@ -83,22 +84,24 @@ export function ScrollScene() {
         {/* ── Beat 2 — three pillars ────────────────────────────────────── */}
         <Beat progress={scrollYProgress} range={[0.28, 0.36, 0.5, 0.58]}>
           <div className="mx-auto w-full max-w-5xl px-6">
-            <p className="mb-10 text-center font-mono text-xs uppercase tracking-[0.35em] text-accent">
-              {content.home.whatIDo}
-            </p>
-            <div className="grid gap-5 md:grid-cols-3">
-              {content.home.pillars.map((pillar) => (
+            <div className="grid gap-5 md:grid-cols-2">
+              {content.home.pillars.map((pillar, index) => (
                 <div
                   key={pillar.title}
-                  className="glass rounded-2xl p-6 text-left sm:p-7"
+                  className={clsx(
+                    "glass rounded-2xl p-6 text-left sm:p-7",
+                    index === 0 && "md:col-span-2",
+                  )}
                 >
-                  <p className="font-mono text-xs tracking-[0.25em] text-accent">
-                    {pillar.index}
-                  </p>
-                  <h3 className="mt-3 font-display text-xl font-semibold text-ink">
+                  <h3 className="font-display text-xl font-semibold text-ink">
                     {pillar.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">
+                  <p
+                    className={clsx(
+                      "mt-2 text-sm leading-relaxed text-muted",
+                      index === 0 && "md:max-w-2xl",
+                    )}
+                  >
                     {pillar.description}
                   </p>
                 </div>
@@ -110,9 +113,6 @@ export function ScrollScene() {
         {/* ── Beat 3 — stats ────────────────────────────────────────────── */}
         <Beat progress={scrollYProgress} range={[0.6, 0.68, 0.8, 0.88]}>
           <div className="mx-auto w-full max-w-4xl px-6">
-            <p className="mb-12 text-center font-mono text-xs uppercase tracking-[0.35em] text-accent">
-              {content.home.byTheNumbers}
-            </p>
             <dl className="grid grid-cols-1 gap-10 text-center sm:grid-cols-3">
               {content.home.stats.map((stat) => (
                 <div key={stat.label} className="flex flex-col items-center">
@@ -154,9 +154,6 @@ export function ScrollScene() {
             </div>
           </div>
         </Beat>
-
-        {/* Scroll hint — fades out after the journey begins */}
-        <ScrollHint progress={scrollYProgress} />
       </div>
     </section>
   );
@@ -203,28 +200,6 @@ function Beat({
   );
 }
 
-function ScrollHint({ progress }: { progress: MotionValue<number> }) {
-  const opacity = useTransform(progress, [0, 0.04], [1, 0]);
-  const { content } = useLang();
-  return (
-    <motion.div
-      style={{ opacity }}
-      className="pointer-events-none absolute bottom-8 left-1/2 z-30 flex -translate-x-1/2 flex-col items-center gap-2"
-    >
-      <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-ink/60">
-        {content.home.scroll}
-      </span>
-      <span className="flex h-9 w-5 items-start justify-center rounded-full border border-ink/30 p-1">
-        <motion.span
-          className="h-1.5 w-1.5 rounded-full bg-accent"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-        />
-      </span>
-    </motion.div>
-  );
-}
-
 /** Calm, non-animated version for reduced-motion users. */
 function StaticFallback() {
   const { content } = useLang();
@@ -238,17 +213,22 @@ function StaticFallback() {
           {content.home.intro.kicker}
         </p>
         <h2 className="mt-6 font-display text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
-          {content.home.intro.line1} <span className="text-gradient">{content.home.intro.line2}</span>
+          {content.home.intro.line1} <span className="text-accent">{content.home.intro.line2}</span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl leading-relaxed text-muted">
           {content.home.intro.blurb}
         </p>
       </div>
 
-      <div className="mx-auto mt-16 grid max-w-5xl gap-5 md:grid-cols-3">
-        {content.home.pillars.map((pillar) => (
-          <div key={pillar.title} className="glass rounded-2xl p-6 sm:p-7">
-            <p className="font-mono text-xs tracking-[0.25em] text-accent">{pillar.index}</p>
+      <div className="mx-auto mt-16 grid max-w-5xl gap-5 md:grid-cols-2">
+        {content.home.pillars.map((pillar, index) => (
+          <div
+            key={pillar.title}
+            className={clsx(
+              "glass rounded-2xl p-6 sm:p-7",
+              index === 0 && "md:col-span-2",
+            )}
+          >
             <h3 className="mt-3 font-display text-xl font-semibold text-ink">{pillar.title}</h3>
             <p className="mt-2 text-sm leading-relaxed text-muted">{pillar.description}</p>
           </div>

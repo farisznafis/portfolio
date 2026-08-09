@@ -12,7 +12,7 @@ import { MaskedText } from "./ui/MaskedText";
 type Status = "idle" | "sending" | "sent";
 
 const FIELD_CLASSES =
-  "w-full rounded-xl border border-line bg-white/5 px-4 py-3 text-sm text-ink placeholder:text-muted/60 transition-colors hover:border-white/25 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25";
+  "w-full rounded-xl border border-line bg-white/5 px-4 py-3 text-sm text-ink transition-colors hover:border-white/25 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25";
 
 export function Contact() {
   const [status, setStatus] = useState<Status>("idle");
@@ -52,22 +52,12 @@ export function Contact() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="relative z-10 min-h-screen pt-28"
+      className="relative z-10 min-h-[100dvh] pt-28"
     >
       <div className="mx-auto w-full max-w-6xl px-5 py-24 sm:py-32">
         <div className="grid gap-14 lg:grid-cols-2 lg:gap-20">
           <div>
             {/* Heading with staggered entrance */}
-            <motion.p
-              className="font-mono text-xs uppercase tracking-[0.3em] text-accent"
-              initial={reduce ? {} : { opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{ duration: 0.7, ease: EASE }}
-            >
-              {content.contact.eyebrow}
-            </motion.p>
-
             <h2
               id="contact-heading"
               className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
@@ -166,7 +156,6 @@ export function Contact() {
                     type="text"
                     required
                     autoComplete="name"
-                    placeholder={content.contact.namePlaceholder}
                     className={FIELD_CLASSES}
                   />
                 </div>
@@ -183,7 +172,6 @@ export function Contact() {
                     type="email"
                     required
                     autoComplete="email"
-                    placeholder={content.contact.emailPlaceholder}
                     className={FIELD_CLASSES}
                   />
                 </div>
@@ -200,7 +188,6 @@ export function Contact() {
                   name="message"
                   required
                   rows={5}
-                  placeholder={content.contact.messagePlaceholder}
                   className={`${FIELD_CLASSES} resize-y`}
                 />
               </div>

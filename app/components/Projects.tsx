@@ -1,14 +1,15 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
 import { ArrowUpRight, Github } from "lucide-react";
 import { useState } from "react";
 import clsx from "clsx";
 import { projectMeta, type Project, type ProjectCategory } from "../lib/data";
 import { useLang } from "../lib/i18n";
-import { EASE, PARALLAX, SPRING } from "../lib/motion";
+import { EASE, SPRING } from "../lib/motion";
 import { MaskedText } from "./ui/MaskedText";
-import { Parallax } from "./ui/Parallax";
 import { TiltCard } from "./ui/TiltCard";
 
 export function Projects() {
@@ -29,7 +30,7 @@ export function Projects() {
     <section
       id="work"
       aria-labelledby="work-heading"
-      className="relative z-10 min-h-screen pt-28"
+      className="relative z-10 min-h-[100dvh] pt-28"
     >
       <div className="mx-auto w-full max-w-6xl px-5 py-24 sm:py-32">
         {/* Header row */}
@@ -111,50 +112,31 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       className={clsx("h-full", project.featured && "sm:col-span-2")}
     >
       <TiltCard className="group glass h-full overflow-hidden rounded-2xl">
-        {/* Thumbnail */}
+        {/* Thumbnail — TODO: replace each picsum placeholder below with a real
+            project screenshot dropped into /public/images/projects/. */}
         <div
           className={clsx(
             "relative overflow-hidden border-b border-line",
             project.featured ? "aspect-[21/9]" : "aspect-[16/9]",
           )}
         >
-          <div
-            aria-hidden="true"
-            className={clsx(
-              "absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105",
-              isTeal
-                ? "bg-gradient-to-br from-accent/25 via-night to-elevated"
-                : "bg-gradient-to-br from-amber/20 via-night to-elevated",
-            )}
-          >
-            <Parallax className="absolute inset-0" strength={PARALLAX.subtle}>
-              <div
-                className={clsx(
-                  "absolute -right-16 -top-16 h-56 w-56 rounded-full blur-3xl",
-                  isTeal ? "bg-accent/20" : "bg-amber/15",
-                )}
-              />
-              <span className="absolute bottom-4 right-6 select-none font-display text-7xl font-bold tracking-tight text-white/[0.06] sm:text-8xl">
-                {project.initials}
-              </span>
-            </Parallax>
-            <div className="absolute left-5 top-5 flex gap-1.5">
-              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-              <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-              <span className={clsx("h-2.5 w-2.5 rounded-full", isTeal ? "bg-accent/70" : "bg-amber/70")} />
-            </div>
-          </div>
-          <a
-            href={project.demo}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={content.projects.openDemo.replace("{title}", project.title)}
+          <Image
+            src={`https://picsum.photos/seed/${project.key}/${project.featured ? 1600 : 1280}/${project.featured ? 685 : 720}`}
+            alt={`${project.title} preview`}
+            fill
+            sizes={project.featured ? "(min-width: 1024px) 1100px, 100vw" : "(min-width: 640px) 50vw, 100vw"}
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+          <Link
+            href={`/work/${project.key}`}
+            aria-label={content.projects.viewCaseStudy.replace("{title}", project.title)}
             className="absolute inset-0 flex items-center justify-center bg-night/60 opacity-0 backdrop-blur-sm transition-opacity duration-300 focus-visible:opacity-100 group-hover:opacity-100"
           >
             <span className="inline-flex translate-y-2 items-center gap-2 rounded-full border border-line bg-white/10 px-5 py-2.5 text-sm font-semibold text-ink transition-transform duration-300 group-hover:translate-y-0">
-              {content.projects.viewProject} <ArrowUpRight size={16} aria-hidden="true" />
+              {content.projects.viewCaseStudy.replace("{title}", project.title)}{" "}
+              <ArrowUpRight size={16} aria-hidden="true" />
             </span>
-          </a>
+          </Link>
         </div>
 
         <div className="p-6 sm:p-7">
@@ -167,7 +149,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             </span>
           </div>
           <h3 className="mt-3 font-display text-2xl font-semibold text-ink transition-colors group-hover:text-accent-bright">
-            {project.title}
+            <Link href={`/work/${project.key}`} className="transition-colors group-hover:text-accent-bright">
+              {project.title}
+            </Link>
           </h3>
           <p className="mt-3 leading-relaxed text-muted">{project.description}</p>
 

@@ -61,7 +61,7 @@ export function Navbar() {
           <Link
             href="/"
             className="font-display text-sm font-bold tracking-[0.3em] text-ink"
-            aria-label={`${site.name} — ${content.nav.ariaLogo}`}
+            aria-label={`${site.name} | ${content.nav.ariaLogo}`}
           >
             {site.shortName}
             <span className="text-accent">.</span>

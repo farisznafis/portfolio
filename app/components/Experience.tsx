@@ -21,7 +21,7 @@ export function Experience() {
     <section
       id="experience"
       aria-labelledby="experience-heading"
-      className="relative z-10 min-h-screen pt-28 border-y border-line bg-white/[0.02]"
+      className="relative z-10 min-h-[100dvh] pt-28 border-y border-line bg-white/[0.02]"
     >
       <div className="mx-auto w-full max-w-6xl px-5 py-24 sm:py-32">
         {/* Heading */}
@@ -32,12 +32,9 @@ export function Experience() {
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.9, ease: EASE }}
         >
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-accent">
-            {content.experience.eyebrow}
-          </p>
           <h2
             id="experience-heading"
-            className="mt-3 font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
+            className="font-display text-3xl font-semibold tracking-tight text-ink sm:text-5xl"
           >
             <MaskedText text={content.experience.heading} delay={0.1} />
           </h2>
@@ -52,7 +49,7 @@ export function Experience() {
           <div aria-hidden="true" className="absolute bottom-2 left-[7px] top-2 w-px bg-white/10" />
           <motion.div
             aria-hidden="true"
-            className="absolute bottom-2 left-[7px] top-2 w-px origin-top bg-gradient-to-b from-accent via-accent-bright to-amber"
+            className="absolute bottom-2 left-[7px] top-2 w-px origin-top bg-gradient-to-b from-accent to-accent-bright"
             style={{ scaleY: reduce ? 1 : lineScale }}
           />
 
