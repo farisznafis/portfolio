@@ -2,12 +2,12 @@
 
 @theme {
   /* ── Color tokens ────────────────────────────────────────────────────────
-     Site identity: deep navy night, teal accent, amber highlight.
+     Site identity: deep teal-charcoal night, teal accent, amber highlight.
      One palette, locked across every section. */
-  --color-night: #080a0f;
-  --color-elevated: #0e1219;
+  --color-night: #0a0f11;
+  --color-elevated: #10181b;
   --color-ink: #f2f6f7;
-  --color-muted: #96a2b0;
+  --color-muted: #94a6ad;
   --color-accent: #00b5a5;
   --color-accent-bright: #2ee6d6;
   --color-amber: #ffc700;
@@ -81,7 +81,7 @@ body {
 body {
   min-height: 100vh;
   margin: 0;
-  background: linear-gradient(135deg, #07090f 0%, #10131a 48%, #0d1117 100%);
+  background: var(--color-night);
   color: var(--color-ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;

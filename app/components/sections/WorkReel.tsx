@@ -1,20 +1,23 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 import clsx from "clsx";
-import { projectImage, projectOrder, type ProjectCategory, type ProjectKey } from "../../lib/data";
+import {
+  featuredProjectOrder,
+  projects,
+  type ProjectKey,
+} from "../../lib/data";
 import { useLang } from "../../lib/i18n";
 import { gsap, ScrollTrigger } from "../../motion/gsap";
 
 type ReelProject = {
   key: ProjectKey;
   title: string;
-  category: Exclude<ProjectCategory, "All">;
-  year: string;
-  role: string;
+  fields: string[];
+  year?: string;
+  role?: string;
   description: string;
   index: number;
 };
@@ -22,23 +25,41 @@ type ReelProject = {
 /**
  * Selected work as a horizontal editorial reel.
  *
+ * Reads from `featuredProjectOrder` (exactly the 5 featured projects),
+ * never from the full project list.
+ *
  * Desktop: the section pins and the track pans horizontally (GSAP
  * ScrollTrigger, scrub 1). Scroll velocity adds a slight skew to the media,
  * settling back when scrolling stops. Mobile / reduced motion: the same
  * panels stack vertically in natural flow - one render path, orientation is
  * CSS; only the pin is conditional.
+ *
+ * Media: projects without a real screenshot yet render a typographic
+ * fallback built from the project initials and the site's design tokens
+ * (no stock photography).
  */
 export function WorkReel() {
   const wrapRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const { content } = useLang();
 
-  // Localized copy merged with display order.
-  const projects: ReelProject[] = useMemo(
+  // Localized copy merged with the featured display order.
+  const projectsList: ReelProject[] = useMemo(
     () =>
-      projectOrder.flatMap((key, index) => {
+      featuredProjectOrder.flatMap((key, index) => {
         const item = content.work.items.find((p) => p.key === key);
-        return item ? [{ ...item, index }] : [];
+        if (!item) return [];
+        return [
+          {
+            key,
+            title: item.title,
+            fields: projects[key].fields.map((f) => content.fields[f]),
+            year: item.year,
+            role: item.role,
+            description: item.description,
+            index,
+          },
+        ];
       }),
     [content],
   );
@@ -99,13 +120,37 @@ export function WorkReel() {
             {content.work.heading}
           </h2>
           <p className="mt-6 font-mono text-sm tracking-[0.2em] text-muted">
-            {String(projects.length).padStart(2, "0")} CASE STUDIES
+            {String(projectsList.length).padStart(2, "0")} {content.work.countLabel}
           </p>
         </div>
 
-        {projects.map((project) => (
+        {projectsList.map((project) => (
           <ReelPanel key={project.key} project={project} />
         ))}
+
+        {/* Trailing cell - view-all CTA keeps the reel's editorial rhythm */}
+        <div className="container-x flex items-center py-24 lg:w-[46vw] lg:shrink-0 lg:py-0">
+          <Link
+            href="/projects"
+            data-cursor="Open"
+            className="group inline-flex flex-col gap-4"
+          >
+            <span className="font-mono text-sm tracking-[0.3em] text-accent">
+              {String(projectsList.length + 1).padStart(2, "0")}
+            </span>
+            <span className="font-display text-section font-semibold uppercase leading-[0.95] tracking-tight text-ink transition-colors duration-500 group-hover:text-accent-bright sm:text-title">
+              {content.work.viewAll}
+            </span>
+            <span className="inline-flex items-center gap-2 text-sm font-semibold text-muted transition-colors group-hover:text-ink">
+              {content.projects.heading}
+              <ArrowUpRight
+                size={16}
+                aria-hidden="true"
+                className="text-accent transition-transform duration-500 group-hover:-translate-y-1 group-hover:translate-x-1"
+              />
+            </span>
+          </Link>
+        </div>
 
         {/* Trailing spacer so the last panel breathes before unpinning */}
         <div aria-hidden="true" className="hidden w-[10vw] shrink-0 lg:block" />
@@ -114,8 +159,43 @@ export function WorkReel() {
   );
 }
 
+/**
+ * Typographic media fallback for projects without a real screenshot yet.
+ * Uses the project's initials and the existing design tokens - no stock
+ * imagery. TODO_REAL_IMAGE: replace with real screenshots as they arrive.
+ */
+function TypographicMedia({
+  initials,
+  title,
+  tone,
+}: {
+  initials: string;
+  title: string;
+  tone: "accent" | "amber";
+}) {
+  return (
+    <div
+      aria-hidden="true"
+      className="absolute inset-0 flex items-center justify-center overflow-hidden bg-elevated"
+    >
+      <span
+        className={clsx(
+          "font-display text-[7rem] font-semibold leading-none tracking-tighter text-outline transition-transform duration-700 ease-out group-hover:scale-[1.04] sm:text-[9rem]",
+          tone === "accent" ? "opacity-90" : "opacity-70",
+        )}
+      >
+        {initials}
+      </span>
+      <span className="absolute bottom-4 left-5 font-mono text-[10px] uppercase tracking-[0.25em] text-muted/70">
+        {title}
+      </span>
+    </div>
+  );
+}
+
 function ReelPanel({ project }: { project: ReelProject }) {
   const { content } = useLang();
+  const meta = projects[project.key];
   const flip = project.index % 2 === 1; // alternate composition per campaign
 
   return (
@@ -135,16 +215,18 @@ function ReelPanel({ project }: { project: ReelProject }) {
             {project.title}
           </h3>
           <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
-            <li>{project.year}</li>
-            <li>{content.work.categories[project.category]}</li>
-            <li>{project.role}</li>
+            {project.year ? <li>{project.year}</li> : null}
+            {project.fields.map((field) => (
+              <li key={field}>{field}</li>
+            ))}
+            {project.role ? <li>{project.role}</li> : null}
           </ul>
           <p className="mt-5 max-w-md text-sm leading-relaxed text-muted lg:text-base">
             {project.description}
           </p>
           <span className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-ink">
             <span className="relative">
-              Case study
+              {content.projects.caseStudyCta}
               <span className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-accent transition-transform duration-500 ease-out group-hover:scale-x-100" />
             </span>
             <ArrowUpRight
@@ -155,20 +237,27 @@ function ReelPanel({ project }: { project: ReelProject }) {
           </span>
         </div>
 
-        {/* Media block */}
+        {/* Media block - real screenshot when available, typographic fallback otherwise */}
         <div
           className={clsx(
             "relative aspect-[16/10] w-full overflow-hidden border border-line/60 bg-elevated lg:col-span-7 lg:h-[58vh] lg:w-auto",
             flip && "lg:order-first",
           )}
         >
-          <Image
-            src={projectImage(project.key, 1600, 1000)}
-            alt={`${project.title} preview`}
-            fill
-            sizes="(min-width: 1024px) 46vw, 100vw"
-            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-          />
+          {meta.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={meta.image}
+              alt={`${project.title} preview`}
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+            />
+          ) : (
+            <TypographicMedia
+              initials={meta.initials}
+              title={project.title}
+              tone={meta.tone}
+            />
+          )}
         </div>
       </Link>
     </article>

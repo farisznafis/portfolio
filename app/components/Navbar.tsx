@@ -17,6 +17,7 @@ import { ScrollProgress } from "./ui/ScrollProgress";
 
 const SECTIONS = [
   "work",
+  "projects",
   "experience",
   "capabilities",
   "about",
@@ -91,17 +92,19 @@ export function Navbar() {
 
   const goTo = (id: SectionId) => (event: React.MouseEvent) => {
     setOpen(false);
-    if (!isHome) return; // let the /#hash navigation happen
+    // "projects" is a real route, not a home section - always navigate.
+    if (id === "projects" || !isHome) return;
     event.preventDefault();
     scrollTo(`#${id}`);
   };
 
-  const linkHref = (id: SectionId) => (isHome ? `/#${id}` : `/#${id}`);
+  const linkHref = (id: SectionId) =>
+    id === "projects" ? "/projects" : `/#${id}`;
 
   return (
     <>
       <header className="fixed inset-x-0 top-0 z-40">
-        <div className="border-b border-line bg-night/70 backdrop-blur-xl">
+        <div className="border-b border-line bg-night/85 backdrop-blur-xl">
           <nav
             aria-label={content.nav.ariaPrimary}
             className="container-x flex h-16 items-center justify-between"

@@ -1,31 +1,38 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { useRef } from "react";
 import clsx from "clsx";
 import { useLang } from "../../lib/i18n";
-import { nextProject, projectImage, projectMeta, type ProjectKey } from "../../lib/data";
+import {
+  nextCaseStudy,
+  projects,
+  type CaseStudyKey,
+} from "../../lib/data";
+import { caseStudiesEn, caseStudiesJa } from "../../lib/caseStudies";
 import { EASE } from "../../lib/motion";
 import { MaskedText } from "../ui/MaskedText";
 
 /**
  * Image block with a slow scroll parallax: the frame stays put while the
  * media drifts inside an oversized container. Static under reduced motion.
+ * Falls back to a typographic plate when no real asset exists yet.
  */
 function ParallaxFigure({
   src,
   alt,
   className,
-  sizes,
+  initials,
+  tone = "accent",
   priority = false,
 }: {
-  src: string;
+  src?: string;
   alt: string;
   className?: string;
-  sizes: string;
+  initials: string;
+  tone?: "accent" | "amber";
   priority?: boolean;
 }) {
   const reduce = useReducedMotion();
@@ -44,23 +51,48 @@ function ParallaxFigure({
         className,
       )}
     >
-      <motion.div
-        style={{ y: reduce ? 0 : y }}
-        className="absolute -inset-y-[9%] inset-x-0"
-      >
-        <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" priority={priority} />
-      </motion.div>
+      {src ? (
+        <motion.div
+          style={{ y: reduce ? 0 : y }}
+          className="absolute -inset-y-[9%] inset-x-0"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src}
+            alt={alt}
+            className="absolute inset-0 h-full w-full object-cover"
+            loading={priority ? "eager" : "lazy"}
+          />
+        </motion.div>
+      ) : (
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 flex items-center justify-center"
+        >
+          <span
+            className={clsx(
+              "font-display text-[6rem] font-semibold leading-none tracking-tighter text-outline sm:text-[9rem]",
+              tone === "accent" ? "opacity-90" : "opacity-70",
+            )}
+          >
+            {initials}
+          </span>
+        </div>
+      )}
     </figure>
   );
 }
 
-export function CaseStudy({ slug }: { slug: ProjectKey }) {
+export function CaseStudy({ slug }: { slug: CaseStudyKey }) {
   const reduce = useReducedMotion();
-  const { content } = useLang();
+  const { content, lang } = useLang();
 
   const item = content.work.items.find((project) => project.key === slug);
-  const study = content.caseStudies[slug];
-  const next = content.work.items.find((project) => project.key === nextProject(slug));
+  const study = lang === "ja" ? caseStudiesJa[slug] : caseStudiesEn[slug];
+  const meta = projects[slug];
+  const nextKey = nextCaseStudy(slug);
+  const next = content.work.items.find((project) => project.key === nextKey);
+  const nextMeta = projects[nextKey];
 
   if (!item || !study || !next) return null;
 
@@ -70,6 +102,8 @@ export function CaseStudy({ slug }: { slug: ProjectKey }) {
     viewport: { once: true, amount: 0.3 },
     transition: { duration: 0.9, ease: EASE },
   } as const;
+
+  const gallery = meta.gallery ?? [];
 
   return (
     <article className="relative">
@@ -94,9 +128,13 @@ export function CaseStudy({ slug }: { slug: ProjectKey }) {
         </motion.div>
 
         <ul className="mt-12 flex flex-wrap gap-x-6 gap-y-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
-          <li className="text-accent">{content.work.categories[item.category]}</li>
-          <li>{item.year}</li>
-          <li>{item.role}</li>
+          {meta.fields.map((field) => (
+            <li key={field} className="text-accent">
+              {content.fields[field]}
+            </li>
+          ))}
+          {item.year ? <li>{item.year}</li> : null}
+          {item.role ? <li>{item.role}</li> : null}
         </ul>
 
         <h1 className="mt-5 font-display text-display font-semibold uppercase leading-[0.9] tracking-tight text-ink">
@@ -113,30 +151,35 @@ export function CaseStudy({ slug }: { slug: ProjectKey }) {
         </motion.p>
       </header>
 
-      {/* Cinematic hero image */}
+      {/* Cinematic hero image - real asset when available, typographic plate otherwise */}
       <ParallaxFigure
-        src={projectImage(slug, 1920, 914)}
+        src={meta.image ?? undefined}
         alt={`${item.title}, hero image`}
+        initials={meta.initials}
+        tone={meta.tone}
         className="aspect-[16/10] border-x-0 sm:aspect-[21/10]"
-        sizes="(min-width: 1024px) 100vw, 100vw"
         priority
       />
 
       {/* ── Meta panel ────────────────────────────────────────────────────── */}
       <section aria-label={study.atAGlance} className="container-x" {...rise}>
         <dl className="grid gap-x-10 gap-y-6 border-b border-line py-10 sm:grid-cols-2 lg:grid-cols-4">
+          {item.role ? (
+            <div>
+              <dt className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Role</dt>
+              <dd className="mt-2 text-sm font-medium text-ink">{item.role}</dd>
+            </div>
+          ) : null}
+          {item.year ? (
+            <div>
+              <dt className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Year</dt>
+              <dd className="mt-2 text-sm font-medium text-ink">{item.year}</dd>
+            </div>
+          ) : null}
           <div>
-            <dt className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Role</dt>
-            <dd className="mt-2 text-sm font-medium text-ink">{item.role}</dd>
-          </div>
-          <div>
-            <dt className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Year</dt>
-            <dd className="mt-2 text-sm font-medium text-ink">{item.year}</dd>
-          </div>
-          <div>
-            <dt className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Category</dt>
+            <dt className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted">Fields</dt>
             <dd className="mt-2 text-sm font-medium text-ink">
-              {content.work.categories[item.category]}
+              {meta.fields.map((field) => content.fields[field]).join(" · ")}
             </dd>
           </div>
           <div>
@@ -145,7 +188,7 @@ export function CaseStudy({ slug }: { slug: ProjectKey }) {
             </dt>
             <dd className="mt-2">
               <ul className="flex flex-wrap gap-2" aria-label={content.work.techAria}>
-                {projectMeta[slug].stack.map((tech) => (
+                {meta.stack.map((tech) => (
                   <li
                     key={tech}
                     className="rounded-full border border-line bg-white/5 px-3 py-1 font-mono text-xs text-muted"
@@ -158,29 +201,60 @@ export function CaseStudy({ slug }: { slug: ProjectKey }) {
           </div>
         </dl>
 
+        {/* Public links only - professional/confidential work shows a note instead */}
         <div className="flex flex-wrap items-center gap-6 pb-10">
-          <a
-            href={projectMeta[slug].demo}
-            target="_blank"
-            rel="noreferrer"
-            data-cursor="Open"
-            className="group/link inline-flex items-center gap-1.5 text-sm font-semibold text-accent-bright transition-colors hover:text-accent"
-          >
-            {content.work.liveDemo}
-            <ArrowUpRight
-              size={15}
-              aria-hidden="true"
-              className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5"
-            />
-          </a>
-          <a
-            href={projectMeta[slug].repo}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
-          >
-            {content.work.source}
-          </a>
+          {meta.confidentiality !== "public" ? (
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted/70">
+              {content.work.confidentialNote}
+            </p>
+          ) : null}
+          {meta.demo ? (
+            <a
+              href={meta.demo}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor="Open"
+              className="group/link inline-flex items-center gap-1.5 text-sm font-semibold text-accent-bright transition-colors hover:text-accent"
+            >
+              {content.work.liveDemo}
+              <ArrowUpRight
+                size={15}
+                aria-hidden="true"
+                className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5"
+              />
+            </a>
+          ) : null}
+          {meta.repo ? (
+            <a
+              href={meta.repo}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
+            >
+              {content.work.source}
+            </a>
+          ) : null}
+          {meta.figma ? (
+            <a
+              href={meta.figma}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
+            >
+              {content.work.figma}
+            </a>
+          ) : null}
+          {meta.externalLinks?.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
       </section>
 
@@ -280,32 +354,25 @@ export function CaseStudy({ slug }: { slug: ProjectKey }) {
         </div>
       </section>
 
-      {/* ── Gallery - one wide plate, then a paired row ──────────────────── */}
-      <section aria-label={study.galleryLabel} className="container-x pb-24 sm:pb-32">
-        <h2 className="sr-only">{study.galleryLabel}</h2>
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-          <div className="lg:col-span-2">
-            <ParallaxFigure
-              src={projectImage(slug, 1920, 914, "b")}
-              alt={`${item.title}, ${study.galleryLabel.toLowerCase()} 1`}
-              className="aspect-[21/10]"
-              sizes="(min-width: 1024px) 100vw, 100vw"
-            />
+      {/* ── Gallery - real assets only; hidden entirely when none exist ──── */}
+      {gallery.length > 0 ? (
+        <section aria-label={study.galleryLabel} className="container-x pb-24 sm:pb-32">
+          <h2 className="sr-only">{study.galleryLabel}</h2>
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+            {gallery.map((src, index) => (
+              <div key={src} className={index === 0 ? "lg:col-span-2" : undefined}>
+                <ParallaxFigure
+                  src={src}
+                  alt={`${item.title}, ${study.galleryLabel.toLowerCase()} ${index + 1}`}
+                  initials={meta.initials}
+                  tone={meta.tone}
+                  className={index === 0 ? "aspect-[21/10]" : "aspect-[4/3]"}
+                />
+              </div>
+            ))}
           </div>
-          <ParallaxFigure
-            src={projectImage(slug, 1280, 960, "c")}
-            alt={`${item.title}, ${study.galleryLabel.toLowerCase()} 2`}
-            className="aspect-[4/3]"
-            sizes="(min-width: 1024px) 50vw, 100vw"
-          />
-          <ParallaxFigure
-            src={projectImage(slug, 1280, 960, "d")}
-            alt={`${item.title}, ${study.galleryLabel.toLowerCase()} 3`}
-            className="aspect-[4/3]"
-            sizes="(min-width: 1024px) 50vw, 100vw"
-          />
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       {/* ── Outcomes ──────────────────────────────────────────────────────── */}
       <section aria-labelledby="cs-outcomes" className="container-x pb-24 sm:pb-32">
@@ -337,13 +404,13 @@ export function CaseStudy({ slug }: { slug: ProjectKey }) {
         </ul>
       </section>
 
-      {/* ── Next project - full-bleed teaser ─────────────────────────────── */}
+      {/* ── Next case study - full-bleed teaser ──────────────────────────── */}
       <section aria-labelledby="cs-next" className="border-t border-line">
         <h2 id="cs-next" className="sr-only">
           {study.nextLabel}
         </h2>
         <Link
-          href={`/work/${next.key}`}
+          href={`/work/${nextKey}`}
           data-cursor="Open"
           aria-label={`${study.nextLabel}: ${next.title}`}
           className="group relative block overflow-hidden bg-night"
@@ -352,13 +419,20 @@ export function CaseStudy({ slug }: { slug: ProjectKey }) {
             aria-hidden="true"
             className="absolute inset-0 opacity-35 transition-opacity duration-700 group-hover:opacity-50"
           >
-            <Image
-              src={projectImage(next.key, 1920, 1080)}
-              alt=""
-              fill
-              sizes="100vw"
-              className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05]"
-            />
+            {nextMeta.image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={nextMeta.image}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05]"
+              />
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center bg-elevated">
+                <span className="font-display text-[10rem] font-semibold leading-none tracking-tighter text-outline opacity-60">
+                  {nextMeta.initials}
+                </span>
+              </div>
+            )}
             <div className="absolute inset-0 bg-linear-to-r from-night via-night/60 to-night/20" />
           </div>
 

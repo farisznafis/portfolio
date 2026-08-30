@@ -11,6 +11,7 @@ scene. Bilingual: English and Japanese via typed dictionaries.
 app/
 ├── layout.tsx              Root shell: fonts, metadata, providers, grain layer
 ├── page.tsx                Home composition - the full act-based journey
+├── projects/page.tsx       All-projects index (filterable by field)
 ├── globals.css             Design tokens, fluid type scale, utilities, z-index scale
 ├── work/[slug]/page.tsx    Case-study route (SSG, generateStaticParams)
 │
@@ -20,8 +21,10 @@ app/
 │
 ├── lib/
 │   ├── data.ts             Language-neutral constants: identity, hero portraits,
-│   │                       interests + media seeds, lab items, project meta/order
+│   │                       interests, lab items, project meta (fields, links,
+│   │                       confidentiality), projectOrder + featuredProjectOrder
 │   ├── content.ts          EN/JA dictionaries (Content interface guarantees parity)
+│   ├── caseStudies.ts      EN/JA case-study copy keyed by CaseStudyKey
 │   └── motion.ts           Framer tokens: EASE, DUR, STAGGER, SPRING
 │
 ├── hooks/
@@ -40,15 +43,18 @@ app/
     │   │                          metadata rail, cursor parallax depth layers
     │   ├── Manifesto.tsx          Pinned stage: particle wave + word-by-word
     │   │                          scroll-scrubbed statement illumination
-    │   ├── WorkReel.tsx           Selected work as horizontal pinned reel
-    │   │                          (GSAP pin/scrub + velocity skew; vertical stack
-    │   │                          on mobile/reduced-motion via CSS orientation)
+    │   ├── WorkReel.tsx           Featured work (featuredProjectOrder) as a
+    │   │                          horizontal pinned reel (GSAP pin/scrub +
+    │   │                          velocity skew; vertical stack on mobile/
+    │   │                          reduced-motion) + "View all projects" CTA cell
     │   ├── ExperienceChapters.tsx Career chapters; sticky giant year rail swaps
     │   │                          per chapter (ScrollTrigger toggles)
     │   ├── Capabilities.tsx       Typographic wall grouped by domain
-    │   ├── AboutSection.tsx       Sticky media frame + interest index that swaps
-    │   │                          imagery on hover/focus/tap
+    │   ├── EducationSection.tsx   Compact education & recognition strip
+    │   ├── AboutSection.tsx       Sticky portrait + biography + interest index
     │   ├── LabStrip.tsx           The page's single marquee of experiments
+    │   ├── ProjectsIndex.tsx      /projects rows: multi-field filter chips,
+    │   │                          typographic fallbacks, links only when real
     │   ├── CaseStudy.tsx          Longform storytelling: parallax plates, sticky
     │   │                          numerals, asymmetric feature grid, next teaser
     │   └── ContactFinale.tsx      Full-viewport closing statement, email CTA,
@@ -71,8 +77,8 @@ public/images/              Portrait pair used by the hero spotlight engine
 
 Tokens live in `globals.css` under `@theme`:
 
-- **Color** - `night #080a0f`, `elevated #0e1219`, `ink #f2f6f7`,
-  `muted #96a2b0`, accent teal `#00b5a5` (+`bright #2ee6d6`), amber `#ffc700`
+- **Color** - `night #0a0f11`, `elevated #10181b`, `ink #f2f6f7`,
+  `muted #94a6ad`, accent teal `#00b5a5` (+`bright #2ee6d6`), amber `#ffc700`
   reserved for rare highlights, `line` hairline, `on-accent` text on teal.
   One palette, locked across every section.
 - **Type** - Space Grotesk display, Geist body, JetBrains Mono metadata,
@@ -117,16 +123,19 @@ Every animated component guards explicitly.
 project links/stack/order, interest seeds, lab items. Components read copy
 via `useLang()`; case-study pages additionally resolve `caseStudies[slug]`.
 
-Project imagery is placeholder (`picsum.photos` seeded via
-`projectImage(key, w, h, variant)`) - swap by editing that one helper once
-real screenshots exist in `/public/images/projects/`.
+Project imagery: projects without a real screenshot render a typographic
+fallback (project initials + design tokens). Set `image` in `data.ts` to a
+path under `/public/images/` once a real asset exists - never stock photos.
 
 ## How To
 
-- **Add a project**: append an entry to both dictionaries' `work.items`,
-  add its key to `ProjectKey` + `projectOrder` + `projectMeta` in `data.ts`,
-  and write its case study in both `caseStudies`. The reel, slug route
-  (SSG), and next-project loop pick it up automatically.
+- **Add a project**: append an entry to both dictionaries' `projects.items`,
+  add its key to `ProjectKey` + `projectOrder` + `projects` in `data.ts`,
+  and (only if it has enough verified material) write its case study in
+  both dictionaries in `caseStudies.ts` and add the key to `CaseStudyKey`
+  + `caseStudyOrder`. The /projects index picks it up automatically;
+  case-study routes (SSG) and the next-project loop follow `caseStudyOrder`.
+- **Feature a project on Home**: add its key to `featuredProjectOrder`.
 - **Add a home section**: create `components/sections/<Name>.tsx`, compose it
   in `page.tsx` between acts, add its strings to both dictionaries, give it
   a unique layout family (no repeats), and register its id in Navbar
@@ -139,10 +148,14 @@ real screenshots exist in `/public/images/projects/`.
 
 ## Architectural Decisions
 
-- **One-page experience**: routes `/work`, `/about`, `/skills`,
-  `/experience`, `/contact` were absorbed into home sections;
-  `next.config.ts` redirects old URLs to their anchors. Only
-  `/work/[slug]` remains a separate route (deep-linkable case studies).
+- **Two surfaces + case studies**: Home is the one-page journey; `/projects`
+  is the complete filterable index. `/work/[slug]` remains SSG for
+  deep-linkable case studies; old `/work` URLs redirect to `/projects`.
+  `/about`, `/skills`, `/experience`, `/contact` still map to home anchors.
+- **Confidentiality model**: each project carries `confidentiality`
+  (`public` | `professional` | `confidential`). Professional/confidential
+  work shows a "details kept general" note instead of links; no private
+  repos, internal names, or proprietary screenshots are ever rendered.
 - **Loader gating**: session-flagged so repeat visits skip straight to the
   hero; SSR always renders the overlay to avoid first-paint flash.
 - **Wave placement**: moved from a dedicated 420vh ScrollScene into the

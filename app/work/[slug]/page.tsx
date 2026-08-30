@@ -3,12 +3,13 @@ import type { Metadata } from "next";
 import { CaseStudy } from "../../components/sections/CaseStudy";
 import { PageTransition } from "../../components/ui/PageTransition";
 import { en } from "../../lib/content";
-import { projectOrder, type ProjectKey } from "../../lib/data";
+import { caseStudiesEn } from "../../lib/caseStudies";
+import { caseStudyOrder, type CaseStudyKey } from "../../lib/data";
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return projectOrder.map((slug) => ({ slug }));
+  return caseStudyOrder.map((slug) => ({ slug }));
 }
 
 /** Metadata uses the English dictionary, matching the static pages. */
@@ -18,12 +19,12 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  if (!(slug in en.caseStudies)) notFound();
-  const key = slug as ProjectKey;
+  if (!(slug in caseStudiesEn)) notFound();
+  const key = slug as CaseStudyKey;
   const item = en.work.items.find((project) => project.key === key);
   return {
-    title: `${item?.title ?? "Project"} | Faris Znafis`,
-    description: en.caseStudies[key].overview,
+    title: `${item?.title ?? "Project"} | Faris Zaidan Nafis`,
+    description: caseStudiesEn[key].overview,
   };
 }
 
@@ -33,11 +34,11 @@ export default async function CaseStudyPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  if (!(slug in en.caseStudies)) notFound();
+  if (!(slug in caseStudiesEn)) notFound();
 
   return (
     <PageTransition>
-      <CaseStudy slug={slug as ProjectKey} />
+      <CaseStudy slug={slug as CaseStudyKey} />
     </PageTransition>
   );
 }

@@ -35,15 +35,15 @@ const notoSansJP = Noto_Sans_JP({
 
 export const metadata: Metadata = {
   title: {
-    default: "Faris Znafis | Creative Frontend Engineer",
-    template: "%s | Faris Znafis",
+    default: "Faris Zaidan Nafis | Software Engineer — Frontend, UI/UX & AI",
+    template: "%s | Faris Zaidan Nafis",
   },
   description:
-    "Portfolio of Faris Znafis, a creative frontend engineer crafting interactive, high-performance web experiences with Next.js, motion design, and 3D.",
+    "Portfolio of Faris Zaidan Nafis, a software engineer in Kumamoto, Japan working across frontend, UI/UX, and AI — from user flows to shipped products.",
   openGraph: {
-    title: "Faris Znafis | Creative Frontend Engineer",
+    title: "Faris Zaidan Nafis | Software Engineer — Frontend, UI/UX & AI",
     description:
-      "Interactive, high-performance web experiences with Next.js, motion design, and 3D.",
+      "Software engineer in Kumamoto, Japan working across frontend, UI/UX, and AI.",
     type: "website",
   },
 };
