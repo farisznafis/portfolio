@@ -48,7 +48,7 @@ const vertexShader = /* glsl */ `
     pos.z += e;
     uElevation = e;
 
-    // Pointer parallax — subtle tilt
+    // Pointer parallax - subtle tilt
     pos.x += uPointer.x * 0.3;
     pos.y += uPointer.y * 0.3;
 
@@ -167,8 +167,11 @@ function ParticleWave({
 
 export default function Scene({
   progressRef,
+  active = true,
 }: {
   progressRef: MutableRefObject<number>;
+  /** Pause the render loop entirely when the section leaves the viewport. */
+  active?: boolean;
 }) {
   return (
     <Canvas
@@ -176,6 +179,7 @@ export default function Scene({
       camera={{ position: [0, 0, 11], fov: 55 }}
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true }}
+      frameloop={active ? "always" : "never"}
     >
       <ParticleWave progressRef={progressRef} />
     </Canvas>

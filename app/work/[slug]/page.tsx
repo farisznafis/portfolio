@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { CaseStudy } from "../../components/CaseStudy";
+import { CaseStudy } from "../../components/sections/CaseStudy";
 import { PageTransition } from "../../components/ui/PageTransition";
 import { en } from "../../lib/content";
 import { projectOrder, type ProjectKey } from "../../lib/data";
@@ -20,7 +20,7 @@ export async function generateMetadata({
   const { slug } = await params;
   if (!(slug in en.caseStudies)) notFound();
   const key = slug as ProjectKey;
-  const item = en.projects.items.find((project) => project.key === key);
+  const item = en.work.items.find((project) => project.key === key);
   return {
     title: `${item?.title ?? "Project"} | Faris Znafis`,
     description: en.caseStudies[key].overview,

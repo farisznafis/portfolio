@@ -1,13 +1,13 @@
-import type { Transition, Variants } from "framer-motion";
+import type { Transition } from "framer-motion";
 
 /**
- * Motion tokens — the single source of truth for timing, easing, and travel
+ * Motion tokens - the single source of truth for timing, easing, and travel
  * distances. CSS-driven animations mirror these through the custom properties
- * declared in globals.css (:root — --ease-signature, --duration-*). Keep both
+ * declared in globals.css (:root - --ease-signature, --duration-*). Keep both
  * in sync when tuning.
  */
 
-/** Signature easing used across the site — a soft, confident deceleration. */
+/** Signature easing used across the site - a soft, confident deceleration. */
 export const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /** Duration scale in seconds. */
@@ -43,26 +43,3 @@ export const SPRING = {
   /** Smoothing for the navbar scroll-progress line. */
   progress: { stiffness: 140, damping: 26, mass: 0.4 },
 } as const;
-
-/** Parallax drift, as a percentage of the element's own height. */
-export const PARALLAX = {
-  subtle: 3,
-  media: 6,
-  deep: 10,
-} as const;
-
-export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 26 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: DUR.base, ease: EASE },
-  },
-};
-
-export const staggerContainer: Variants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: STAGGER.items, delayChildren: 0.12 },
-  },
-};

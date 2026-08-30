@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Geist, JetBrains_Mono, Noto_Sans_JP, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "./components/Navbar";
-import { CursorGlow } from "./components/CursorGlow";
-import { Footer } from "./components/Footer";
+import { ContextCursor } from "./components/ContextCursor";
+import { IntroProvider } from "./components/Loader";
+import { LenisProvider } from "./motion/LenisProvider";
 import { LanguageProvider } from "./lib/i18n";
 
 const geist = Geist({
@@ -57,17 +58,20 @@ export default function RootLayout({
       lang="en"
       className={`${geist.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} ${notoSansJP.variable}`}
     >
-      <body>
+      <body className="grain">
         <LanguageProvider>
-          <a href="#main" className="skip-link">
-            Skip to content
-          </a>
-          <CursorGlow />
-          <Navbar />
-          <main id="main" className="relative">
-            {children}
-          </main>
-          <Footer />
+          <LenisProvider>
+            <IntroProvider>
+              <a href="#main" className="skip-link">
+                Skip to content
+              </a>
+              <ContextCursor />
+              <Navbar />
+              <main id="main" className="relative">
+                {children}
+              </main>
+            </IntroProvider>
+          </LenisProvider>
         </LanguageProvider>
       </body>
     </html>

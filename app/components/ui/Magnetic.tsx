@@ -7,7 +7,7 @@ import { useRef } from "react";
 type MagneticProps = {
   children: ReactNode;
   className?: string;
-  /** How strongly the element leans toward the cursor (0–1). */
+  /** How strongly the element leans toward the cursor (0-1). */
   strength?: number;
 };
 

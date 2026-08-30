@@ -35,7 +35,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       const stored = window.localStorage.getItem(STORAGE_KEY);
       if (stored === "en" || stored === "ja") setLangState(stored);
     } catch {
-      // localStorage unavailable — keep default
+      // localStorage unavailable - keep default
     }
   }, []);
 

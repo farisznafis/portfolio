@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  /* Color tokens — the site's identity: deep navy night, teal accent, amber highlight */
+  /* ── Color tokens ────────────────────────────────────────────────────────
+     Site identity: deep navy night, teal accent, amber highlight.
+     One palette, locked across every section. */
   --color-night: #080a0f;
   --color-elevated: #0e1219;
   --color-ink: #f2f6f7;
@@ -16,11 +18,18 @@
   /* Type roles */
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", Menlo,
+    monospace;
+
+  /* Fluid display scale - huge editorial type with graceful mobile fallbacks */
+  --text-hero: clamp(3.4rem, 12vw, 11.5rem);
+  --text-display: clamp(2.6rem, 8vw, 8rem);
+  --text-title: clamp(2rem, 5vw, 4.5rem);
+  --text-section: clamp(1.9rem, 3.6vw, 3.25rem);
+  --text-lede: clamp(1.05rem, 1.5vw, 1.35rem);
 
   /* Animations */
-  --animate-marquee: marquee 36s linear infinite;
-  --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
+  --animate-marquee: marquee 38s linear infinite;
 
   @keyframes marquee {
     from {
@@ -30,57 +39,62 @@
       transform: translateX(-50%);
     }
   }
-
-  @keyframes pulse-dot {
-    0%,
-    100% {
-      opacity: 1;
-      box-shadow: 0 0 0 0 rgba(0, 181, 165, 0.45);
-    }
-    50% {
-      opacity: 0.75;
-      box-shadow: 0 0 0 6px rgba(0, 181, 165, 0);
-    }
-  }
 }
 
-/* Motion tokens — CSS mirror of app/lib/motion.ts (EASE, DUR, STAGGER).
+/* Motion tokens - CSS mirror of app/lib/motion.ts (EASE, DUR).
    Keep both in sync when tuning. */
 :root {
   --ease-signature: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-micro: 400ms;
   --duration-fast: 600ms;
   --duration-base: 700ms;
   --stagger-chars: 18ms;
 }
 
+/* ── Z-index scale ──────────────────────────────────────────────────────────
+   0        section content
+   10       media layers inside sections
+   20       sticky/pinned UI inside sections
+   40       navbar
+   60       route-transition cover
+   70       mobile menu overlay
+   80       context cursor
+   85       film grain
+   90       loader
+   100      skip link */
+
 * {
   box-sizing: border-box;
 }
 
 html {
-  scroll-behavior: smooth;
+  /* Lenis owns scrolling; native smooth-behavior would fight it. */
+  scroll-behavior: auto;
+}
+
+html,
+body {
+  overflow-x: clip;
 }
 
 body {
   min-height: 100vh;
   margin: 0;
-  background:
-    radial-gradient(circle at 18% 8%, rgba(0, 181, 165, 0.14), transparent 34rem),
-    radial-gradient(circle at 92% 12%, rgba(255, 199, 0, 0.09), transparent 30rem),
-    linear-gradient(135deg, #07090f 0%, #10131a 48%, #0d1117 100%);
+  background: linear-gradient(135deg, #07090f 0%, #10131a 48%, #0d1117 100%);
   color: var(--color-ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Japanese mode — Noto Sans JP takes over the font faces so CJK glyphs
-   render consistently on every device. */
+/* Japanese mode - Noto Sans JP takes over so CJK glyphs render consistently. */
 html[lang="ja"] body {
-  font-family: var(--font-noto-sans-jp), var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-noto-sans-jp), var(--font-geist), ui-sans-serif,
+    system-ui, sans-serif;
 }
 html[lang="ja"] .font-display {
-  font-family: var(--font-noto-sans-jp), var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-noto-sans-jp), var(--font-space-grotesk), ui-sans-serif,
+    system-ui, sans-serif;
 }
 
 button,
@@ -100,7 +114,7 @@ a {
   border-radius: 4px;
 }
 
-/* Skip link — hidden until focused */
+/* Skip link - hidden until focused */
 .skip-link {
   position: fixed;
   left: 1rem;
@@ -120,22 +134,40 @@ a {
 }
 
 @layer components {
-  /* Subtle blueprint grid, masked to fade downward */
-  .mesh-line {
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: linear-gradient(to bottom, black, transparent 82%);
-    -webkit-mask-image: linear-gradient(to bottom, black, transparent 82%);
+  /* Page gutter + measure for full-width editorial sections */
+  .container-x {
+    width: 100%;
+    max-width: 1400px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .container-x {
+      padding-inline: 2.5rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .container-x {
+      padding-inline: 3.5rem;
+    }
   }
 
-  /* Frosted panel used across cards */
-  .glass {
-    border: 1px solid var(--color-line);
-    background: rgba(10, 13, 19, 0.66);
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
-    backdrop-filter: blur(18px);
+  /* Outlined display type - the second voice of the identity */
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(242, 246, 247, 0.55);
+  }
+
+  /* Film grain - one fixed layer above everything visual, never on
+     scrolling containers (GPU cost stays flat). */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    z-index: 85;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   /* Gradient text for accented words */
@@ -175,25 +207,16 @@ a {
   background: rgba(255, 255, 255, 0.24);
 }
 
-/* ─── Hero spotlight animations ───────────────────────────────────────────── */
-
-@keyframes heroFadeUp {
-  0%   { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0);    }
-}
+/* ─── Hero entrance ──────────────────────────────────────────────────────── */
 
 @keyframes heroZoom {
-  0%   { transform: scale(1.12); }
-  100% { transform: scale(1);    }
+  0% { transform: scale(1.12); }
+  100% { transform: scale(1); }
 }
 
-.hero-anim {
-  opacity: 0;
-  animation-fill-mode: forwards;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+.hero-zoom {
+  animation: heroZoom 1.8s var(--ease-enter) forwards;
 }
-.hero-fade   { animation-name: heroFadeUp; animation-duration: 1s;   }
-.hero-zoom   { animation: heroZoom 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
 /* ─── Per-character text rollover ─────────────────────────────────────────
    Two stacked copies of each character inside a 1-line mask; hovering the
@@ -230,23 +253,64 @@ button:focus-visible .rollover-char-inner {
   transform: translateY(-1em);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+/* ─── Context cursor ───────────────────────────────────────────────────────
+   Companion ring that trails the pointer and morphs into labeled states
+   ("View", "Drag"). The native cursor stays visible for usability. */
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 80;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  margin-top: -7px;
+  border-radius: 999px;
+  border: 1px solid rgba(46, 230, 214, 0.9);
+  background: rgba(46, 230, 214, 0.08);
+  transition:
+    width 320ms var(--ease-enter),
+    height 320ms var(--ease-enter),
+    margin 320ms var(--ease-enter),
+    background-color 320ms var(--ease-enter),
+    border-color 320ms var(--ease-enter);
+}
 
+.cursor-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-on-accent);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.cursor-ring[data-active="true"] {
+  width: 76px;
+  height: 76px;
+  margin-left: -38px;
+  margin-top: -38px;
+  background: rgba(46, 230, 214, 0.92);
+  border-color: rgba(46, 230, 214, 0.92);
+}
+
+.cursor-ring[data-active="true"] .cursor-label {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;
   }
 
-  .animate-pulse-dot {
-    animation: none;
-  }
-
-  .hero-anim,
   .hero-zoom {
     animation: none;
-    opacity: 1;
+    transform: scale(1);
   }
 
   .rollover-char-inner {

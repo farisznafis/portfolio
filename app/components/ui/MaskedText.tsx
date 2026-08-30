@@ -12,6 +12,12 @@ type MaskedTextProps = {
   accentWords?: readonly string[];
   /** Animate on mount (hero) instead of on scroll into view. */
   onMount?: boolean;
+  /**
+   * Gate for mount-triggered reveals: while false the words stay hidden.
+   * Lets choreography wait for the loader (`useIntro().done`). Ignored
+   * when onMount is false.
+   */
+  play?: boolean;
 };
 
 /**
@@ -26,6 +32,7 @@ export function MaskedText({
   delay = 0,
   accentWords = [],
   onMount = false,
+  play = true,
 }: MaskedTextProps) {
   const reduce = useReducedMotion();
   const words = text.split(" ");
@@ -46,9 +53,12 @@ export function MaskedText({
     );
   }
 
-  const trigger = onMount
-    ? { animate: { y: "0%", opacity: 1 } }
-    : { whileInView: { y: "0%", opacity: 1 } };
+  const held = onMount && !play;
+  const trigger = held
+    ? {}
+    : onMount
+      ? { animate: { y: "0%", opacity: 1 } }
+      : { whileInView: { y: "0%", opacity: 1 } };
 
   return (
     <span className={className} aria-label={text}>

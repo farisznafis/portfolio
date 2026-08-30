@@ -8,46 +8,67 @@ export const site = {
   shortName: "FZ",
   role: "Creative Frontend Engineer",
   email: "hello@farisznafis.dev",
-  location: "Jakarta, Indonesia · GMT+7",
+  location: "Jakarta, Indonesia",
   availability: "Available for work",
   github: "https://github.com/farisznafis",
   linkedin: "https://www.linkedin.com/in/farisznafis",
   twitter: "https://x.com/farisznafis",
 };
 
-/**
- * Hero spotlight images.
- * `base` is always visible; `reveal` shows only inside the cursor spotlight.
- * Swap these with your own photos later — drop files into /public/images
- * and change the values to e.g. "/images/hero-base.png" & "/images/hero-reveal.png".
- */
-export const heroImages = {
-//   base: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260609_195923_b0ba8ace-1d1d-4f2c-9a28-1ab84b330680.png&w=1280&q=85",
-//   reveal:
-//     "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260609_201152_bba90a12-bf12-459f-91f0-51f237dbaf3b.png&w=1280&q=85",
-    base: "/images/zaid-portrait-base.png",
-    reveal: "/images/zaid-portrait-reveal.png",
+/** Hero wordmark - split across two oversized lines. Language-neutral. */
+export const heroName = {
+  line1: "FARIS",
+  line2: "ZNAFIS",
 } as const;
 
 /**
- * Tech names shown in the hero marquee — identical across languages,
- * so they live here rather than in the content dictionaries.
+ * Hero spotlight images.
+ * `base` is always visible; `reveal` shows only inside the cursor spotlight.
+ * Swap these with your own photos later - drop files into /public/images
+ * and change the values here.
  */
-export const marqueeStack = [
-  "Next.js",
-  "React",
-  "TypeScript",
-  "Tailwind CSS",
-  "Framer Motion",
-  "GSAP",
-  "Three.js",
-  "Node.js",
-] as const;
+export const heroImages = {
+  base: "/images/zaid-portrait-base.png",
+  reveal: "/images/zaid-portrait-reveal.png",
+} as const;
 
 export const socials = [
   { label: "GitHub", href: site.github },
   { label: "LinkedIn", href: site.linkedin },
   { label: "Twitter / X", href: site.twitter },
+] as const;
+
+/** About section: interest categories with a picsum seed each for media. */
+export type InterestKey =
+  | "engineering"
+  | "ai"
+  | "design"
+  | "photography"
+  | "videography"
+  | "experimentation";
+
+export function interestImage(key: InterestKey, w = 900, h = 1100) {
+  return `https://picsum.photos/seed/fz-interest-${key}/${w}/${h}`;
+}
+
+export const interestOrder = [
+  "engineering",
+  "ai",
+  "design",
+  "photography",
+  "videography",
+  "experimentation",
+] as const satisfies readonly InterestKey[];
+
+/** Lab strip: experiment names are proper nouns, shared across languages. */
+export const labItems = [
+  "Shader Particles",
+  "Variable Font Choreography",
+  "Scroll-Driven Masks",
+  "Generative Type Systems",
+  "WebGL Image Distortion",
+  "Cursor Physics",
+  "Kinetic Marquees",
 ] as const;
 
 // ─── Projects ────────────────────────────────────────────────────────────────
@@ -76,6 +97,11 @@ export type Project = ProjectMeta & {
   role: string;
   description: string;
 };
+
+/** Placeholder imagery per project - swap for real screenshots when ready. */
+export function projectImage(key: ProjectKey, w: number, h: number, variant = "") {
+  return `https://picsum.photos/seed/fz-${key}${variant ? `-${variant}` : ""}/${w}/${h}`;
+}
 
 export const projectMeta: Record<ProjectKey, ProjectMeta> = {
   lumen: {
@@ -116,7 +142,7 @@ export const projectMeta: Record<ProjectKey, ProjectMeta> = {
   },
 };
 
-/** Display order for the case-study pages and the next-project loop. */
+/** Display order for the case-study pages and the work reel. */
 export const projectOrder: readonly ProjectKey[] = [
   "lumen",
   "orbit",

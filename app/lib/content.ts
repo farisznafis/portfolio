@@ -1,14 +1,13 @@
 /**
- * Localized site content — English (en) and Japanese (ja).
+ * Localized site content - English (en) and Japanese (ja).
  *
  * `Content` is an explicit interface, so TypeScript guarantees both languages
  * have exactly the same shape. Add a key to `Content` and typecheck will
  * fail until both `en` and `ja` define it.
  *
- * {name} / {title} / {skill} tokens are interpolated by the component that
- * renders the string (see Hero intro, Contact mail subject, Projects aria).
+ * {name} tokens are interpolated by the component that renders the string.
  */
-import type { ProjectCategory, ProjectKey } from "./data";
+import type { InterestKey, ProjectCategory, ProjectKey } from "./data";
 
 export type Lang = "en" | "ja";
 
@@ -58,51 +57,47 @@ export interface Content {
     ariaMenu: string;
     ariaClose: string;
     ariaLang: string;
-    links: { work: string; about: string; skills: string; experience: string; contact: string };
+    links: {
+      work: string;
+      experience: string;
+      capabilities: string;
+      about: string;
+      contact: string;
+    };
   };
+  loader: { ariaLabel: string; wordmark: string };
   hero: {
     ariaSection: string;
-    line1: string;
-    line2: string;
-    accentWords: string[];
-    intro: string;
-    hint: string;
+    role: string;
+    statement: string;
+    metaLocation: string;
+    metaAvailability: string;
     ctaWork: string;
     ctaTouch: string;
+    hint: string;
   };
-  home: {
-    intro: { kicker: string; line1: string; line2: string; blurb: string };
-    make1: string;
-    make2: string;
-    explore: string;
-    getInTouch: string;
-    pillars: { title: string; description: string }[];
-    stats: { value: number; suffix: string; label: string }[];
+  manifesto: {
+    ariaSection: string;
+    lead: string;
+    support: string;
   };
-  projects: {
-    eyebrow: string;
+  work: {
+    ariaSection: string;
     heading: string;
-    subtitle: string;
-    filterAria: string;
     viewCaseStudy: string;
-    techAria: string;
     liveDemo: string;
     source: string;
+    techAria: string;
     categories: Record<ProjectCategory, string>;
     items: ProjectItem[];
   };
-  caseStudies: Record<ProjectKey, CaseStudy>;
-  skills: {
-    heading: string;
-    subtitle: string;
-    groups: { title: string; blurb: string; skills: { name: string }[] }[];
-  };
   experience: {
+    ariaSection: string;
     heading: string;
-    subtitle: string;
     now: string;
     techAria: string;
     items: {
+      year: string;
       role: string;
       company: string;
       period: string;
@@ -112,7 +107,14 @@ export interface Content {
       stack: string[];
     }[];
   };
+  capabilities: {
+    ariaSection: string;
+    heading: string;
+    blurb: string;
+    groups: { title: string; skills: string[] }[];
+  };
   about: {
+    ariaSection: string;
     heading: string;
     p1a: string;
     p1Strong: string;
@@ -120,25 +122,24 @@ export interface Content {
     p2a: string;
     p2Strong: string;
     p2b: string;
-    factLabels: { name: string; basedIn: string; focus: string; currently: string };
-    focusValue: string;
-    currentlyValue: string;
-    blockquote: string;
-    principles: { title: string; description: string }[];
+    quote: string;
+    interestsIntro: string;
+    interests: Record<InterestKey, { label: string }>;
+  };
+  lab: {
+    ariaSection: string;
+    heading: string;
   };
   contact: {
-    heading: string;
-    intro: string;
-    mailSubject: string;
-    name: string;
-    email: string;
-    message: string;
-    send: string;
-    opening: string;
-    ready: string;
-    readyAria: string;
+    ariaSection: string;
+    line1: string;
+    line2: string;
+    emailAria: string;
+    socialsAria: string;
+    rights: string;
+    backTop: string;
   };
-  footer: { rights: string; backHome: string };
+  caseStudies: Record<ProjectKey, CaseStudy>;
 }
 
 export const en: Content = {
@@ -151,68 +152,40 @@ export const en: Content = {
     ariaLang: "Change language",
     links: {
       work: "Work",
-      about: "About",
-      skills: "Skills",
       experience: "Experience",
+      capabilities: "Capabilities",
+      about: "About",
       contact: "Contact",
     },
   },
+  loader: {
+    ariaLabel: "Loading portfolio",
+    wordmark: "Faris Znafis",
+  },
   hero: {
     ariaSection: "Introduction",
-    line1: "Building interfaces",
-    line2: "that feel alive.",
-    accentWords: ["alive."],
-    intro:
-      "I'm {name}, a frontend engineer blending motion design, 3D, and product thinking to ship web experiences people remember.",
-    hint: "Move your cursor across the scene to peel back the surface.",
+    role: "Creative Frontend Engineer",
+    statement:
+      "I build interfaces that feel alive, where motion carries meaning and every detail earns its place.",
+    metaLocation: "Jakarta, GMT+7",
+    metaAvailability: "Available for work",
     ctaWork: "View my work",
     ctaTouch: "Get in touch",
+    hint: "Move your cursor to reveal what sits beneath.",
   },
-  home: {
-    intro: {
-      kicker: "Creative Frontend Engineer",
-      line1: "I design and build",
-      line2: "interfaces that feel alive",
-      blurb:
-        "Motion, 3D, and product thinking woven into fast, memorable web experiences. Scroll to see what I mean.",
-    },
-    make1: "Let's make something",
-    make2: "unforgettable.",
-    explore: "View my work",
-    getInTouch: "Get in touch",
-    pillars: [
-      {
-        title: "Motion Design",
-        description:
-          "Purposeful animation that explains state, guides attention, and rewards curiosity. Never decoration for its own sake.",
-      },
-      {
-        title: "3D & WebGL",
-        description:
-          "Shader-driven scenes, particle systems, and real-time 3D that stay smooth at 60fps on real devices.",
-      },
-      {
-        title: "Product UI",
-        description:
-          "Design systems, accessible components, and the unglamorous glue that turns a prototype into a shipped product.",
-      },
-    ],
-    stats: [
-      { value: 6, suffix: "+", label: "Years crafting UI" },
-      { value: 40, suffix: "+", label: "Projects shipped" },
-      { value: 15, suffix: "+", label: "Clients & teams" },
-    ],
+  manifesto: {
+    ariaSection: "Creative statement",
+    lead: "I build interfaces that feel alive. Motion with intent. Engineering with taste. Nothing decorative.",
+    support:
+      "Six years of product UI, WebGL, and design systems taught me that performance is part of the design.",
   },
-  projects: {
-    eyebrow: "Selected work",
-    heading: "Projects built with motion and purpose",
-    subtitle:
-      "A mix of product interfaces, web apps, and interactive experiments. Each one shipped, measured, and polished.",
-    filterAria: "Filter projects by category",
+  work: {
+    ariaSection: "Selected work",
+    heading: "Selected work",
     viewCaseStudy: "Read the {title} case study",
-    techAria: "Technology stack",
     liveDemo: "Live demo",
     source: "Source",
+    techAria: "Technology stack",
     categories: {
       All: "All",
       "Product UI": "Product UI",
@@ -266,6 +239,114 @@ export const en: Content = {
           "Component library and token pipeline powering three products: 60+ accessible components, Storybook docs, and automated visual regression.",
       },
     ],
+  },
+  experience: {
+    ariaSection: "Career history",
+    heading: "The road so far",
+    now: "Present",
+    techAria: "Technologies used",
+    items: [
+      {
+        year: "2023",
+        role: "Senior Frontend Engineer",
+        company: "Nimbus Labs",
+        period: "2023 - Present",
+        current: true,
+        summary:
+          "Leading the frontend guild on a B2B analytics suite used by 200+ teams.",
+        points: [
+          "Rebuilt the dashboard shell with streaming server components, cutting time-to-interactive dramatically.",
+          "Introduced a shared motion system that unified transitions across four product areas.",
+          "Mentored four engineers through their first design-system contributions.",
+        ],
+        stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+      },
+      {
+        year: "2021",
+        role: "Frontend Engineer",
+        company: "Arunika Studio",
+        period: "2021 - 2023",
+        current: false,
+        summary:
+          "Built award-nominated marketing sites and interactive campaigns for regional brands.",
+        points: [
+          "Shipped 12 campaign sites with WebGL and scroll-driven storytelling, all with top Lighthouse scores.",
+          "Created the studio's internal starter kit, cutting project setup time in half.",
+          "Collaborated daily with designers to prototype motion directly in the browser.",
+        ],
+        stack: ["React", "GSAP", "Three.js", "Sanity"],
+      },
+      {
+        year: "2019",
+        role: "Freelance UI Engineer",
+        company: "Independent",
+        period: "2019 - 2021",
+        current: false,
+        summary:
+          "Partnered with early-stage startups to take products from Figma to production.",
+        points: [
+          "Delivered MVPs for five startups across fintech, education, and e-commerce.",
+          "Owned everything from component architecture to deployment pipelines.",
+        ],
+        stack: ["React", "Styled Components", "Firebase"],
+      },
+    ],
+  },
+  capabilities: {
+    ariaSection: "Capabilities",
+    heading: "Tools of the trade",
+    blurb:
+      "Grouped by how they fit together: foundations first, then the layers that bring life, then the practice that ships.",
+    groups: [
+      {
+        title: "Frontend Core",
+        skills: ["React & Next.js", "TypeScript", "Tailwind CSS", "Accessibility"],
+      },
+      {
+        title: "Motion & 3D",
+        skills: ["Framer Motion", "GSAP", "Three.js / R3F", "Canvas & Shaders"],
+      },
+      {
+        title: "Practice",
+        skills: ["Performance", "Testing", "Git & CI/CD", "Node.js & APIs"],
+      },
+    ],
+  },
+  about: {
+    ariaSection: "About Faris",
+    heading: "Engineer by discipline, designer at heart",
+    p1a:
+      "I started out cutting PSDs into pixel-perfect pages, and never lost that obsession with detail. Over the last six years it grew into something bigger: ",
+    p1Strong: "building product interfaces that move with intent",
+    p1b: ". Every transition explains state, and every hover rewards curiosity.",
+    p2a:
+      "Today I work across the whole frontend surface: design systems, WebGL moments, performance budgets, and the unglamorous glue in between. My favorite projects sit ",
+    p2Strong: "right where engineering rigor meets craft",
+    p2b: ".",
+    quote:
+      "\u201CThe best interfaces disappear. What remains is how they made you feel.\u201D",
+    interestsIntro: "Hover each interest for a glimpse of what feeds it.",
+    interests: {
+      engineering: { label: "Engineering" },
+      ai: { label: "AI" },
+      design: { label: "Design" },
+      photography: { label: "Photography" },
+      videography: { label: "Videography" },
+      experimentation: { label: "Experimentation" },
+    },
+  },
+  lab: {
+    ariaSection: "Experiments",
+    heading: "Currently experimenting",
+  },
+  contact: {
+    ariaSection: "Contact",
+    line1: "LET'S BUILD SOMETHING",
+    line2: "PEOPLE REMEMBER.",
+    emailAria: "Email Faris Znafis",
+    socialsAria: "Social profiles",
+    rights: "All rights reserved.",
+    backTop: "Back to top",
   },
   caseStudies: {
     lumen: {
@@ -602,147 +683,6 @@ export const en: Content = {
       nextLabel: "Next project",
     },
   },
-  skills: {
-    heading: "Tools I reach for every day",
-    subtitle:
-      "Grouped by how I actually use them: foundations, the layer that brings life, and the practices that keep everything shippable.",
-    groups: [
-      {
-        title: "Frontend Core",
-        blurb: "The foundation every project stands on.",
-        skills: [
-          { name: "React & Next.js" },
-          { name: "TypeScript" },
-          { name: "Tailwind CSS" },
-          { name: "HTML & Accessibility" },
-        ],
-      },
-      {
-        title: "Motion & 3D",
-        blurb: "Where interfaces come to life.",
-        skills: [
-          { name: "Framer Motion" },
-          { name: "GSAP" },
-          { name: "Three.js / R3F" },
-          { name: "CSS Animation" },
-        ],
-      },
-      {
-        title: "Engineering Practice",
-        blurb: "Shipping fast without breaking things.",
-        skills: [
-          { name: "Performance Optimization" },
-          { name: "Testing (Vitest, Playwright)" },
-          { name: "Git & CI/CD" },
-          { name: "Node.js & APIs" },
-        ],
-      },
-    ],
-  },
-  experience: {
-    heading: "The road so far",
-    subtitle:
-      "From freelance MVPs to leading frontend on products used by hundreds of teams.",
-    now: "Now",
-    techAria: "Technologies used",
-    items: [
-      {
-        role: "Senior Frontend Engineer",
-        company: "Nimbus Labs",
-        period: "2023 - Present",
-        current: true,
-        summary:
-          "Leading the frontend guild on a B2B analytics suite used by 200+ teams.",
-        points: [
-          "Rebuilt the dashboard shell with streaming server components, cutting time-to-interactive dramatically.",
-          "Introduced a shared motion system that unified transitions across four product areas.",
-          "Mentored four engineers through their first design-system contributions.",
-        ],
-        stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-      },
-      {
-        role: "Frontend Engineer",
-        company: "Arunika Studio",
-        period: "2021 - 2023",
-        current: false,
-        summary:
-          "Built award-nominated marketing sites and interactive campaigns for regional brands.",
-        points: [
-          "Shipped 12 campaign sites with WebGL and scroll-driven storytelling, all with top Lighthouse scores.",
-          "Created the studio's internal starter kit, cutting project setup time in half.",
-          "Collaborated daily with designers to prototype motion directly in the browser.",
-        ],
-        stack: ["React", "GSAP", "Three.js", "Sanity"],
-      },
-      {
-        role: "Freelance UI Engineer",
-        company: "Independent",
-        period: "2019 - 2021",
-        current: false,
-        summary:
-          "Partnered with early-stage startups to take products from Figma to production.",
-        points: [
-          "Delivered MVPs for five startups across fintech, education, and e-commerce.",
-          "Owned everything from component architecture to deployment pipelines.",
-        ],
-        stack: ["React", "Styled Components", "Firebase"],
-      },
-    ],
-  },
-  about: {
-    heading: "Engineer by discipline, designer at heart",
-    p1a: "I started out cutting PSDs into pixel-perfect pages, and never lost that obsession with detail. Over the last six years it grew into something bigger: ",
-    p1Strong: "building product interfaces that move with intent",
-    p1b: ". Every transition explains state, and every hover rewards curiosity.",
-    p2a:
-      "Today I work across the whole frontend surface: design systems, WebGL moments, performance budgets, and the unglamorous glue in between. My favorite projects sit ",
-    p2Strong: "right where engineering rigor meets craft",
-    p2b: ".",
-    factLabels: {
-      name: "Name",
-      basedIn: "Based in",
-      focus: "Focus",
-      currently: "Currently",
-    },
-    focusValue: "Interactive product UI",
-    currentlyValue: "Senior Frontend Engineer",
-    blockquote:
-      "\u201CThe best interfaces disappear. What remains is how they made you feel.\u201D",
-    principles: [
-      {
-        title: "Performance first",
-        description:
-          "Motion means nothing if it stutters. Every animation is budgeted against real devices.",
-      },
-      {
-        title: "Motion with purpose",
-        description:
-          "Animation should explain, guide, or delight \u2014 never decorate for its own sake.",
-      },
-      {
-        title: "Accessible by default",
-        description:
-          "Keyboard paths, reduced-motion fallbacks, and honest contrast are non-negotiable.",
-      },
-    ],
-  },
-  contact: {
-    heading: "Let's build something memorable",
-    intro:
-      "Have a project in mind, a role to fill, or just want to talk shop about motion on the web? My inbox is open.",
-    mailSubject: "Portfolio inquiry from {name}",
-    name: "Name",
-    email: "Email",
-    message: "Message",
-    send: "Send message",
-    opening: "Opening mail app\u2026",
-    ready: "Message ready",
-    readyAria: "Your email draft is ready in your mail app.",
-  },
-  footer: {
-    rights: "All rights reserved.",
-    backHome: "Back to home",
-  },
 };
 
 export const ja: Content = {
@@ -755,68 +695,40 @@ export const ja: Content = {
     ariaLang: "言語を切り替える",
     links: {
       work: "実績",
-      about: "概要",
-      skills: "スキル",
       experience: "経歴",
+      capabilities: "スキル",
+      about: "概要",
       contact: "お問い合わせ",
     },
   },
+  loader: {
+    ariaLabel: "ポートフォリオを読み込み中",
+    wordmark: "Faris Znafis",
+  },
   hero: {
     ariaSection: "はじめに",
-    line1: "インターフェースを創る",
-    line2: "そこに命を宿す。",
-    accentWords: ["命を宿す。"],
-    intro:
-      "私は{name}。モーション・デザイン、3D、プロダクト思考を融合させ、記憶に残るWeb体験を届けるフロントエンドエンジニアです。",
-    hint: "カーソルを動かすと、表面がめくれます。",
+    role: "クリエイティブ・フロントエンドエンジニア",
+    statement:
+      "動きに意味を宿らせ、すべての細部に存在理由があるインターフェースを創っています。",
+    metaLocation: "ジャカルタ GMT+7",
+    metaAvailability: "就業可能",
     ctaWork: "作品を見る",
     ctaTouch: "お問い合わせ",
+    hint: "カーソルを動かすと、その下にあるものが見えます。",
   },
-  home: {
-    intro: {
-      kicker: "クリエイティブ・フロントエンドエンジニア",
-      line1: "設計し、創るのは",
-      line2: "心が動くインターフェース",
-      blurb:
-        "モーション、3D、プロダクト思考を、速くて記憶に残るWeb体験に織り込んでいます。スクロールすると、その意味がわかります。",
-    },
-    make1: "忘れられないものを",
-    make2: "一緒に創ろう。",
-    explore: "作品を見る",
-    getInTouch: "お問い合わせ",
-    pillars: [
-      {
-        title: "モーションデザイン",
-        description:
-          "状態を説明し、注目を導き、好奇心に応える、意図のあるアニメーション。飾りとしての動きは一切しません。",
-      },
-      {
-        title: "3D & WebGL",
-        description:
-          "シェーダー駆動のシーン、パーティクルシステム、実機でも60fpsを保つリアルタイム3D。",
-      },
-      {
-        title: "プロダクトUI",
-        description:
-          "デザインシステム、アクセシブルなコンポーネント、そしてプロトタイプを本番製品に変える縁の下の力持ち。",
-      },
-    ],
-    stats: [
-      { value: 6, suffix: "+", label: "UI制作の経験年数" },
-      { value: 40, suffix: "+", label: "リリースしたプロジェクト" },
-      { value: 15, suffix: "+", label: "クライアント・チーム数" },
-    ],
+  manifesto: {
+    ariaSection: "クリエイティブステートメント",
+    lead: "命を感じるインターフェースを創る。意図のあるモーション。誠実なエンジニアリング。装飾はしない。",
+    support:
+      "プロダクトUI、WebGL、デザインシステムでの6年間から学んだのは、パフォーマンスもまたデザインの一部だということです。",
   },
-  projects: {
-    eyebrow: "厳選した作品",
-    heading: "動きと意図を込めたプロジェクト",
-    subtitle:
-      "プロダクトUI、Webアプリ、インタラクティブな実験作品の数々。すべてリリースし、計測し、磨き上げてきました。",
-    filterAria: "カテゴリでプロジェクトを絞り込む",
+  work: {
+    ariaSection: "厳選した作品",
+    heading: "厳選した作品",
     viewCaseStudy: "{title}のケーススタディを見る",
-    techAria: "技術スタック",
     liveDemo: "ライブデモ",
     source: "ソースコード",
+    techAria: "技術スタック",
     categories: {
       All: "すべて",
       "Product UI": "プロダクトUI",
@@ -870,6 +782,114 @@ export const ja: Content = {
           "3つのプロダクトを支えるコンポーネントライブラリとトークンパイプライン。60以上のアクセシブルなコンポーネント、Storybookドキュメント、自動ビジュアルリグレッション。",
       },
     ],
+  },
+  experience: {
+    ariaSection: "職歴",
+    heading: "これまでの道のり",
+    now: "現在",
+    techAria: "使用技術",
+    items: [
+      {
+        year: "2023",
+        role: "シニア・フロントエンドエンジニア",
+        company: "Nimbus Labs",
+        period: "2023 - 現在",
+        current: true,
+        summary:
+          "200以上のチームが利用するB2B分析スイートで、フロントエンドギルドを率いています。",
+        points: [
+          "ストリーミングサーバーコンポーネントでダッシュボード基盤を再構築し、操作開始までの時間を大幅に短縮。",
+          "4つのプロダクト領域のトランジションを統一する共通モーションシステムを導入。",
+          "4名のエンジニアを、デザインシステムへの初めての貢献まで導きました。",
+        ],
+        stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
+      },
+      {
+        year: "2021",
+        company: "Arunika Studio",
+        role: "フロントエンドエンジニア",
+        period: "2021 - 2023",
+        current: false,
+        summary:
+          "地域ブランド向けに、アワード候補に選ばれたマーケティングサイトとインタラクティブキャンペーンを制作。",
+        points: [
+          "WebGLとスクロール駆動の叙事的ストーリーテリングを用いたキャンペーンサイトを12件リリース。すべてLighthouseの高スコアを記録。",
+          "スタジオ内製のスターターキットを開発し、プロジェクト立ち上げ時間を半減。",
+          "デザイナーと毎日連携し、ブラウザ上で直接モーションのプロトタイプを制作。",
+        ],
+        stack: ["React", "GSAP", "Three.js", "Sanity"],
+      },
+      {
+        year: "2019",
+        company: "フリーランス",
+        role: "フリーランスUIエンジニア",
+        period: "2019 - 2021",
+        current: false,
+        summary:
+          "アーリーステージのスタートアップとともに、Figmaから本番環境までプロダクトを届けてきました。",
+        points: [
+          "フィンテック、教育、Eコマースの5つのスタートアップにMVPを納品。",
+          "コンポーネント設計からデプロイパイプラインまで、すべてを自ら担当。",
+        ],
+        stack: ["React", "Styled Components", "Firebase"],
+      },
+    ],
+  },
+  capabilities: {
+    ariaSection: "スキル",
+    heading: "日々の道具立て",
+    blurb:
+      "組み合わせ方ごとに分類しています。まず土台、次に命を吹き込む層、そして届け続けるための実践。",
+    groups: [
+      {
+        title: "フロントエンド基盤",
+        skills: ["React & Next.js", "TypeScript", "Tailwind CSS", "アクセシビリティ"],
+      },
+      {
+        title: "モーション & 3D",
+        skills: ["Framer Motion", "GSAP", "Three.js / R3F", "Canvasとシェーダー"],
+      },
+      {
+        title: "実務",
+        skills: ["パフォーマンス", "テスト", "Git & CI/CD", "Node.js & APIs"],
+      },
+    ],
+  },
+  about: {
+    ariaSection: "ファリスについて",
+    heading: "規律はエンジニア、心はデザイナー",
+    p1a:
+      "PSDをピクセルパーフェクトなページに切り出すことから始まり、細部へのこだわりは今も変わりません。この6年でそれはもっと大きなものになりました：",
+    p1Strong: "意図を持って動くプロダクトインターフェースを創ること",
+    p1b: "。すべてのトランジションが状態を説明し、すべてのホバーが好奇心に応えます。",
+    p2a:
+      "現在はフロントエンド全体に携わっています：デザインシステム、WebGL、パフォーマンス予算、そしてその間にある地味な接着剤。私のお気に入りのプロジェクトは、",
+    p2Strong: "エンジニアリングの厳密さと職人技が出会う場所",
+    p2b: "にあります。",
+    quote:
+      "「最高のインターフェースは存在を忘れさせる。残るのは、それがあなたに与えた感覚だけ。」",
+    interestsIntro: "気になる分野にカーソルを合わせると、その世界を覗けます。",
+    interests: {
+      engineering: { label: "エンジニアリング" },
+      ai: { label: "AI" },
+      design: { label: "デザイン" },
+      photography: { label: "写真" },
+      videography: { label: "映像制作" },
+      experimentation: { label: "実験" },
+    },
+  },
+  lab: {
+    ariaSection: "実験",
+    heading: "いま実験していること",
+  },
+  contact: {
+    ariaSection: "お問い合わせ",
+    line1: "記憶に残るものを",
+    line2: "一緒に創ろう。",
+    emailAria: "ファリス・ズナフィスにメールを送る",
+    socialsAria: "ソーシャルプロフィール",
+    rights: "無断転載を禁じます。",
+    backTop: "トップへ戻る",
   },
   caseStudies: {
     lumen: {
@@ -1199,146 +1219,5 @@ export const ja: Content = {
       },
       nextLabel: "次のプロジェクト",
     },
-  },
-  skills: {
-    heading: "仕事で日々使うツール",
-    subtitle:
-      "実際の使い方で分類しています。土台となる技術、命を吹き込むレイヤー、そして安定して届けるための実践。",
-    groups: [
-      {
-        title: "フロントエンド基盤",
-        blurb: "あらゆるプロジェクトが立つ土台。",
-        skills: [
-          { name: "React & Next.js" },
-          { name: "TypeScript" },
-          { name: "Tailwind CSS" },
-          { name: "HTMLとアクセシビリティ" },
-        ],
-      },
-      {
-        title: "モーション & 3D",
-        blurb: "インターフェースに命を吹き込む層。",
-        skills: [
-          { name: "Framer Motion" },
-          { name: "GSAP" },
-          { name: "Three.js / R3F" },
-          { name: "CSSアニメーション" },
-        ],
-      },
-      {
-        title: "エンジニアリング実務",
-        blurb: "壊さず、速く届けるための実践。",
-        skills: [
-          { name: "パフォーマンス最適化" },
-          { name: "テスト（Vitest、Playwright）" },
-          { name: "Git & CI/CD" },
-          { name: "Node.js & APIs" },
-        ],
-      },
-    ],
-  },
-  experience: {
-    heading: "これまでの道のり",
-    subtitle:
-      "フリーランスのMVP開発から、何百ものチームに使われるプロダクトのフロントエンドを率いるまで。",
-    now: "現在",
-    techAria: "使用技術",
-    items: [
-      {
-        role: "シニア・フロントエンドエンジニア",
-        company: "Nimbus Labs",
-        period: "2023 - 現在",
-        current: true,
-        summary:
-          "200以上のチームが利用するB2B分析スイートで、フロントエンドギルドを率いています。",
-        points: [
-          "ストリーミングサーバーコンポーネントでダッシュボード基盤を再構築し、操作開始までの時間を大幅に短縮。",
-          "4つのプロダクト領域のトランジションを統一する共通モーションシステムを導入。",
-          "4名のエンジニアを、デザインシステムへの初めての貢献まで導きました。",
-        ],
-        stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"],
-      },
-      {
-        company: "Arunika Studio",
-        role: "フロントエンドエンジニア",
-        period: "2021 - 2023",
-        current: false,
-        summary:
-          "地域ブランド向けに、アワード候補に選ばれたマーケティングサイトとインタラクティブキャンペーンを制作。",
-        points: [
-          "WebGLとスクロール駆動の叙事的ストーリーテリングを用いたキャンペーンサイトを12件リリース。すべてLighthouseの高スコアを記録。",
-          "スタジオ内製のスターターキットを開発し、プロジェクト立ち上げ時間を半減。",
-          "デザイナーと毎日連携し、ブラウザ上で直接モーションのプロトタイプを制作。",
-        ],
-        stack: ["React", "GSAP", "Three.js", "Sanity"],
-      },
-      {
-        company: "フリーランス",
-        role: "フリーランスUIエンジニア",
-        period: "2019 - 2021",
-        current: false,
-        summary:
-          "アーリーステージのスタートアップとともに、Figmaから本番環境までプロダクトを届けてきました。",
-        points: [
-          "フィンテック、教育、Eコマースの5つのスタートアップにMVPを納品。",
-          "コンポーネント設計からデプロイパイプラインまで、すべてを自ら担当。",
-        ],
-        stack: ["React", "Styled Components", "Firebase"],
-      },
-    ],
-  },
-  about: {
-    heading: "規律はエンジニア、心はデザイナー",
-    p1a: "PSDをピクセルパーフェクトなページに切り出すことから始まり、細部へのこだわりは今も変わりません。この6年でそれはもっと大きなものになりました：",
-    p1Strong: "意図を持って動くプロダクトインターフェースを創ること",
-    p1b: "。すべてのトランジションが状態を説明し、すべてのホバーが好奇心に応えます。",
-    p2a:
-      "現在はフロントエンド全体に携わっています：デザインシステム、WebGL、パフォーマンス予算、そしてその間にある地味な接着剤。私のお気に入りのプロジェクトは、",
-    p2Strong: "エンジニアリングの厳密さと職人技が出会う場所",
-    p2b: "にあります。",
-    factLabels: {
-      name: "名前",
-      basedIn: "在住",
-      focus: "専門",
-      currently: "現在",
-    },
-    focusValue: "インタラクティブなプロダクトUI",
-    currentlyValue: "シニア・フロントエンドエンジニア",
-    blockquote:
-      "「最高のインターフェースは存在を忘れさせる。残るのは、それがあなたに与えた感覚だけ。」",
-    principles: [
-      {
-        title: "パフォーマンス最優先",
-        description:
-          "カクつくモーションに意味はありません。すべてのアニメーションは実機の性能に合わせて設計しています。",
-      },
-      {
-        title: "意図のあるモーション",
-        description:
-          "アニメーションは説明し、導き、喜ばせるものであるべき。飾りのための動きはしません。",
-      },
-      {
-        title: "アクセシビリティを標準に",
-        description:
-          "キーボード操作、動作抑制への対応、誠実なコントラスト。これらは譲れません。",
-      },
-    ],
-  },
-  contact: {
-    heading: "記憶に残るものを一緒に創りましょう",
-    intro:
-      "構想中のプロジェクト、募集中のポジション、あるいはWebのモーションについて語りたいだけでも。私の受信トレイはいつでも開いています。",
-    mailSubject: "{name}からのポートフォリオお問い合わせ",
-    name: "名前",
-    email: "メールアドレス",
-    message: "メッセージ",
-    send: "メッセージを送信",
-    opening: "メールアプリを起動中…",
-    ready: "メッセージ準備完了",
-    readyAria: "メールアプリに下書きが準備できました。",
-  },
-  footer: {
-    rights: "無断転載を禁じます。",
-    backHome: "トップへ戻る",
   },
 };
