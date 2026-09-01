@@ -7,8 +7,8 @@ import clsx from "clsx";
 import {
   heroImages,
   interestOrder,
-  type InterestKey,
-} from "../../lib/data";
+} from "../../content/profile";
+import type { InterestKey } from "../../types/common";
 import { useLang } from "../../lib/i18n";
 
 /**

@@ -1,39 +1,21 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import clsx from "clsx";
 import {
-  fieldOrder,
-  projects,
-  projectOrder,
-  type ProjectField,
-  type ProjectKey,
-} from "../../lib/data";
+  getAllProjects,
+  getPrimaryLink,
+  type ProjectView,
+} from "../../lib/content/projects";
 import { useLang } from "../../lib/i18n";
 import { EASE } from "../../lib/motion";
+import { PROJECT_FIELDS, type ProjectField } from "../../types/project";
 
 type Filter = "All" | ProjectField;
-
-type CardProject = {
-  key: ProjectKey;
-  title: string;
-  fields: ProjectField[];
-  year?: string;
-  role?: string;
-  description: string;
-  caseStudy: boolean;
-  confidentiality: string;
-  demo?: string;
-  repo?: string;
-  figma?: string;
-  externalLinks?: { label: string; href: string }[];
-  initials: string;
-  tone: "accent" | "amber";
-  image?: string | null;
-};
 
 /**
  * The /projects index: every real project, filterable by field.
@@ -43,37 +25,10 @@ type CardProject = {
  */
 export function ProjectsIndex() {
   const reduce = useReducedMotion();
-  const { content } = useLang();
+  const { content, lang } = useLang();
   const [filter, setFilter] = useState<Filter>("All");
 
-  const all: CardProject[] = useMemo(
-    () =>
-      projectOrder.flatMap((key) => {
-        const item = content.projects.items.find((p) => p.key === key);
-        if (!item) return [];
-        const meta = projects[key];
-        return [
-          {
-            key,
-            title: item.title,
-            fields: meta.fields,
-            year: item.year,
-            role: item.role,
-            description: item.description,
-            caseStudy: Boolean(meta.caseStudy),
-            confidentiality: meta.confidentiality,
-            demo: meta.demo,
-            repo: meta.repo,
-            figma: meta.figma,
-            externalLinks: meta.externalLinks,
-            initials: meta.initials,
-            tone: meta.tone,
-            image: meta.image,
-          },
-        ];
-      }),
-    [content],
-  );
+  const all = useMemo(() => getAllProjects(lang), [lang]);
 
   const filtered = useMemo(
     () =>
@@ -83,7 +38,7 @@ export function ProjectsIndex() {
     [all, filter],
   );
 
-  const filters: Filter[] = ["All", ...fieldOrder];
+  const filters: Filter[] = ["All", ...PROJECT_FIELDS];
 
   return (
     <section aria-label={content.projects.ariaSection} className="container-x pb-28 pt-32 sm:pt-40">
@@ -136,7 +91,7 @@ export function ProjectsIndex() {
         <ul className="mt-8 divide-y divide-line border-t border-line">
           {filtered.map((project, index) => (
             <ProjectRow
-              key={project.key}
+              key={project.slug}
               project={project}
               index={index}
               reduce={Boolean(reduce)}
@@ -153,27 +108,22 @@ function ProjectRow({
   index,
   reduce,
 }: {
-  project: CardProject;
+  project: ProjectView;
   index: number;
   reduce: boolean;
 }) {
   const { content } = useLang();
-  const meta = projects[project.key];
 
   // Primary destination: case study when one exists, otherwise the first
-  // public link. Projects with no links at all render without a CTA.
-  const primaryHref = project.caseStudy
-    ? `/work/${project.key}`
-    : (project.demo ?? project.repo ?? project.figma ?? project.externalLinks?.[0]?.href);
-  const primaryLabel = project.caseStudy
+  // public link (demo > github > figma > ...). Projects with no links at
+  // all render without a CTA.
+  const primaryLink = getPrimaryLink(project);
+  const primaryHref = project.hasCaseStudy
+    ? `/work/${project.slug}`
+    : primaryLink?.url;
+  const primaryLabel = project.hasCaseStudy
     ? content.projects.caseStudyCta
-    : project.demo
-      ? content.projects.demoCta
-      : project.repo
-        ? content.projects.repoCta
-        : project.figma
-          ? content.projects.figmaCta
-          : content.projects.linkCta;
+    : primaryLink?.label ?? content.projects.linkCta;
 
   return (
     <motion.li
@@ -214,7 +164,7 @@ function ProjectRow({
 
         {/* Stack chips */}
         <ul className="mt-5 flex flex-wrap gap-2" aria-label={content.work.techAria}>
-          {meta.stack.map((tech) => (
+          {project.stack.map((tech) => (
             <li
               key={tech}
               className="rounded-full border border-line bg-white/[0.03] px-3 py-1 font-mono text-[11px] text-muted"
@@ -235,11 +185,12 @@ function ProjectRow({
       {/* Media + links */}
       <div className="flex flex-col justify-between gap-6">
         <div className="relative aspect-[16/9] w-full overflow-hidden border border-line/60 bg-elevated">
-          {project.image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={project.image}
-              alt={`${project.title} preview`}
+          {project.cover ? (
+            <Image
+              src={project.cover.src}
+              alt={project.cover.alt}
+              fill
+              sizes="(min-width: 768px) 42vw, 100vw"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
             />
           ) : (
@@ -262,7 +213,7 @@ function ProjectRow({
         {/* Links - rendered only when they actually exist */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
           {primaryHref ? (
-            project.caseStudy ? (
+            project.hasCaseStudy ? (
               <Link
                 href={primaryHref}
                 data-cursor="View"
@@ -294,47 +245,19 @@ function ProjectRow({
           ) : null}
 
           {/* Secondary public links */}
-          {project.repo && primaryHref !== project.repo ? (
-            <a
-              href={project.repo}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
-            >
-              {content.projects.repoCta}
-            </a>
-          ) : null}
-          {project.demo && primaryHref !== project.demo ? (
-            <a
-              href={project.demo}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
-            >
-              {content.projects.demoCta}
-            </a>
-          ) : null}
-          {project.figma && primaryHref !== project.figma ? (
-            <a
-              href={project.figma}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
-            >
-              {content.projects.figmaCta}
-            </a>
-          ) : null}
-          {project.externalLinks?.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
-            >
-              {link.label}
-            </a>
-          ))}
+          {project.links
+            .filter((link) => link.url !== primaryHref)
+            .map((link) => (
+              <a
+                key={link.url}
+                href={link.url}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
+              >
+                {link.label}
+              </a>
+            ))}
         </div>
       </div>
     </motion.li>

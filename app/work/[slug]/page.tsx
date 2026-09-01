@@ -2,14 +2,15 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { CaseStudy } from "../../components/sections/CaseStudy";
 import { PageTransition } from "../../components/ui/PageTransition";
-import { en } from "../../lib/content";
-import { caseStudiesEn } from "../../lib/caseStudies";
-import { caseStudyOrder, type CaseStudyKey } from "../../lib/data";
+import {
+  getCaseStudySlugs,
+  getProjectBySlug,
+} from "../../lib/content/projects";
 
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return caseStudyOrder.map((slug) => ({ slug }));
+  return getCaseStudySlugs().map((slug) => ({ slug }));
 }
 
 /** Metadata uses the English dictionary, matching the static pages. */
@@ -19,12 +20,20 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  if (!(slug in caseStudiesEn)) notFound();
-  const key = slug as CaseStudyKey;
-  const item = en.work.items.find((project) => project.key === key);
-  return {
-    title: `${item?.title ?? "Project"} | Faris Zaidan Nafis`,
-    description: caseStudiesEn[key].overview,
+  const project = getProjectBySlug("en", slug);
+  if (!project) notFound();
+    return {
+    title: `${project.title} | Faris Zaidan Nafis`,
+    description: project.description,
+    ...(project.cover
+      ? {
+          openGraph: {
+            title: `${project.title} | Faris Zaidan Nafis`,
+            description: project.description,
+            images: [{ url: project.cover.src, alt: project.cover.alt }],
+          },
+        }
+      : {}),
   };
 }
 
@@ -34,11 +43,11 @@ export default async function CaseStudyPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  if (!(slug in caseStudiesEn)) notFound();
+  if (!getCaseStudySlugs().includes(slug)) notFound();
 
   return (
     <PageTransition>
-      <CaseStudy slug={slug as CaseStudyKey} />
+      <CaseStudy slug={slug} />
     </PageTransition>
   );
 }

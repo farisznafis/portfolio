@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUp, ArrowUpRight } from "lucide-react";
-import { site, socials } from "../../lib/data";
+import { site, socials } from "../../content/profile";
 import { useLang } from "../../lib/i18n";
 import { EASE } from "../../lib/motion";
 import { useSmoothScroll } from "../../motion/LenisProvider";

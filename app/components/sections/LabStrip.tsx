@@ -1,6 +1,6 @@
 "use client";
 
-import { labItems } from "../../lib/data";
+import { labItems } from "../../content/profile";
 import { useLang } from "../../lib/i18n";
 
 /**

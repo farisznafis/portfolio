@@ -1,31 +1,20 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 import clsx from "clsx";
-import {
-  featuredProjectOrder,
-  projects,
-  type ProjectKey,
-} from "../../lib/data";
+import { getFeaturedProjects, getProjectHref, type ProjectView } from "../../lib/content/projects";
 import { useLang } from "../../lib/i18n";
 import { gsap, ScrollTrigger } from "../../motion/gsap";
 
-type ReelProject = {
-  key: ProjectKey;
-  title: string;
-  fields: string[];
-  year?: string;
-  role?: string;
-  description: string;
-  index: number;
-};
+type ReelProject = ProjectView & { index: number };
 
 /**
  * Selected work as a horizontal editorial reel.
  *
- * Reads from `featuredProjectOrder` (exactly the 5 featured projects),
+ * Reads from `getFeaturedProjects(lang)` (exactly the 5 featured projects),
  * never from the full project list.
  *
  * Desktop: the section pins and the track pans horizontally (GSAP
@@ -41,27 +30,12 @@ type ReelProject = {
 export function WorkReel() {
   const wrapRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const { content } = useLang();
+  const { content, lang } = useLang();
 
-  // Localized copy merged with the featured display order.
+  // Featured projects from the data-access layer, in featuredOrder.
   const projectsList: ReelProject[] = useMemo(
-    () =>
-      featuredProjectOrder.flatMap((key, index) => {
-        const item = content.work.items.find((p) => p.key === key);
-        if (!item) return [];
-        return [
-          {
-            key,
-            title: item.title,
-            fields: projects[key].fields.map((f) => content.fields[f]),
-            year: item.year,
-            role: item.role,
-            description: item.description,
-            index,
-          },
-        ];
-      }),
-    [content],
+    () => getFeaturedProjects(lang).map((project, index) => ({ ...project, index })),
+    [lang],
   );
 
   useEffect(() => {
@@ -125,7 +99,7 @@ export function WorkReel() {
         </div>
 
         {projectsList.map((project) => (
-          <ReelPanel key={project.key} project={project} />
+          <ReelPanel key={project.slug} project={project} />
         ))}
 
         {/* Trailing cell - view-all CTA keeps the reel's editorial rhythm */}
@@ -195,13 +169,12 @@ function TypographicMedia({
 
 function ReelPanel({ project }: { project: ReelProject }) {
   const { content } = useLang();
-  const meta = projects[project.key];
   const flip = project.index % 2 === 1; // alternate composition per campaign
 
   return (
     <article className="group relative flex items-center py-20 lg:w-[74vw] lg:shrink-0 lg:py-0">
       <Link
-        href={`/work/${project.key}`}
+        href={getProjectHref(project)}
         data-cursor="View"
         aria-label={content.work.viewCaseStudy.replace("{title}", project.title)}
         className="container-x grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-10"
@@ -217,7 +190,7 @@ function ReelPanel({ project }: { project: ReelProject }) {
           <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
             {project.year ? <li>{project.year}</li> : null}
             {project.fields.map((field) => (
-              <li key={field}>{field}</li>
+              <li key={field}>{content.fields[field]}</li>
             ))}
             {project.role ? <li>{project.role}</li> : null}
           </ul>
@@ -244,18 +217,19 @@ function ReelPanel({ project }: { project: ReelProject }) {
             flip && "lg:order-first",
           )}
         >
-          {meta.image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={meta.image}
-              alt={`${project.title} preview`}
+          {project.cover ? (
+            <Image
+              src={project.cover.src}
+              alt={project.cover.alt}
+              fill
+              sizes="(min-width: 1024px) 58vw, 100vw"
               className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
             />
           ) : (
             <TypographicMedia
-              initials={meta.initials}
+              initials={project.initials}
               title={project.title}
-              tone={meta.tone}
+              tone={project.tone}
             />
           )}
         </div>

@@ -1,7 +1,9 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import { useMemo } from "react";
 import { useLang } from "../../lib/i18n";
+import { getCapabilities } from "../../lib/content/experience";
 import { EASE } from "../../lib/motion";
 
 /**
@@ -11,7 +13,8 @@ import { EASE } from "../../lib/motion";
  */
 export function Capabilities() {
   const reduce = useReducedMotion();
-  const { content } = useLang();
+  const { content, lang } = useLang();
+  const groups = useMemo(() => getCapabilities(lang), [lang]);
 
   return (
     <section
@@ -28,7 +31,7 @@ export function Capabilities() {
         </p>
 
         <div className="mt-16 border-t border-line">
-          {content.capabilities.groups.map((group) => (
+          {groups.map((group) => (
             <div
               key={group.title}
               className="grid gap-6 border-b border-line py-12 md:grid-cols-[220px_1fr]"

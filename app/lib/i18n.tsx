@@ -9,7 +9,8 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { en, ja, type Content, type Lang } from "./content";
+import type { Lang } from "../types/common";
+import { en, ja, type Content } from "./content";
 
 const STORAGE_KEY = "lang";
 

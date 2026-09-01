@@ -7,11 +7,9 @@ import { useRef } from "react";
 import clsx from "clsx";
 import { useLang } from "../../lib/i18n";
 import {
-  nextCaseStudy,
-  projects,
-  type CaseStudyKey,
-} from "../../lib/data";
-import { caseStudiesEn, caseStudiesJa } from "../../lib/caseStudies";
+  getProjectBySlug,
+  getNextCaseStudySlug,
+} from "../../lib/content/projects";
 import { EASE } from "../../lib/motion";
 import { MaskedText } from "../ui/MaskedText";
 
@@ -83,18 +81,15 @@ function ParallaxFigure({
   );
 }
 
-export function CaseStudy({ slug }: { slug: CaseStudyKey }) {
+export function CaseStudy({ slug }: { slug: string }) {
   const reduce = useReducedMotion();
   const { content, lang } = useLang();
 
-  const item = content.work.items.find((project) => project.key === slug);
-  const study = lang === "ja" ? caseStudiesJa[slug] : caseStudiesEn[slug];
-  const meta = projects[slug];
-  const nextKey = nextCaseStudy(slug);
-  const next = content.work.items.find((project) => project.key === nextKey);
-  const nextMeta = projects[nextKey];
+  const project = getProjectBySlug(lang, slug);
+  const nextKey = getNextCaseStudySlug(slug);
+  const next = getProjectBySlug(lang, nextKey);
 
-  if (!item || !study || !next) return null;
+  if (!project || !project.caseStudy || !next) return null;
 
   const rise = {
     initial: reduce ? {} : { opacity: 0, y: 36 },
@@ -103,6 +98,9 @@ export function CaseStudy({ slug }: { slug: CaseStudyKey }) {
     transition: { duration: 0.9, ease: EASE },
   } as const;
 
+  const item = project;
+  const study = project.caseStudy;
+  const meta = project;
   const gallery = meta.gallery ?? [];
 
   return (
@@ -152,9 +150,9 @@ export function CaseStudy({ slug }: { slug: CaseStudyKey }) {
       </header>
 
       {/* Cinematic hero image - real asset when available, typographic plate otherwise */}
-      <ParallaxFigure
-        src={meta.image ?? undefined}
-        alt={`${item.title}, hero image`}
+            <ParallaxFigure
+        src={meta.cover?.src ?? undefined}
+        alt={meta.cover ? meta.cover.alt : `${item.title}, hero image`}
         initials={meta.initials}
         tone={meta.tone}
         className="aspect-[16/10] border-x-0 sm:aspect-[21/10]"
@@ -208,51 +206,21 @@ export function CaseStudy({ slug }: { slug: CaseStudyKey }) {
               {content.work.confidentialNote}
             </p>
           ) : null}
-          {meta.demo ? (
+                    {meta.links.map((link) => (
             <a
-              href={meta.demo}
+              key={link.url}
+              href={link.url}
               target="_blank"
               rel="noreferrer"
               data-cursor="Open"
               className="group/link inline-flex items-center gap-1.5 text-sm font-semibold text-accent-bright transition-colors hover:text-accent"
             >
-              {content.work.liveDemo}
+              {link.label}
               <ArrowUpRight
                 size={15}
                 aria-hidden="true"
                 className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5"
               />
-            </a>
-          ) : null}
-          {meta.repo ? (
-            <a
-              href={meta.repo}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
-            >
-              {content.work.source}
-            </a>
-          ) : null}
-          {meta.figma ? (
-            <a
-              href={meta.figma}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
-            >
-              {content.work.figma}
-            </a>
-          ) : null}
-          {meta.externalLinks?.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
-            >
-              {link.label}
             </a>
           ))}
         </div>
@@ -359,10 +327,10 @@ export function CaseStudy({ slug }: { slug: CaseStudyKey }) {
         <section aria-label={study.galleryLabel} className="container-x pb-24 sm:pb-32">
           <h2 className="sr-only">{study.galleryLabel}</h2>
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            {gallery.map((src, index) => (
-              <div key={src} className={index === 0 ? "lg:col-span-2" : undefined}>
+                        {gallery.map((media, index) => (
+              <div key={media.src} className={index === 0 ? "lg:col-span-2" : undefined}>
                 <ParallaxFigure
-                  src={src}
+                  src={media.src}
                   alt={`${item.title}, ${study.galleryLabel.toLowerCase()} ${index + 1}`}
                   initials={meta.initials}
                   tone={meta.tone}
@@ -419,17 +387,17 @@ export function CaseStudy({ slug }: { slug: CaseStudyKey }) {
             aria-hidden="true"
             className="absolute inset-0 opacity-35 transition-opacity duration-700 group-hover:opacity-50"
           >
-            {nextMeta.image ? (
+                        {next.cover ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={nextMeta.image}
-                alt=""
+                src={next.cover.src}
+                alt={next.cover.alt}
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.05]"
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center bg-elevated">
                 <span className="font-display text-[10rem] font-semibold leading-none tracking-tighter text-outline opacity-60">
-                  {nextMeta.initials}
+                  {next.initials}
                 </span>
               </div>
             )}

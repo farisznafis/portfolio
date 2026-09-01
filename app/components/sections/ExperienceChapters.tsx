@@ -1,9 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { useLang } from "../../lib/i18n";
+import { getExperience } from "../../lib/content/experience";
 import { gsap, ScrollTrigger } from "../../motion/gsap";
 
 /**
@@ -14,11 +15,11 @@ import { gsap, ScrollTrigger } from "../../motion/gsap";
  */
 export function ExperienceChapters() {
   const reduce = useReducedMotion();
-  const { content } = useLang();
+  const { content, lang } = useLang();
   const ref = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
 
-  const items = content.experience.items;
+  const items = useMemo(() => getExperience(lang), [lang]);
 
   useEffect(() => {
     if (reduce) return;

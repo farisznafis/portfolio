@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion, useMotionValue, useReducedMotion, useTransform, type MotionValue, type Variants } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { heroImages, heroName } from "../../lib/data";
+import { heroImages, heroName } from "../../content/profile";
 import { useLang } from "../../lib/i18n";
 import { DUR, EASE } from "../../lib/motion";
 import { useIntro } from "../Loader";

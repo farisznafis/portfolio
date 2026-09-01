@@ -2,16 +2,19 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { GraduationCap, Award } from "lucide-react";
+import { useMemo } from "react";
 import { useLang } from "../../lib/i18n";
+import { getEducation } from "../../lib/content/experience";
 import { EASE } from "../../lib/motion";
 
 /**
  * Compact education & recognition strip for early-career credibility.
- * Only verified items are rendered (data lives in content.education).
+ * Only verified items are rendered (data lives in the content domain).
  */
 export function EducationSection() {
   const reduce = useReducedMotion();
-  const { content } = useLang();
+  const { content, lang } = useLang();
+  const education = useMemo(() => getEducation(lang), [lang]);
 
   const rise = {
     initial: reduce ? {} : { opacity: 0, y: 24 },
@@ -39,7 +42,7 @@ export function EducationSection() {
               {content.education.heading.split("&")[0]?.trim()}
             </p>
             <ul className="mt-5 divide-y divide-line border-t border-line">
-              {content.education.items.map((item) => (
+              {education.items.map((item) => (
                 <li key={item.school} className="py-5">
                   <p className="font-display text-xl font-semibold tracking-tight text-ink sm:text-2xl">
                     {item.school}
@@ -60,7 +63,7 @@ export function EducationSection() {
               {content.education.recognitionHeading}
             </p>
             <ul className="mt-5 divide-y divide-line border-t border-line">
-              {content.education.recognition.map((item) => (
+              {education.recognition.map((item) => (
                 <li
                   key={item}
                   className="flex items-baseline justify-between gap-6 py-5"
