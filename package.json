@@ -7,10 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint app next.config.ts postcss.config.mjs eslint.config.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed:projects": "tsx scripts/seed-projects.ts"
   },
   "dependencies": {
     "@react-three/fiber": "^9.0.0",
+    "@supabase/ssr": "^0.12.5",
+    "@supabase/supabase-js": "^2.114.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.0.0",
     "gsap": "^3.12.7",
@@ -28,10 +31,13 @@
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
     "@types/three": "^0.171.0",
+    "dotenv": "^17.4.2",
     "eslint": "^9.17.0",
     "eslint-config-next": "^15.1.0",
     "postcss": "^8.4.49",
+    "supabase": "^2.116.0",
     "tailwindcss": "^4.0.0",
+    "tsx": "^4.23.13",
     "typescript": "^5.7.2"
   }
 }
