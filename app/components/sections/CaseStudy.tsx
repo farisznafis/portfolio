@@ -11,6 +11,7 @@ import {
   getNextCaseStudySlug,
 } from "../../lib/content/projects";
 import { EASE } from "../../lib/motion";
+import type { StoredProject } from "../../types/project";
 import { MaskedText } from "../ui/MaskedText";
 
 /**
@@ -81,13 +82,32 @@ function ParallaxFigure({
   );
 }
 
-export function CaseStudy({ slug }: { slug: string }) {
+export function CaseStudy({
+  slug,
+  projects,
+}: {
+  slug: string;
+  projects: StoredProject[];
+}) {
   const reduce = useReducedMotion();
   const { content, lang } = useLang();
 
-  const project = getProjectBySlug(lang, slug);
-  const nextKey = getNextCaseStudySlug(slug);
-  const next = getProjectBySlug(lang, nextKey);
+  const project = getProjectBySlug(
+    projects,
+    lang,
+    slug,
+  );
+
+  const nextKey = getNextCaseStudySlug(
+    projects,
+    slug,
+  );
+
+  const next = getProjectBySlug(
+    projects,
+    lang,
+    nextKey,
+  );
 
   if (!project || !project.caseStudy || !next) return null;
 

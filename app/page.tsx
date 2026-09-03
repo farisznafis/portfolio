@@ -9,18 +9,18 @@ import { AboutSection } from "./components/sections/AboutSection";
 import { LabStrip } from "./components/sections/LabStrip";
 import { ContactFinale } from "./components/sections/ContactFinale";
 
-/**
- * The homepage is one continuous act-based journey:
- * hero → manifesto → selected work (horizontal reel) → experience chapters
- * → capabilities wall → education/recognition → about/interests
- * → lab ticker → contact finale.
- */
-export default function Home() {
+import { getStoredProjects } from "./lib/data/projects";
+
+export default async function Home() {
+  const projects = await getStoredProjects();
+
   return (
     <PageTransition>
       <Hero />
       <Manifesto />
-      <WorkReel />
+
+      <WorkReel projects={projects} />
+
       <ExperienceChapters />
       <Capabilities />
       <EducationSection />

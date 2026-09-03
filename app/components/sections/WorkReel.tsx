@@ -8,14 +8,15 @@ import clsx from "clsx";
 import { getFeaturedProjects, getProjectHref, type ProjectView } from "../../lib/content/projects";
 import { useLang } from "../../lib/i18n";
 import { gsap, ScrollTrigger } from "../../motion/gsap";
+import type { StoredProject } from "../../types/project";
 
 type ReelProject = ProjectView & { index: number };
 
 /**
  * Selected work as a horizontal editorial reel.
  *
- * Reads from `getFeaturedProjects(lang)` (exactly the 5 featured projects),
- * never from the full project list.
+ * Reads from `getFeaturedProjects(projects, lang)` (exactly the featured set,
+ * in featuredOrder), never the full project list.
  *
  * Desktop: the section pins and the track pans horizontally (GSAP
  * ScrollTrigger, scrub 1). Scroll velocity adds a slight skew to the media,
@@ -27,15 +28,23 @@ type ReelProject = ProjectView & { index: number };
  * fallback built from the project initials and the site's design tokens
  * (no stock photography).
  */
-export function WorkReel() {
+export function WorkReel({
+  projects,
+}: {
+  projects: StoredProject[];
+}) {
   const wrapRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const { content, lang } = useLang();
 
   // Featured projects from the data-access layer, in featuredOrder.
   const projectsList: ReelProject[] = useMemo(
-    () => getFeaturedProjects(lang).map((project, index) => ({ ...project, index })),
-    [lang],
+    () =>
+      getFeaturedProjects(projects, lang).map((project, index) => ({
+        ...project,
+        index,
+      })),
+    [projects, lang],
   );
 
   useEffect(() => {

@@ -13,7 +13,8 @@ import {
 } from "../../lib/content/projects";
 import { useLang } from "../../lib/i18n";
 import { EASE } from "../../lib/motion";
-import { PROJECT_FIELDS, type ProjectField } from "../../types/project";
+import { PROJECT_FIELDS, type ProjectField, type StoredProject } from "../../types/project";
+// import type { StoredProject } from "../../types/project";
 
 type Filter = "All" | ProjectField;
 
@@ -23,12 +24,19 @@ type Filter = "All" | ProjectField;
  * Editorial rows (not cards) to match the home reel's typographic language.
  * Reduced motion: entrances collapse to static.
  */
-export function ProjectsIndex() {
+export function ProjectsIndex({
+  projects,
+}: {
+  projects: StoredProject[];
+}) {
   const reduce = useReducedMotion();
   const { content, lang } = useLang();
   const [filter, setFilter] = useState<Filter>("All");
 
-  const all = useMemo(() => getAllProjects(lang), [lang]);
+  const all = useMemo(
+    () => getAllProjects(projects, lang),
+    [projects, lang],
+  );
 
   const filtered = useMemo(
     () =>
