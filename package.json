@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint app next.config.ts postcss.config.mjs eslint.config.mjs",
     "typecheck": "tsc --noEmit",
-    "seed:projects": "tsx scripts/seed-projects.ts"
+    "seed:projects": "tsx scripts/seed-projects.ts",
+    "check:supabase": "tsx scripts/check-supabase.ts"
   },
   "dependencies": {
     "@react-three/fiber": "^9.0.0",

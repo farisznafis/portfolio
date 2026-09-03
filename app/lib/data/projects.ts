@@ -506,7 +506,7 @@ export const getStoredProjects =
     ],
 
     {
-      revalidate: 3600,
+      revalidate: 60,
       tags: [
         "projects",
       ],
