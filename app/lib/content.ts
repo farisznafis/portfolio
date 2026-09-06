@@ -55,6 +55,14 @@ export interface Content {
   /** Field labels shared by the Home reel and the /projects filters. */
   fields: Record<ProjectField, string>;
   fieldsAll: string;
+  caseStudy: {
+    role: string;
+    year: string;
+    fields: string;
+    stack: string;
+    processDetails: string;
+    openImage: string;
+  };
   work: {
     ariaSection: string;
     heading: string;
@@ -117,6 +125,14 @@ export interface Content {
   };
 }
 export const en: Content = {
+  caseStudy: {
+    role: "Role",
+    year: "Year",
+    fields: "Fields",
+    stack: "Stack",
+    processDetails: "Process details",
+    openImage: "Open original image",
+  },
   nav: {
     ariaPrimary: "Primary",
     ariaLogo: "home",
@@ -241,6 +257,14 @@ export const en: Content = {
   },
 };
 export const ja: Content = {
+  caseStudy: {
+    role: "担当",
+    year: "年",
+    fields: "分野",
+    stack: "技術スタック",
+    processDetails: "制作プロセスの詳細",
+    openImage: "元の画像を開く",
+  },
   nav: {
     ariaPrimary: "メイン",
     ariaLogo: "ホーム",
