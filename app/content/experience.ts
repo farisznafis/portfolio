@@ -88,7 +88,7 @@ export const experience: ExperienceItem[] = [
   },
   {
     id: "telkom-data-scientist-intern",
-    year: "2024",
+    year: "",
     role: { en: "Data Scientist Intern", ja: "データサイエンティストインターン" },
     company: "Telkom Indonesia",
     period: "January 2024 - June 2024",

@@ -40,10 +40,12 @@ export function WorkReel({
   // Featured projects from the data-access layer, in featuredOrder.
   const projectsList: ReelProject[] = useMemo(
     () =>
-      getFeaturedProjects(projects, lang).map((project, index) => ({
-        ...project,
-        index,
-      })),
+      getFeaturedProjects(projects, lang)
+        .slice(0, 3)
+        .map((project, index) => ({
+          ...project,
+          index,
+        })),
     [projects, lang],
   );
 
