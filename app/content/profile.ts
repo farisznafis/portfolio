@@ -9,12 +9,12 @@ import type { InterestKey } from "../types/common";
 
 export const site = {
   name: "Faris Zaidan Nafis",
-  shortName: "FZ",
+  shortName: "F",
   role: "Software Engineer — Frontend, UI/UX & AI",
   // TODO_REAL_CONTENT: confirm this address is the one to publish before launch.
-  email: "hello@farisznafis.dev",
+  email: "farisznafis14@gmail.com",
   location: "Kumamoto, Japan",
-  availability: "Open to opportunities in Japan",
+  // availability: "Open to opportunities in Japan",
   github: "https://github.com/farisznafis",
   linkedin: "https://www.linkedin.com/in/farisznafis",
 } as const;
@@ -22,8 +22,9 @@ export const site = {
 /** Hero wordmark — split across two oversized lines. Language-neutral. */
 export const heroName = {
   line1: "FARIS",
-  line2: "ZNAFIS",
-} as const;
+  line2Filled: "ZAID",
+  line2Outline: "AN NAFIS",
+};
 
 /**
  * Hero spotlight images (real portraits, already in the repo).

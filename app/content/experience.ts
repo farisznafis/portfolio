@@ -34,14 +34,14 @@ export const experience: ExperienceItem[] = [
         ja: "業務フローに沿ったREST API連携を実装。",
       },
     ],
-    stack: ["Web Applications", "UI/UX", "Frontend", "API Integration"],
+    stack: ["React", "TypeScript", "Figma", "REST API Integration"],
   },
   {
     id: "kct-frontend-intern",
     year: "2025",
     role: { en: "Frontend Developer Intern", ja: "フロントエンド開発インターン" },
     company: "Knowledge Creation Technology Co., Ltd.",
-    period: "2025",
+    period: "February 2025 - March 2025",
     current: false,
     summary: {
       en: "Frontend internship centered on an interactive AI conversation bot for Kumamoto EXPO 2025.",
@@ -61,14 +61,14 @@ export const experience: ExperienceItem[] = [
         ja: "3人のチームで開発し、来場者80名以上に利用されました。",
       },
     ],
-    stack: ["Next.js", "React", "TypeScript", "face-api.js", "TensorFlow.js"],
+    stack: ["Next.js", "React", "TypeScript", "FastAPI"],
   },
   {
     id: "goto-data-scientist-intern",
     year: "2024",
     role: { en: "Data Scientist Intern", ja: "データサイエンティストインターン" },
     company: "GoTo",
-    period: "2024 - 2025",
+    period: "September 2024 - February 2025",
     current: false,
     summary: {
       en: "Data science internship on an LLM-related data project.",
@@ -84,14 +84,14 @@ export const experience: ExperienceItem[] = [
         ja: "シンガポール拠点のチームメイトと連携しながら進行。",
       },
     ],
-    stack: ["Data Pipeline", "LLM", "Web Scraping"],
+    stack: ["Selenium", "LLM", "Web Scraping"],
   },
   {
     id: "telkom-data-scientist-intern",
     year: "2024",
     role: { en: "Data Scientist Intern", ja: "データサイエンティストインターン" },
     company: "Telkom Indonesia",
-    period: "2024",
+    period: "January 2024 - June 2024",
     current: false,
     summary: {
       en: "Data science internship focused on optimization models and deployment.",
@@ -120,6 +120,6 @@ export const education: EducationItem[] = [
 ];
 
 export const recognitions: LocalizedText[] = [
-  { en: "Bangkit Distinction Graduate — Top 10%", ja: "Bangkit Distinction Graduate — 上位10%" },
+  { en: "Bangkit Distinction Graduate — Valedictorian", ja: "Bangkit Distinction Graduate — 最優秀者" },
   { en: "3rd Place — Data Royale 2023", ja: "Data Royale 2023 — 3位" },
 ];

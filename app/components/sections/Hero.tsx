@@ -238,14 +238,36 @@ export function Hero() {
             custom={0.05}
             variants={fadeRise}
           >
-            <p className="max-w-xs text-lede leading-snug text-ink/90 sm:max-w-sm">
-              {content.hero.statement}
-            </p>
-            <ul className="mt-6 flex flex-wrap items-center gap-x-7 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
-              <li className="text-ink">{content.hero.role}</li>
-              <li>{content.hero.metaLocation}</li>
-              <li className="text-accent-bright">{content.hero.metaAvailability}</li>
-            </ul>
+            {content.hero.statement ? (
+              <p className="max-w-xs text-lede leading-snug text-ink/90 sm:max-w-sm">
+                {content.hero.statement}
+              </p>
+            ) : null}
+            {(
+              content.hero.role ||
+              content.hero.metaLocation ||
+              content.hero.metaAvailability
+            ) ? (
+              <ul className="mt-6 flex flex-wrap items-center gap-x-7 gap-y-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
+                {content.hero.role ? (
+                  <li className="text-ink">
+                    {content.hero.role}
+                  </li>
+                ) : null}
+
+                {content.hero.metaLocation ? (
+                  <li>
+                    {content.hero.metaLocation}
+                  </li>
+                ) : null}
+
+                {content.hero.metaAvailability ? (
+                  <li className="text-accent-bright">
+                    {content.hero.metaAvailability}
+                  </li>
+                ) : null}
+              </ul>
+            ) : null}
           </motion.div>
         </motion.div>
 
@@ -253,11 +275,27 @@ export function Hero() {
         <div className="absolute inset-x-0 bottom-0 z-40">
           <div className="container-x pb-8 sm:pb-10">
             <h1 className="font-display uppercase leading-[0.82] tracking-[-0.03em]">
-              <span className="block text-hero text-ink">
+              <span className="block text-hero text-outline">
                 <MaskedText text={heroName.line1} onMount play={done} delay={0.15} />
               </span>
-              <span className="-mt-[0.06em] block text-hero text-outline">
-                <MaskedText text={heroName.line2} onMount play={done} delay={0.32} />
+              <span className="-mt-[0.06em] block text-hero leading-[0.82] tracking-[-0.03em]">
+                <span className="text-outline">
+                  <MaskedText
+                    text={heroName.line2Filled}
+                    onMount
+                    play={done}
+                    delay={0.32}
+                  />
+                </span>
+
+                <span className="text-outline">
+                  <MaskedText
+                    text={heroName.line2Outline}
+                    onMount
+                    play={done}
+                    delay={0.32}
+                  />
+                </span>
               </span>
             </h1>
 
@@ -279,7 +317,7 @@ export function Hero() {
                     }}
                     className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3 text-sm font-medium text-on-accent transition-transform active:scale-[0.97]"
                   >
-                    <RolloverText text={content.hero.ctaWork} />
+                    <RolloverText text={content.hero.ctaWork ?? ""} />
                     <ArrowUpRight size={16} aria-hidden="true" />
                   </a>
                 </Magnetic>
@@ -292,20 +330,22 @@ export function Hero() {
                     }}
                     className="inline-flex items-center gap-2 rounded-full border border-line bg-night/40 px-6 py-3 text-sm font-medium text-ink backdrop-blur-md transition-colors hover:border-accent/60"
                   >
-                    <RolloverText text={content.hero.ctaTouch} />
+                    <RolloverText text={content.hero.ctaTouch ?? ""} />
                   </a>
                 </Magnetic>
               </motion.div>
 
-              <motion.p
-                className="hidden max-w-[220px] text-right font-mono text-[11px] uppercase leading-relaxed tracking-[0.16em] text-muted/80 md:block"
-                initial={gate ? false : "hidden"}
-                animate="show"
-                custom={0.7}
-                variants={fadeRise}
-              >
-                {content.hero.hint}
-              </motion.p>
+              {content.hero.hint ? (
+                <motion.p
+                  className="hidden max-w-[220px] text-right font-mono text-[11px] uppercase leading-relaxed tracking-[0.16em] text-muted/80 md:block"
+                  initial={gate ? false : "hidden"}
+                  animate="show"
+                  custom={0.7}
+                  variants={fadeRise}
+                >
+                  {content.hero.hint}
+                </motion.p>
+              ) : null}
             </div>
           </div>
         </div>

@@ -39,13 +39,13 @@ export interface Content {
   loader: { ariaLabel: string; wordmark: string };
   hero: {
     ariaSection: string;
-    role: string;
-    statement: string;
-    metaLocation: string;
-    metaAvailability: string;
-    ctaWork: string;
-    ctaTouch: string;
-    hint: string;
+    role?: string;
+    statement?: string;
+    metaLocation?: string;
+    metaAvailability?: string;
+    ctaWork?: string;
+    ctaTouch?: string;
+    hint?: string;
   };
   manifesto: {
     ariaSection: string;
@@ -103,7 +103,7 @@ export interface Content {
   capabilities: {
     ariaSection: string;
     heading: string;
-    blurb: string;
+    blurb?: string;
   };
   about: {
     ariaSection: string;
@@ -156,17 +156,17 @@ export const en: Content = {
   hero: {
     ariaSection: "Introduction",
     role: "Software Engineer — Frontend, UI/UX & AI",
-    statement:
-      "I build products where interface and intelligence meet — from user flows to shipped frontend.",
+    // statement:
+    //   "I build products where interface and intelligence meet — from user flows to shipped frontend.",
     metaLocation: "Kumamoto, Japan",
-    metaAvailability: "Open to opportunities in Japan",
+    // metaAvailability: "Open to opportunities in Japan",
     ctaWork: "View my work",
     ctaTouch: "Get in touch",
-    hint: "Move your cursor to reveal what sits beneath.",
+    // hint: "Move your cursor to reveal what sits beneath.",
   },
   manifesto: {
     ariaSection: "Statement",
-    lead: "Frontend engineering with product thinking.",
+    lead: "Hello! I'm Zaid",
     support:
       "I work from requirements and user flows through UI/UX design, frontend implementation, and API integration. My background in machine learning and data helps me build products where interface and intelligence meet.",
   },
@@ -198,7 +198,7 @@ export const en: Content = {
     countLabel: "{count} projects",
     filterAria: "Filter projects by field",
     empty: "No projects in this field yet.",
-    caseStudyCta: "Case study",
+    caseStudyCta: "Detail",
     repoCta: "Source",
     demoCta: "Live",
     figmaCta: "Figma",
@@ -212,15 +212,15 @@ export const en: Content = {
     techAria: "Technologies used",
   },
   education: {
-    ariaSection: "Education and recognition",
-    heading: "Education & recognition",
-    recognitionHeading: "Recognition",
+    ariaSection: "Education and Program",
+    heading: "Education & Program",
+    recognitionHeading: "Program",
   },
   capabilities: {
     ariaSection: "Capabilities",
     heading: "Capabilities",
-    blurb:
-      "Four layers of one practice: the interfaces I build, the product thinking behind them, the intelligence underneath, and the delivery path to production.",
+    // blurb:
+    //   "Four layers of one practice: the interfaces I build, the product thinking behind them, the intelligence underneath, and the delivery path to production.",
   },
   about: {
     ariaSection: "About Faris",
@@ -288,17 +288,17 @@ export const ja: Content = {
   hero: {
     ariaSection: "はじめに",
     role: "ソフトウェアエンジニア — フロントエンド・UI/UX・AI",
-    statement:
-      "インターフェースと知性が出会うプロダクトを。ユーザーフローから、届くフロントエンドまで。",
+    // statement:
+    //   "インターフェースと知性が出会うプロダクトを。ユーザーフローから、届くフロントエンドまで。",
     metaLocation: "日本・熊本",
-    metaAvailability: "日本での機会を歓迎します",
+    // metaAvailability: "日本での機会を歓迎します",
     ctaWork: "作品を見る",
     ctaTouch: "お問い合わせ",
-    hint: "カーソルを動かすと、その下にあるものが見えます。",
+    // hint: "カーソルを動かすと、その下にあるものが見えます。",
   },
   manifesto: {
     ariaSection: "ステートメント",
-    lead: "プロダクト思考のフロントエンドエンジニアリング。",
+    lead: "こんにちは！ ザイドです",
     support:
       "要件とユーザーフローから出発し、UI/UXデザイン、フロントエンド実装、API連携までを一気通貫で担います。機械学習とデータのバックグラウンドがあるからこそ、インターフェースと知性が出会うプロダクトを作れます。",
   },
