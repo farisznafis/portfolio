@@ -164,14 +164,14 @@ approach: {
 {
     id: "kumamotalk",
     slug: "kumamotalk",
-    title: "Kumamotalk — Interactive AI Conversation Bot",
+    title: "Kumamotalk — Conversation Bot",
     year: "2025",
     role: t(
       "Frontend Engineer & UI/UX Designer",
       "フロントエンドエンジニア & UI/UXデザイナー",
     ),
-    fields: ["Frontend", "AI / ML", "UI / UX"],
-    stack: ["Next.js", "React", "TypeScript", "face-api.js", "TensorFlow.js", "react-mic"],
+    fields: ["Frontend", "UI / UX"],
+    stack: ["Next.js", "React", "TypeScript", "FastAPI"],
     summary: t(
       "Interactive AI conversation bot developed for Kumamoto EXPO 2025. I designed and implemented the frontend with face-detection and microphone-aware interactions, used by 80+ visitors.",
       "熊本EXPO 2025向けに開発した対話型AI会話ボット。顔検出とマイクの状態を反映したインタラクションを備えたフロントエンドを設計・実装し、来場者80名以上に利用されました。",

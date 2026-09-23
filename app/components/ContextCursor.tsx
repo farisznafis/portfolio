@@ -1,74 +1,211 @@
 "use client";
 
 import gsap from "gsap";
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 /**
  * Contextual cursor companion for fine-pointer devices.
  *
- * A small teal ring trails the pointer and morphs into a labeled pill when
- * hovering elements that opt in via `data-cursor="View"` (etc.). The native
- * cursor stays visible and fully functional - this is an affordance layer,
- * not a replacement - and everything disables under reduced motion or touch.
+ * The component renders only after hydration and only when:
+ * - the device has a fine pointer
+ * - reduced motion is not enabled
+ *
+ * This keeps SSR and the client's first render identical.
  */
 export function ContextCursor() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [label, setLabel] = useState<string | null>(null);
+  const ref =
+    useRef<HTMLDivElement>(null);
 
+  const [enabled, setEnabled] =
+    useState(false);
+
+  const [label, setLabel] =
+    useState<string | null>(null);
+
+  /**
+   * Detect cursor capability only after hydration.
+   *
+   * Server render:
+   * enabled = false
+   *
+   * First client render:
+   * enabled = false
+   *
+   * Therefore hydration stays identical.
+   */
   useEffect(() => {
-    if (!window.matchMedia("(pointer: fine)").matches) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const finePointer =
+      window.matchMedia(
+        "(pointer: fine)",
+      );
+
+    const reducedMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      );
+
+    const update = () => {
+      setEnabled(
+        finePointer.matches &&
+          !reducedMotion.matches,
+      );
+    };
+
+    update();
+
+    finePointer.addEventListener(
+      "change",
+      update,
+    );
+
+    reducedMotion.addEventListener(
+      "change",
+      update,
+    );
+
+    return () => {
+      finePointer.removeEventListener(
+        "change",
+        update,
+      );
+
+      reducedMotion.removeEventListener(
+        "change",
+        update,
+      );
+    };
+  }, []);
+
+  /**
+   * Cursor animation / events.
+   *
+   * This runs only after the cursor has actually
+   * been mounted in the DOM.
+   */
+  useEffect(() => {
+    if (!enabled) {
+      return;
+    }
 
     const el = ref.current;
-    if (!el) return;
+
+    if (!el) {
+      return;
+    }
 
     el.style.opacity = "0";
 
-    const xTo = gsap.quickTo(el, "x", { duration: 0.4, ease: "power3.out" });
-    const yTo = gsap.quickTo(el, "y", { duration: 0.4, ease: "power3.out" });
+    const xTo = gsap.quickTo(
+      el,
+      "x",
+      {
+        duration: 0.4,
+        ease: "power3.out",
+      },
+    );
+
+    const yTo = gsap.quickTo(
+      el,
+      "y",
+      {
+        duration: 0.4,
+        ease: "power3.out",
+      },
+    );
 
     let shown = false;
 
-    const onMove = (event: PointerEvent) => {
-      if (event.pointerType !== "mouse") return;
+    const onMove = (
+      event: PointerEvent,
+    ) => {
+      if (
+        event.pointerType !==
+        "mouse"
+      ) {
+        return;
+      }
+
       xTo(event.clientX);
       yTo(event.clientY);
+
       if (!shown) {
         shown = true;
         el.style.opacity = "1";
       }
     };
 
-    const onOver = (event: PointerEvent) => {
-      const target = event.target as HTMLElement | null;
-      const zone = target?.closest?.("[data-cursor]");
-      if (zone instanceof HTMLElement) {
-        setLabel(zone.dataset.cursor ?? "");
+    const onOver = (
+      event: PointerEvent,
+    ) => {
+      const target =
+        event.target as HTMLElement | null;
+
+      const zone =
+        target?.closest?.(
+          "[data-cursor]",
+        );
+
+      if (
+        zone instanceof HTMLElement
+      ) {
+        setLabel(
+          zone.dataset.cursor ??
+            "",
+        );
       } else {
         setLabel(null);
       }
     };
 
-    window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("pointerover", onOver, { passive: true });
+    window.addEventListener(
+      "pointermove",
+      onMove,
+      {
+        passive: true,
+      },
+    );
+
+    window.addEventListener(
+      "pointerover",
+      onOver,
+      {
+        passive: true,
+      },
+    );
 
     return () => {
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerover", onOver);
-    };
-  }, []);
+      window.removeEventListener(
+        "pointermove",
+        onMove,
+      );
 
-  // Touch devices and reduced-motion users get nothing rendered at all.
-  if (typeof window === "undefined") return null;
+      window.removeEventListener(
+        "pointerover",
+        onOver,
+      );
+    };
+  }, [enabled]);
+
+  if (!enabled) {
+    return null;
+  }
 
   return (
     <div
       ref={ref}
       className="cursor-ring hidden md:flex"
-      data-active={label !== null}
+      data-active={
+        label !== null
+      }
       aria-hidden="true"
     >
-      <span className="cursor-label">{label}</span>
+      <span className="cursor-label">
+        {label}
+      </span>
     </div>
   );
 }

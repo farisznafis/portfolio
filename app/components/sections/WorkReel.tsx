@@ -9,6 +9,7 @@ import { getFeaturedProjects, getProjectHref, type ProjectView } from "../../lib
 import { useLang } from "../../lib/i18n";
 import { gsap, ScrollTrigger } from "../../motion/gsap";
 import type { StoredProject } from "../../types/project";
+import { useIntro } from "../Loader";
 
 type ReelProject = ProjectView & { index: number };
 
@@ -36,6 +37,7 @@ export function WorkReel({
   const wrapRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const { content, lang } = useLang();
+  const { done } = useIntro();
 
   // Featured projects from the data-access layer, in featuredOrder.
   const projectsList: ReelProject[] = useMemo(
@@ -50,48 +52,156 @@ export function WorkReel({
   );
 
   useEffect(() => {
+    if (!done) return;
+
     const wrap = wrapRef.current;
     const track = trackRef.current;
+
     if (!wrap || !track) return;
 
     const mm = gsap.matchMedia();
 
-    mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
-      const distance = () => track.scrollWidth - window.innerWidth;
+    let refreshRaf = 0;
+    let secondRefreshRaf = 0;
+    let active = true;
 
-      const tween = gsap.to(track, {
-        x: () => -distance(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: wrap,
-          start: "top top",
-          end: () => `+=${distance()}`,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true,
+    mm.add(
+        "(min-width: 1024px) and (prefers-reduced-motion: no-preference)",
+        () => {
+        const distance = () =>
+            Math.max(
+            0,
+            track.scrollWidth -
+                window.innerWidth,
+            );
+
+        const tween = gsap.to(
+            track,
+            {
+            x: () =>
+                -distance(),
+
+            ease: "none",
+
+            scrollTrigger: {
+                trigger: wrap,
+
+                start:
+                "top top",
+
+                end: () =>
+                `+=${Math.max(
+                    1,
+                    distance(),
+                )}`,
+
+                pin: true,
+                scrub: 1,
+
+                anticipatePin: 1,
+
+                invalidateOnRefresh:
+                true,
+            },
+            },
+        );
+
+        const skewTo =
+            gsap.quickTo(
+            track,
+            "skewX",
+            {
+                duration: 0.5,
+                ease: "power3.out",
+            },
+            );
+
+        const velocityTrigger =
+            ScrollTrigger.create({
+            trigger: wrap,
+
+            start:
+                "top bottom",
+
+            end:
+                "bottom top",
+
+            onUpdate: (
+                self,
+            ) => {
+                const velocity =
+                self.getVelocity();
+
+                skewTo(
+                gsap.utils.clamp(
+                    -4,
+                    4,
+                    velocity /
+                    -400,
+                ),
+                );
+            },
+            });
+
+        /**
+         * Important:
+         *
+         * Loader has just disappeared and the
+         * PageTransition wrapper has settled.
+         * Wait two frames before measuring again.
+         */
+        refreshRaf =
+            requestAnimationFrame(
+            () => {
+                secondRefreshRaf =
+                requestAnimationFrame(
+                    () => {
+                    if (
+                        active
+                    ) {
+                        ScrollTrigger.refresh();
+                    }
+                    },
+                );
+            },
+            );
+
+        /**
+         * Fonts can change text width and therefore
+         * the total horizontal reel width.
+         */
+        document.fonts?.ready.then(
+            () => {
+            if (active) {
+                ScrollTrigger.refresh();
+            }
+            },
+        );
+
+        return () => {
+            velocityTrigger.kill();
+            tween.kill();
+        };
         },
-      });
+    );
 
-      // Velocity skew - fast scrolls tilt the media slightly; it settles.
-      const skewTo = gsap.quickTo(track, "skewX", {
-        duration: 0.5,
-        ease: "power3.out",
-      });
-      const st = ScrollTrigger.create({
-        onUpdate: (self) => {
-          const v = self.getVelocity();
-          skewTo(gsap.utils.clamp(-4, 4, v / -400));
-        },
-      });
+    return () => {
+        active = false;
 
-      return () => {
-        st.kill();
-        tween.kill();
-      };
-    });
+        cancelAnimationFrame(
+        refreshRaf,
+        );
 
-    return () => mm.revert();
-  }, []);
+        cancelAnimationFrame(
+        secondRefreshRaf,
+        );
+
+        mm.revert();
+    };
+    }, [
+    done,
+    projectsList.length,
+    ]);
 
   return (
     <section id="work" ref={wrapRef} aria-label={content.work.ariaSection}>
