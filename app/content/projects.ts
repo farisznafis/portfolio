@@ -424,10 +424,21 @@ approach: {
     year: "2024",
     role: t("Machine Learning Developer", "機械学習デベロッパー"),
     fields: ["AI / ML", "Data / Optimization"],
-    stack: ["Python", "TensorFlow", "Keras", "Librosa", "NumPy", "Pandas", "Streamlit"],
+    stack: [
+      "Python",
+      "TensorFlow",
+      "Keras",
+      "Librosa",
+      "NumPy",
+      "Pandas",
+      "Pydub",
+      "Streamlit",
+      "Pytest",
+      "GitHub Actions",
+    ],
     summary: t(
-      "Audio emotion recognition system that extracts ZCR, RMS, and MFCC features and uses a TensorFlow/Keras model to classify speech into six emotion categories through a Streamlit interface.",
-      "ZCR・RMS・MFCCの特徴量を抽出し、TensorFlow/Kerasモデルで音声を6つの感情カテゴリに分類するシステム。Streamlitのインターフェースから利用できます。",
+      "End-to-end speech emotion recognition project that combines acoustic feature engineering, a two-layer LSTM classifier, model evaluation, and a Streamlit inference app for six emotion classes.",
+      "音響特徴量設計、2層LSTM分類器、モデル評価、Streamlit推論アプリを組み合わせ、音声を6つの感情クラスに分類するエンドツーエンドの音声感情認識プロジェクト。",
     ),
     featured: true,
     featuredOrder: 4,
@@ -443,83 +454,237 @@ approach: {
     ],
     initials: "SE",
     tone: "amber",
-    // TODO_REAL_IMAGE: Streamlit UI screenshot
+    // TODO_REAL_IMAGE: Streamlit UI screenshot / evaluation plots
     caseStudy: {
       overview: t(
-        "An audio emotion recognition system: ZCR, RMS, and MFCC features extracted with Librosa, classified by a TensorFlow/Keras model into six emotions, and served through a Streamlit interface.",
-        "音声の感情認識システム。LibrosaでZCR・RMS・MFCCの特徴量を抽出し、TensorFlow/Kerasモデルが6つの感情に分類、Streamlitのインターフェースから利用できます。",
+        "An end-to-end Speech Emotion Recognition experiment that turns raw recordings into acoustic feature sequences, classifies them with a two-layer TensorFlow/Keras LSTM, evaluates the model on held-out data, and exposes inference through Streamlit. I later revisited the project as a portfolio remaster, separating research code from production inference and auditing inconsistencies between the historical notebook and deployed pipeline.",
+        "生の音声を音響特徴量の系列へ変換し、TensorFlow/Kerasの2層LSTMで分類、ホールドアウトデータで評価し、Streamlitで推論できるようにしたエンドツーエンドの音声感情認識実験です。その後ポートフォリオ向けに再整理し、研究用コードと本番推論コードを分離するとともに、過去のノートブックとデプロイ済みパイプラインの不整合も監査しました。",
       ),
       atAGlance: t("Project at a glance", "プロジェクト概要"),
       challenge: {
-        heading: t("Reading feeling from a waveform", "波形から感情を読む"),
+        heading: t("Classifying how something is said, not what is said", "「何を」ではなく「どう」話したかを分類する"),
         lead: t(
-          "Emotion hides in signal shape, not words. The model had to learn from raw audio features — zero-crossing rate, RMS energy, MFCCs — and separate six classes that overlap even for human listeners.",
-          "感情は言葉ではなく信号の形に宿ります。モデルはゼロ交差率・RMSエネルギー・MFCCといった生の音声特徴から学び、人間の聴き手ですら重なり合う6つのクラスを分離しなければなりませんでした。",
+          "Speech emotion recognition is a signal problem before it is a classification problem. The model does not read words; it must infer patterns from energy, temporal changes, and spectral characteristics that can overlap heavily across speakers and emotions.",
+          "音声感情認識は、分類問題である前に信号処理の問題です。モデルは言葉そのものを読むのではなく、話者や感情間で大きく重なり得るエネルギー、時間変化、スペクトル特性からパターンを推定する必要があります。",
         ),
         body: t(
-          "The pipeline had to stay honest end to end: consistent feature extraction, a model that generalizes beyond its training recordings, and an interface that lets anyone test it without touching Python.",
-          "パイプラインは終端まで誠実である必要がありました。一貫した特徴抽出、学習録音を超えて一般化するモデル、そして誰もがPythonに触れずに試せるインターフェースです。",
+          "The engineering challenge was keeping the whole chain consistent: dataset labels, waveform preprocessing, feature extraction, tensor shape, class order, model checkpoint, and runtime inference all have to agree. During the remaster I found that even a seemingly small change such as the sample-rate value passed to MFCC extraction could change confidence scores without causing any shape or runtime error.",
+          "技術的な難しさは、データセットのラベル、波形前処理、特徴量抽出、テンソル形状、クラス順、モデルチェックポイント、実行時推論をすべて一致させることでした。再整理の過程では、MFCC抽出に渡すサンプルレートのような一見小さな変更でも、形状エラーや実行時エラーを出さずに信頼度スコアを変えてしまうことが分かりました。",
         ),
       },
       approach: {
         kicker: t("Approach", "アプローチ"),
-        heading: t("Features first, then a classifier, then a face for it", "まず特徴量、次に分類器、そして顔となるUI"),
+        heading: t(
+          "From heterogeneous recordings to a fixed sequence the LSTM can learn",
+          "異なる音声データをLSTMが学習できる固定系列へ",
+        ),
         steps: [
           {
+            tag: t("Data", "データ"),
+            title: t("Unify four emotional-speech datasets", "4つの感情音声データセットを統合"),
+            description: t(
+              "The research notebook combines RAVDESS, CREMA-D, TESS, and SAVEE into one label space. The experiment then inspects emotion and gender distribution and narrows the working set to female speech before feature extraction.",
+              "研究ノートブックではRAVDESS、CREMA-D、TESS、SAVEEを一つのラベル空間に統合。感情・性別分布を確認した後、特徴抽出前に女性音声へ対象を絞っています。",
+            ),
+          },
+          {
+            tag: t("Signal", "信号処理"),
+            title: t("Normalize duration without normalizing away the signal", "信号特性を残したまま長さを正規化"),
+            description: t(
+              "Audio is decoded to PCM samples, silence is trimmed with top_db=25, and each sample is padded or truncated to 180,000 values. This produces a stable temporal length while preserving the raw amplitude scale used by the historical model.",
+              "音声をPCMサンプルへ変換し、top_db=25で無音区間を除去。各サンプルを180,000点へパディングまたは切り詰めます。過去モデルが使った生の振幅スケールを維持しながら、時間長を固定します。",
+            ),
+          },
+          {
             tag: t("Features", "特徴量"),
-            title: t("ZCR, RMS, and MFCC extraction", "ZCR・RMS・MFCCの抽出"),
+            title: t("Encode energy, transitions, and spectral envelope", "エネルギー・変化・スペクトル包絡を特徴量化"),
             description: t(
-              "Librosa extracts the signal features that carry prosody — energy, rhythm, spectral shape — into a representation a model can learn from.",
-              "Librosaが韻律を運ぶ信号特徴 — エネルギー・リズム・スペクトルの形 — を、モデルが学べる表現へ抽出します。",
+              "Every frame contains one Zero Crossing Rate value, one RMS energy value, and 13 MFCC coefficients. With a 2,048-sample frame and 512-sample hop, the deployed model receives a sequence shaped (352, 15).",
+              "各フレームはゼロ交差率1値、RMSエネルギー1値、MFCC 13係数で構成。フレーム長2,048、ホップ長512により、デプロイモデルには(352, 15)の系列が入力されます。",
             ),
           },
           {
-            tag: t("Model", "モデル"),
-            title: t("A TensorFlow/Keras classifier for six emotions", "6感情を分けるTensorFlow/Keras分類器"),
+            tag: t("Sequence model", "系列モデル"),
+            title: t("Model the feature sequence with stacked LSTMs", "積層LSTMで特徴系列をモデル化"),
             description: t(
-              "A Keras network maps extracted features to six classes: neutral, happy, sad, angry, fear, and disgust.",
-              "Kerasネットワークが抽出された特徴を6クラス — neutral・happy・sad・angry・fear・disgust — へマッピングします。",
+              "A 64-unit LSTM returns the full sequence to a second 64-unit LSTM, followed by a six-unit softmax layer. The reference architecture has 53,894 trainable parameters and maps the sequence to neutral, happy, sad, angry, fear, or disgust.",
+              "64ユニットのLSTMが系列全体を第2の64ユニットLSTMへ渡し、最後に6ユニットのsoftmax層で分類します。参照アーキテクチャは53,894個の学習可能パラメータを持ち、neutral・happy・sad・angry・fear・disgustへ分類します。",
             ),
           },
           {
-            tag: t("Interface", "インターフェース"),
-            title: t("Streamlit as the product surface", "プロダクトの表面としてのStreamlit"),
+            tag: t("Productization", "プロダクト化"),
+            title: t("Separate research, inference, tests, and UI", "研究・推論・テスト・UIを分離"),
             description: t(
-              "A Streamlit app wraps the pipeline so recordings can be classified interactively — no code required.",
-              "Streamlitアプリがパイプラインを包み込み、録音を対話的に分類できます。コードは不要です。",
+              "The portfolio remaster moves runtime logic into src/, keeps the historical notebook as a training reference, validates model input/output contracts with tests, and wraps inference in a Streamlit interface with upload validation and per-class confidence scores.",
+              "ポートフォリオ向け再整理では、実行時ロジックをsrc/へ分離し、過去ノートブックは学習リファレンスとして保持。テストでモデルの入出力契約を検証し、アップロード検証とクラス別信頼度を備えたStreamlit UIから推論できるようにしました。",
             ),
           },
         ],
       },
-features: {
+      methodology: {
+        kicker: t("Methodology", "手法"),
+        heading: t("What the model actually sees", "モデルが実際に見ているもの"),
+        body: t(
+          "The classifier never receives text or a raw waveform directly. The pipeline converts each recording into a fixed sequence of handcrafted acoustic descriptors, then learns temporal relationships between those descriptors.",
+          "分類器にはテキストも生波形も直接入力されません。各録音を固定長の手設計音響特徴系列へ変換し、その特徴量間の時間的関係を学習します。",
+        ),
+        items: [
+          {
+            title: t("Dataset construction", "データセット構築"),
+            description: t(
+              "RAVDESS, CREMA-D, TESS, and SAVEE are mapped into six common classes. The notebook records source-specific label parsing and gender metadata, then filters the experimental dataframe to female speech.",
+              "RAVDESS、CREMA-D、TESS、SAVEEを6つの共通クラスへマッピング。データセットごとのラベル解析と性別情報を保持し、実験用データフレームでは女性音声に絞っています。",
+            ),
+          },
+          {
+            title: t("Preprocessing contract", "前処理契約"),
+            description: t(
+              "Silence is trimmed at 25 dB below the reference level and the remaining PCM array is padded or truncated to 180,000 samples. The production remaster deliberately preserves the legacy inference behavior instead of silently introducing a new resampling policy.",
+              "基準レベルから25 dB下を閾値として無音を除去し、残ったPCM配列を180,000サンプルへパディングまたは切り詰めます。本番向け再整理では、新しいリサンプリング方針を暗黙に導入せず、従来の推論挙動を意図的に維持しています。",
+            ),
+          },
+          {
+            title: t("15 features × 352 frames", "15特徴量 × 352フレーム"),
+            description: t(
+              "ZCR captures sign changes in the waveform, RMS summarizes frame energy, and 13 MFCCs represent the spectral envelope. Concatenating them produces 15 values per frame and a model tensor of (batch, 352, 15).",
+              "ZCRは波形の符号変化、RMSはフレームごとのエネルギー、13個のMFCCはスペクトル包絡を表現します。連結すると1フレーム15値となり、モデル入力は(batch, 352, 15)です。",
+            ),
+          },
+          {
+            title: t("Train / validation / test split", "学習・検証・テスト分割"),
+            description: t(
+              "The notebook first reserves 12% of the processed data, then splits that remainder 70/30 into validation and test sets with random_state=1. This corresponds to approximately 88% training, 8.4% validation, and 3.6% test data.",
+              "ノートブックではまず処理済みデータの12%を確保し、その部分をrandom_state=1で70/30に分けて検証・テストセットを作成。概ね学習88%、検証8.4%、テスト3.6%の構成です。",
+            ),
+          },
+          {
+            title: t("Optimization setup", "最適化設定"),
+            description: t(
+              "The reference run compiles the network with categorical cross-entropy, RMSProp, and categorical accuracy. Training is configured for up to 400 epochs with a batch size of 6.",
+              "参照実行ではcategorical cross-entropy、RMSProp、categorical accuracyでコンパイル。最大400エポック、バッチサイズ6で学習する設定です。",
+            ),
+          },
+          {
+            title: t("Runtime safeguards", "実行時の保護"),
+            description: t(
+              "The remastered app validates file type and size, checks the expected (352, 15) feature contract and six-class model output, runs automated Pytest checks in CI, and keeps user-facing errors separate from internal exceptions.",
+              "再整理版ではファイル形式・サイズを検証し、(352, 15)の特徴量契約と6クラス出力を確認。CIでPytestを実行し、ユーザー向けエラーと内部例外も分離しています。",
+            ),
+          },
+        ],
+      },
+      features: {
         heading: t("What shipped", "実装したもの"),
         items: [
           {
-            title: t("Signal-level features", "信号レベルの特徴量"),
+            title: t("Acoustic feature pipeline", "音響特徴量パイプライン"),
             description: t(
-              "ZCR, RMS, and MFCC extraction with Librosa captures how something is said, not what.",
-              "LibrosaによるZCR・RMS・MFCC抽出が、何が言われたかではなくどう言われたかを捉えます。",
+              "A deterministic ZCR + RMS + 13-MFCC feature path converts variable recordings into the sequence shape expected by the trained checkpoint.",
+              "ZCR + RMS + 13 MFCCによる決定的な特徴抽出経路で、可変長録音を学習済みチェックポイントが期待する系列形状へ変換します。",
             ),
           },
           {
-            title: t("Six-class classifier", "6クラス分類器"),
+            title: t("Stacked LSTM classifier", "積層LSTM分類器"),
             description: t(
-              "A TensorFlow/Keras model separates neutral, happy, sad, angry, fear, and disgust.",
-              "TensorFlow/Kerasモデルがneutral・happy・sad・angry・fear・disgustを分離します。",
+              "Two 64-unit LSTM layers model temporal structure before a six-way softmax prediction.",
+              "64ユニットLSTMを2層重ねて時間構造を学習し、6クラスsoftmaxで予測します。",
             ),
           },
           {
-            title: t("Streamlit interface", "Streamlitインターフェース"),
+            title: t("Interactive inference app", "対話型推論アプリ"),
             description: t(
-              "The full pipeline is usable through a simple app, from audio in to emotion out.",
-              "音声入力から感情出力まで、パイプライン全体をシンプルなアプリから利用できます。",
+              "Streamlit handles supported audio uploads, playback, inference, the detected class, overall confidence, and a per-emotion score visualization.",
+              "Streamlitで対応音声のアップロード、再生、推論、検出クラス、信頼度、感情別スコア可視化まで提供します。",
             ),
           },
           {
-            title: t("Reproducible data handling", "再現可能なデータ処理"),
+            title: t("Production-oriented project structure", "本番を意識したプロジェクト構成"),
             description: t(
-              "NumPy and Pandas keep feature and dataset handling consistent end to end.",
-              "NumPyとPandasが特徴量とデータセットの処理を終端まで一貫させます。",
+              "Inference code is separated from the training notebook, the Keras checkpoint is loaded without recompilation, and CI covers linting, feature contracts, model loading, and synthetic inference.",
+              "推論コードを学習ノートブックから分離し、Kerasチェックポイントは再コンパイルせずロード。CIでLint、特徴量契約、モデルロード、合成入力推論を検証します。",
+            ),
+          },
+        ],
+      },
+      analysis: {
+        kicker: t("Model analysis", "モデル分析"),
+        heading: t("The metric is useful only when its provenance is clear", "指標は由来が明確であって初めて意味を持つ"),
+        body: t(
+          "The historical notebook contains a validation run with strong numbers, but the remaster uncovered enough provenance issues that I treat those numbers as experimental evidence rather than as a production accuracy claim.",
+          "過去ノートブックには高い検証結果が残っていますが、再整理時に複数の由来・整合性問題が見つかったため、その数値は本番精度の断定ではなく、実験結果として扱っています。",
+        ),
+        items: [
+          {
+            title: t("Historical validation: ~94%", "過去の検証結果：約94%"),
+            description: t(
+              "One recorded validation report contains 263 samples and reports 0.94 accuracy, with macro F1 around 0.93 and weighted F1 around 0.94. This belongs to the notebook experiment, not a newly reproduced benchmark of the current deployed checkpoint.",
+              "記録された検証レポートの一つでは263サンプルに対してaccuracy 0.94、macro F1約0.93、weighted F1約0.94を記録しています。ただしこれはノートブック実験の結果であり、現在デプロイ中のチェックポイントを再現評価した最新ベンチマークではありません。",
+            ),
+          },
+          {
+            title: t("Evaluation label audit", "評価ラベルの監査"),
+            description: t(
+              "The training mapping is neutral, happy, sad, angry, fear, disgust, but the historical confusion-matrix/report display labels were written as neutral, calm, sad, happy, fear, disgust. The numeric class indices remain evaluable, but the class names shown for indices 1 and 3 are not trustworthy and should be corrected before presenting per-class conclusions.",
+              "学習時のマッピングはneutral・happy・sad・angry・fear・disgustですが、過去の混同行列／レポート表示はneutral・calm・sad・happy・fear・disgustとなっていました。数値インデックス自体は評価できますが、インデックス1と3の表示名は信頼できず、クラス別結論を示す前に修正が必要です。",
+            ),
+          },
+          {
+            title: t("Checkpoint callback audit", "チェックポイント設定の監査"),
+            description: t(
+              "The model is compiled with categorical_accuracy, while EarlyStopping and ModelCheckpoint monitor val_accuracy. Keras logs explicitly warn that val_accuracy is unavailable, so those callbacks did not operate as intended in the recorded run.",
+              "モデルはcategorical_accuracyでコンパイルされていますが、EarlyStoppingとModelCheckpointはval_accuracyを監視しています。Kerasログにはval_accuracyが存在しないという警告が残っており、記録された実行ではこれらのコールバックが意図通り動作していません。",
+            ),
+          },
+          {
+            title: t("Notebook model ≠ deployed checkpoint", "ノートブックモデル ≠ デプロイ済みチェックポイント"),
+            description: t(
+              "The current app deploys the checkpoint historically named best_model_22112024_400.keras, while the reference notebook later trains/saves a 03122024 model. Because those artifacts are not the same checkpoint, notebook metrics should not be attributed directly to the deployed model.",
+              "現在のアプリは旧称best_model_22112024_400.kerasのチェックポイントをデプロイしていますが、参照ノートブックは後の03122024モデルを学習・保存しています。同一チェックポイントではないため、ノートブックの評価値をデプロイモデルへ直接帰属させるべきではありません。",
+            ),
+          },
+          {
+            title: t("Inference parity matters", "推論パリティの重要性"),
+            description: t(
+              "During the remaster, changing MFCC sample-rate handling altered confidence scores even though tensor shapes stayed valid. I restored the legacy inference behavior and added contract tests, reinforcing that ML refactors must preserve numerical preprocessing, not only interfaces.",
+              "再整理中、MFCCのサンプルレート処理を変更したところ、テンソル形状は正常なまま信頼度が変化しました。従来の推論挙動へ戻し契約テストを追加したことで、MLのリファクタリングではインターフェースだけでなく数値的前処理も維持する必要があると確認できました。",
+            ),
+          },
+        ],
+      },
+      limitations: {
+        kicker: t("Limitations & next steps", "制約と次の改善"),
+        heading: t("A useful experiment, not a universal emotion detector", "有用な実験だが、万能な感情検出器ではない"),
+        body: t(
+          "The model estimates patterns associated with acted emotional-speech datasets. It should not be interpreted as an objective reading of a person's internal emotional state.",
+          "このモデルは演技された感情音声データセットに関連する音響パターンを推定するものです。人の内面的な感情状態を客観的に読み取るものとして解釈すべきではありません。",
+        ),
+        items: [
+          {
+            title: t("Dataset bias", "データセットバイアス"),
+            description: t(
+              "The notebook intentionally narrows the experiment to female speech, and the source datasets differ in speakers, recording conditions, and acting style. Generalization to everyday speech, other demographics, languages, or microphones is therefore not established.",
+              "ノートブックでは意図的に女性音声へ対象を絞っており、元データセットも話者・録音条件・演技スタイルが異なります。日常会話、他の属性、言語、マイクへの一般化は確認されていません。",
+            ),
+          },
+          {
+            title: t("Confidence is not calibration", "信頼度は校正精度ではない"),
+            description: t(
+              "The softmax score is exposed as model confidence for usability, but the project does not contain a calibration study. A high score should not be read as a guaranteed probability of correctness.",
+              "使いやすさのためsoftmax値をモデル信頼度として表示していますが、校正評価は行っていません。高いスコアを正解確率の保証として読むべきではありません。",
+            ),
+          },
+          {
+            title: t("Rebuild the evaluation protocol", "評価プロトコルの再構築"),
+            description: t(
+              "The next rigorous step is to correct display labels and callback monitors, pin preprocessing dependencies, bind evaluation to the exact deployed checkpoint, and report a reproducible test-set confusion matrix and per-class metrics.",
+              "次の厳密な改善は、表示ラベルとコールバック監視指標を修正し、前処理依存関係を固定し、評価を実際のデプロイ済みチェックポイントへ結び付け、再現可能なテストセット混同行列とクラス別指標を報告することです。",
+            ),
+          },
+          {
+            title: t("Standardize future preprocessing by retraining", "再学習で将来の前処理を標準化"),
+            description: t(
+              "The deployed model currently preserves legacy preprocessing for compatibility. A future model should explicitly resample audio to a documented rate, retrain on that contract, and test parity across WAV and compressed formats.",
+              "現デプロイモデルは互換性のため従来前処理を維持しています。将来モデルでは明示したサンプルレートへリサンプリングし、その契約で再学習し、WAVと圧縮形式間のパリティも検証するべきです。",
             ),
           },
         ],
@@ -527,16 +692,23 @@ features: {
       galleryLabel: t("Gallery", "ギャラリー"),
       outcomes: {
         kicker: t("Outcomes", "成果"),
-        heading: t("What changed", "変わったこと"),
+        heading: t("What the project demonstrates", "このプロジェクトで示せたこと"),
         items: [
-          t("Classifies speech into six emotion categories.", "音声を6つの感情カテゴリに分類します。"),
           t(
-            "Feature extraction, training, and inference share one Python stack.",
-            "特徴抽出・学習・推論が一つのPythonスタックを共有します。",
+            "Built a complete speech-emotion pipeline from multi-dataset label parsing through acoustic features, sequence modeling, evaluation, and interactive inference.",
+            "複数データセットのラベル統合から音響特徴量、系列モデル、評価、対話型推論まで、音声感情認識の一連のパイプラインを構築。",
           ),
           t(
-            "The Streamlit interface makes the model usable without any code.",
-            "Streamlitインターフェースにより、コードなしでモデルを利用できます。",
+            "Converted each recording into a stable (352, 15) temporal feature representation consumed by a 53,894-parameter stacked LSTM.",
+            "各録音を安定した(352, 15)の時間特徴表現へ変換し、53,894パラメータの積層LSTMで処理。",
+          ),
+          t(
+            "Turned a notebook experiment into a cleaner application structure with separated inference modules, automated tests, CI, and Streamlit deployment.",
+            "ノートブック実験を、推論モジュール分離・自動テスト・CI・Streamlitデプロイを備えた整理されたアプリ構成へ発展。",
+          ),
+          t(
+            "Audited the historical experiment and documented evaluation-label, callback-monitor, checkpoint-provenance, and preprocessing-parity issues instead of presenting an unsupported production accuracy claim.",
+            "裏付けのない本番精度を主張するのではなく、過去実験の評価ラベル、コールバック監視、チェックポイント由来、前処理パリティの問題を監査・文書化。",
           ),
         ],
       },
