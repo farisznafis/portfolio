@@ -89,6 +89,13 @@ export type CaseStudyFeature = {
   description: LocalizedText;
 };
 
+export type CaseStudyDetailSection = {
+  kicker: LocalizedText;
+  heading: LocalizedText;
+  body: LocalizedText;
+  items: CaseStudyFeature[];
+};
+
 /**
  * Rich, fully-localized case-study copy. Mirrors the per-locale columns of a
  * future `project_translations` table (overview/problem/…/outcome), extended
@@ -100,7 +107,11 @@ export type CaseStudyContent = {
   atAGlance: LocalizedText;
   challenge: { heading: LocalizedText; lead: LocalizedText; body: LocalizedText };
   approach: { kicker: LocalizedText; heading: LocalizedText; steps: CaseStudyStep[] };
+  /** Optional deep-dive sections for technical / research-heavy projects. */
+  methodology?: CaseStudyDetailSection;
   features: { heading: LocalizedText; items: CaseStudyFeature[] };
+  analysis?: CaseStudyDetailSection;
+  limitations?: CaseStudyDetailSection;
   /** sr-only label for the gallery section. */
   galleryLabel: LocalizedText;
   outcomes: { kicker: LocalizedText; heading: LocalizedText; items: LocalizedText[] };
