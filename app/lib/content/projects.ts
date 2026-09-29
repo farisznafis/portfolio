@@ -85,9 +85,39 @@ export type CaseStudyView = {
     }[];
   };
 
+  methodology?: {
+    kicker: string;
+    heading: string;
+    body: string;
+    items: {
+      title: string;
+      description: string;
+    }[];
+  };
+
   features: {
     heading: string;
 
+    items: {
+      title: string;
+      description: string;
+    }[];
+  };
+
+  analysis?: {
+    kicker: string;
+    heading: string;
+    body: string;
+    items: {
+      title: string;
+      description: string;
+    }[];
+  };
+
+  limitations?: {
+    kicker: string;
+    heading: string;
+    body: string;
     items: {
       title: string;
       description: string;
@@ -249,6 +279,46 @@ function caseStudyToView(
         ),
     },
 
+    methodology:
+      study.methodology
+        ? {
+            kicker:
+              localized(
+                study.methodology.kicker,
+                lang,
+              ) ?? "",
+
+            heading:
+              localized(
+                study.methodology.heading,
+                lang,
+              ) ?? "",
+
+            body:
+              localized(
+                study.methodology.body,
+                lang,
+              ) ?? "",
+
+            items:
+              study.methodology.items.map(
+                (item) => ({
+                  title:
+                    localized(
+                      item.title,
+                      lang,
+                    ) ?? "",
+
+                  description:
+                    localized(
+                      item.description,
+                      lang,
+                    ) ?? "",
+                }),
+              ),
+          }
+        : undefined,
+
     features: {
       heading:
         localized(
@@ -273,6 +343,86 @@ function caseStudyToView(
           }),
         ),
     },
+
+    analysis:
+      study.analysis
+        ? {
+            kicker:
+              localized(
+                study.analysis.kicker,
+                lang,
+              ) ?? "",
+
+            heading:
+              localized(
+                study.analysis.heading,
+                lang,
+              ) ?? "",
+
+            body:
+              localized(
+                study.analysis.body,
+                lang,
+              ) ?? "",
+
+            items:
+              study.analysis.items.map(
+                (item) => ({
+                  title:
+                    localized(
+                      item.title,
+                      lang,
+                    ) ?? "",
+
+                  description:
+                    localized(
+                      item.description,
+                      lang,
+                    ) ?? "",
+                }),
+              ),
+          }
+        : undefined,
+
+    limitations:
+      study.limitations
+        ? {
+            kicker:
+              localized(
+                study.limitations.kicker,
+                lang,
+              ) ?? "",
+
+            heading:
+              localized(
+                study.limitations.heading,
+                lang,
+              ) ?? "",
+
+            body:
+              localized(
+                study.limitations.body,
+                lang,
+              ) ?? "",
+
+            items:
+              study.limitations.items.map(
+                (item) => ({
+                  title:
+                    localized(
+                      item.title,
+                      lang,
+                    ) ?? "",
+
+                  description:
+                    localized(
+                      item.description,
+                      lang,
+                    ) ?? "",
+                }),
+              ),
+          }
+        : undefined,
 
     galleryLabel:
       localized(
