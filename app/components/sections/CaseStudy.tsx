@@ -304,6 +304,51 @@ export function CaseStudy({
         </div>
       </section>
 
+      {study.methodology ? (
+        <section
+          aria-labelledby="cs-methodology"
+          className="border-t border-line bg-white/[0.02]"
+        >
+          <div className="container-x py-24 sm:py-32">
+            <motion.div {...rise}>
+              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-accent">
+                {study.methodology.kicker}
+              </p>
+              <h2
+                id="cs-methodology"
+                className="mt-4 font-display text-section font-semibold tracking-tight text-ink sm:text-title"
+              >
+                <MaskedText text={study.methodology.heading} delay={0.1} />
+              </h2>
+              <p className="mt-6 max-w-3xl leading-relaxed text-muted">
+                {study.methodology.body}
+              </p>
+            </motion.div>
+
+            <div className="mt-12 grid gap-px overflow-hidden border border-line bg-line lg:grid-cols-2">
+              {study.methodology.items.map((item, index) => (
+                <motion.div
+                  key={item.title}
+                  className={clsx(
+                    "p-8 sm:p-10",
+                    index % 3 === 1 ? "bg-accent/[0.06]" : "bg-elevated",
+                  )}
+                  initial={reduce ? {} : { opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.7, delay: index * 0.06, ease: EASE }}
+                >
+                  <h3 className="font-display text-xl font-semibold text-ink">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 leading-relaxed text-muted">{item.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       {/* ── Features - asymmetric grid, tint variation across cells ──────── */}
       <section aria-labelledby="cs-features" className="container-x py-24 sm:py-32">
         <motion.h2
@@ -341,6 +386,79 @@ export function CaseStudy({
           })}
         </div>
       </section>
+
+      {study.analysis ? (
+        <section aria-labelledby="cs-analysis" className="border-t border-line">
+          <div className="container-x py-24 sm:py-32">
+            <motion.div {...rise}>
+              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-accent">
+                {study.analysis.kicker}
+              </p>
+              <h2
+                id="cs-analysis"
+                className="mt-4 font-display text-section font-semibold tracking-tight text-ink sm:text-title"
+              >
+                <MaskedText text={study.analysis.heading} delay={0.1} />
+              </h2>
+              <p className="mt-6 max-w-3xl leading-relaxed text-muted">{study.analysis.body}</p>
+            </motion.div>
+
+            <div className="mt-12 grid gap-6 lg:grid-cols-2">
+              {study.analysis.items.map((item, index) => (
+                <motion.div
+                  key={item.title}
+                  className="border border-line bg-elevated p-8 sm:p-10"
+                  initial={reduce ? {} : { opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.7, delay: index * 0.06, ease: EASE }}
+                >
+                  <span className="font-mono text-[11px] text-muted">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="mt-4 font-display text-xl font-semibold text-ink">
+                    {item.title}
+                  </h3>
+                  <p className="mt-3 leading-relaxed text-muted">{item.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {study.limitations ? (
+        <section aria-labelledby="cs-limitations" className="container-x py-24 sm:py-32">
+          <motion.div className="max-w-3xl" {...rise}>
+            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-accent">
+              {study.limitations.kicker}
+            </p>
+            <h2
+              id="cs-limitations"
+              className="mt-4 font-display text-section font-semibold tracking-tight text-ink sm:text-title"
+            >
+              <MaskedText text={study.limitations.heading} delay={0.1} />
+            </h2>
+            <p className="mt-6 leading-relaxed text-muted">{study.limitations.body}</p>
+          </motion.div>
+
+          <ul className="mt-12 divide-y divide-line border-y border-line">
+            {study.limitations.items.map((item, index) => (
+              <motion.li
+                key={item.title}
+                className="grid gap-3 py-7 md:grid-cols-[220px_1fr] md:gap-12"
+                initial={reduce ? {} : { opacity: 0, x: -16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6, delay: index * 0.06, ease: EASE }}
+              >
+                <h3 className="font-display text-lg font-semibold text-ink">{item.title}</h3>
+                <p className="leading-relaxed text-muted">{item.description}</p>
+              </motion.li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {/* ── Gallery - real assets only; hidden entirely when none exist ──── */}
       {gallery.length > 0 ? (
