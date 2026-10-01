@@ -133,16 +133,16 @@ export const visualJournal: VisualJournalConfig = {
     {
       src: "/images/journal/IMG_20250222_162510_780.jpg",
       alt: {
-        en: "A street scene photographed in Japan",
-        ja: "日本で撮影した街の風景",
+        en: "Kumamoto Castle",
+        ja: "熊本城",
       },
     },
 
     {
       src: "/images/journal/IMG_20250209_180504_696.jpg",
       alt: {
-        en: "A landscape photographed in Japan",
-        ja: "日本で撮影した風景",
+        en: "View from the top of Hanaokayama",
+        ja: "花岡山の頂上からの眺め",
       },
     },
   ],

@@ -1,7 +1,7 @@
 import { unstable_cache } from "next/cache";
 
 import { createPublicClient } from "@/app/lib/supabase/public";
-import { projects as fallbackProjects } from "@/app/content/projects";
+// import { projects as fallbackProjects } from "@/app/content/projects";
 
 import type {
   CaseStudyContent,
@@ -217,15 +217,20 @@ export const getStoredProjects =
           "project_order",
         );
 
-      if (error || !data) {
+      if (error) {
         console.error(
           "Supabase projects failed:",
           error,
         );
 
-        return fallbackProjects;
+        throw new Error(
+          "Failed to load projects from Supabase.",
+        );
       }
 
+      if (!data) {
+        return [];
+      }
       /**
        * We have not generated Supabase Database types yet,
        * so explicitly describe the nested query result.

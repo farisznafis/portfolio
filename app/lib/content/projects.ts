@@ -1,28 +1,18 @@
 /**
- * Project presentation/data-access helpers.
+ * Project presentation / data-access helpers.
  *
- * Raw project data is provided by the caller. The source may be:
+ * Raw project content comes from:
  *
- * - Supabase (normal production path)
- * - the static TypeScript fallback
+ * - Supabase in production
+ * - app/content/projects.ts as a fallback
  *
- * This layer only converts StoredProject[] into localized ProjectView objects.
- *
- *   getAllProjects(stored, lang)
- *   getFeaturedProjects(stored, lang)
- *   getProjectBySlug(stored, lang, slug)
- *   getProjectsByField(stored, lang, field)
- *   getCaseStudySlugs(stored)
- *   isCaseStudySlug(stored, slug)
- *   getNextCaseStudySlug(stored, slug)
- *   getProjectHref(view)
- *   getPrimaryLink(view)
- *
- * Components receive resolved/localized view objects and do not need to know
- * whether the underlying data came from Supabase or the static fallback.
+ * This layer converts StoredProject into locale-resolved
+ * ProjectView objects for components.
  */
 
-import type { Lang } from "../../types/common";
+import type {
+  Lang,
+} from "../../types/common";
 
 import type {
   CaseStudyContent,
@@ -34,34 +24,61 @@ import type {
   StoredProject,
 } from "../../types/project";
 
-import { localized } from "./common";
+import {
+  localized,
+} from "./common";
 
 /**
- * Public link resolved for one locale.
+ * External link ready for rendering.
  */
 export type ViewLink = {
   type: ProjectLink["type"];
+
   label: string;
+
   url: string;
 };
 
 /**
- * Media resolved for one locale.
- *
- * src may be:
- * - a local /public path
- * - a Supabase Storage public URL
- * - another supported external URL
+ * Media ready for rendering.
  */
 export type ViewMedia = {
   type: ProjectMedia["type"];
+
   src: string;
+
   alt: string;
+
   caption?: string;
 };
 
 /**
- * Localized case-study content ready for rendering.
+ * Generic long-form case-study section after locale resolution.
+ */
+export type CaseStudySectionView = {
+  id: string;
+
+  kicker?: string;
+
+  heading: string;
+
+  paragraphs: string[];
+
+  facts: {
+    label: string;
+    value: string;
+  }[];
+
+  items: {
+    title: string;
+    description: string;
+  }[];
+
+  note?: string;
+};
+
+/**
+ * Localized case study ready for rendering.
  */
 export type CaseStudyView = {
   overview: string;
@@ -70,17 +87,22 @@ export type CaseStudyView = {
 
   challenge: {
     heading: string;
+
     lead: string;
+
     body: string;
   };
 
   approach: {
     kicker: string;
+
     heading: string;
 
     steps: {
       tag: string;
+
       title: string;
+
       description: string;
     }[];
   };
@@ -90,15 +112,20 @@ export type CaseStudyView = {
 
     items: {
       title: string;
+
       description: string;
     }[];
   };
+
+  sections: CaseStudySectionView[];
 
   galleryLabel: string;
 
   outcomes: {
     kicker: string;
+
     heading: string;
+
     items: string[];
   };
 
@@ -106,7 +133,7 @@ export type CaseStudyView = {
 };
 
 /**
- * Project fully resolved for one locale and ready for UI rendering.
+ * Project fully resolved for one locale.
  */
 export type ProjectView = {
   slug: string;
@@ -128,22 +155,17 @@ export type ProjectView = {
   links: ViewLink[];
 
   /**
-   * Hero / social-preview media.
-   *
-   * The current UI only supports image covers.
+   * Current home / case-study hero expects an image.
    */
   cover: ViewMedia | null;
 
   /**
-   * Current gallery UI only renders images.
+   * Gallery currently exposes image media only.
    */
   gallery: ViewMedia[];
 
   hasCaseStudy: boolean;
 
-  /**
-   * Typographic fallback shown when no cover image exists.
-   */
   initials: string;
 
   tone: ProjectTone;
@@ -152,28 +174,35 @@ export type ProjectView = {
 };
 
 /**
- * Convert one localized media object to the UI view.
+ * Resolve media text for one locale.
  */
 function mediaToView(
   media: ProjectMedia,
   lang: Lang,
 ): ViewMedia {
   return {
-    type: media.type,
+    type:
+      media.type,
 
-    src: media.src,
-
-    alt:
-      localized(media.alt, lang) ??
+    src:
       media.src,
 
+    alt:
+      localized(
+        media.alt,
+        lang,
+      ) ?? media.src,
+
     caption:
-      localized(media.caption, lang),
+      localized(
+        media.caption,
+        lang,
+      ),
   };
 }
 
 /**
- * Convert bilingual case-study content into one active locale.
+ * Resolve bilingual case-study content.
  */
 function caseStudyToView(
   study: CaseStudyContent,
@@ -274,6 +303,87 @@ function caseStudyToView(
         ),
     },
 
+    sections:
+      (
+        study.sections ??
+        []
+      ).map(
+        (section) => ({
+          id:
+            section.id,
+
+          kicker:
+            localized(
+              section.kicker,
+              lang,
+            ),
+
+          heading:
+            localized(
+              section.heading,
+              lang,
+            ) ?? "",
+
+          paragraphs:
+            (
+              section.paragraphs ??
+              []
+            ).map(
+              (paragraph) =>
+                localized(
+                  paragraph,
+                  lang,
+                ) ?? "",
+            ),
+
+          facts:
+            (
+              section.facts ??
+              []
+            ).map(
+              (fact) => ({
+                label:
+                  localized(
+                    fact.label,
+                    lang,
+                  ) ?? "",
+
+                value:
+                  localized(
+                    fact.value,
+                    lang,
+                  ) ?? "",
+              }),
+            ),
+
+          items:
+            (
+              section.items ??
+              []
+            ).map(
+              (item) => ({
+                title:
+                  localized(
+                    item.title,
+                    lang,
+                  ) ?? "",
+
+                description:
+                  localized(
+                    item.description,
+                    lang,
+                  ) ?? "",
+              }),
+            ),
+
+          note:
+            localized(
+              section.note,
+              lang,
+            ),
+        }),
+      ),
+
     galleryLabel:
       localized(
         study.galleryLabel,
@@ -312,7 +422,7 @@ function caseStudyToView(
 }
 
 /**
- * Convert one StoredProject into the localized shape consumed by the UI.
+ * Convert one StoredProject into its UI view.
  */
 function toView(
   project: StoredProject,
@@ -338,7 +448,8 @@ function toView(
       localized(
         project.summary,
         lang,
-      ) ?? project.title,
+      ) ??
+      project.title,
 
     fields:
       project.fields,
@@ -350,7 +461,10 @@ function toView(
       project.confidentiality,
 
     links:
-      (project.links ?? []).map(
+      (
+        project.links ??
+        []
+      ).map(
         (link) => ({
           type:
             link.type,
@@ -367,12 +481,13 @@ function toView(
       ),
 
     /**
-     * Existing components use next/image / image-oriented rendering,
-     * so video covers are not exposed as cover yet.
+     * Covers remain image-only because the current UI uses
+     * image-oriented rendering.
      */
     cover:
       project.cover &&
-      project.cover.type === "image"
+      project.cover.type ===
+        "image"
         ? mediaToView(
             project.cover,
             lang,
@@ -380,14 +495,17 @@ function toView(
         : null,
 
     /**
-     * Existing gallery UI is image-only.
-     * Video support can be added separately later.
+     * Case-study gallery currently renders images.
      */
     gallery:
-      (project.gallery ?? [])
+      (
+        project.gallery ??
+        []
+      )
         .filter(
           (media) =>
-            media.type === "image",
+            media.type ===
+            "image",
         )
         .map(
           (media) =>
@@ -417,7 +535,7 @@ function toView(
 }
 
 /**
- * Every project in /projects display order.
+ * All projects in display order.
  */
 export function getAllProjects(
   stored: StoredProject[],
@@ -440,7 +558,7 @@ export function getAllProjects(
 }
 
 /**
- * Featured Home projects ordered by featuredOrder.
+ * Featured home projects.
  */
 export function getFeaturedProjects(
   stored: StoredProject[],
@@ -454,8 +572,14 @@ export function getFeaturedProjects(
     .slice()
     .sort(
       (a, b) =>
-        (a.featuredOrder ?? 0) -
-        (b.featuredOrder ?? 0),
+        (
+          a.featuredOrder ??
+          0
+        ) -
+        (
+          b.featuredOrder ??
+          0
+        ),
     )
     .map(
       (project) =>
@@ -467,9 +591,7 @@ export function getFeaturedProjects(
 }
 
 /**
- * Projects belonging to one field.
- *
- * A project may belong to several fields.
+ * Projects by field.
  */
 export function getProjectsByField(
   stored: StoredProject[],
@@ -488,7 +610,7 @@ export function getProjectsByField(
 }
 
 /**
- * Find one project by URL slug.
+ * Get one project.
  */
 export function getProjectBySlug(
   stored: StoredProject[],
@@ -498,7 +620,8 @@ export function getProjectBySlug(
   const project =
     stored.find(
       (item) =>
-        item.slug === slug,
+        item.slug ===
+        slug,
     );
 
   return project
@@ -510,10 +633,7 @@ export function getProjectBySlug(
 }
 
 /**
- * Internal canonical case-study slug list.
- *
- * It is intentionally calculated from the supplied dataset instead of being
- * stored globally because projects now come from Supabase at runtime.
+ * Internal case-study slug list.
  */
 function getCaseStudySlugList(
   stored: StoredProject[],
@@ -538,12 +658,6 @@ function getCaseStudySlugList(
     );
 }
 
-/**
- * Known case-study slugs.
- *
- * generateStaticParams may use this to prerender existing projects, while
- * dynamicParams can still allow newly-created projects later.
- */
 export function getCaseStudySlugs(
   stored: StoredProject[],
 ): string[] {
@@ -552,9 +666,6 @@ export function getCaseStudySlugs(
   );
 }
 
-/**
- * Check whether a slug currently represents a valid case study.
- */
 export function isCaseStudySlug(
   stored: StoredProject[],
   slug: string,
@@ -567,9 +678,9 @@ export function isCaseStudySlug(
 }
 
 /**
- * Get the next case study in display order.
+ * Get next case study.
  *
- * Wraps back to the first case study after the final project.
+ * Wrap back to the first project after the last.
  */
 export function getNextCaseStudySlug(
   stored: StoredProject[],
@@ -591,11 +702,6 @@ export function getNextCaseStudySlug(
       slug,
     );
 
-  /**
-   * Defensive fallback:
-   * if the current slug is unexpectedly missing, use the first
-   * valid case study rather than performing modulo math on -1.
-   */
   if (
     index === -1
   ) {
@@ -607,32 +713,35 @@ export function getNextCaseStudySlug(
 
   return (
     slugs[
-      (index + 1) %
+      (
+        index +
+        1
+      ) %
         slugs.length
-    ] ?? slug
+    ] ??
+    slug
   );
 }
 
 /**
- * Priority used when deciding the primary external CTA.
+ * Priority when choosing an external destination.
  */
-const LINK_PRIORITY: ProjectLink["type"][] = [
-  "demo",
-  "github",
-  "figma",
-  "article",
-  "other",
-];
+const LINK_PRIORITY: ProjectLink["type"][] =
+  [
+    "demo",
+    "github",
+    "figma",
+    "article",
+    "other",
+  ];
 
-/**
- * First public external link.
- *
- * Projects with a case study intentionally return null here because the
- * project's primary destination becomes /work/[slug].
- */
 export function getPrimaryLink(
   view: ProjectView,
 ): ViewLink | null {
+  /**
+   * Projects with a full case study should navigate to
+   * their internal case-study page first.
+   */
   if (
     view.hasCaseStudy
   ) {
@@ -646,7 +755,8 @@ export function getPrimaryLink(
     const link =
       view.links.find(
         (item) =>
-          item.type === type,
+          item.type ===
+          type,
       );
 
     if (link) {
@@ -660,9 +770,6 @@ export function getPrimaryLink(
   );
 }
 
-/**
- * Primary navigation destination for a project card.
- */
 export function getProjectHref(
   view: ProjectView,
 ): string {

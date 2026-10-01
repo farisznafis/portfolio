@@ -96,7 +96,7 @@ export interface Content {
   projects: {
     ariaSection: string;
     heading: string;
-    blurb: string;
+    blurb?: string;
 
     countLabel: string;
     filterAria: string;
@@ -298,8 +298,8 @@ export const en: Content = {
     heading:
       "Projects",
 
-    blurb:
-      "Every project across frontend, AI/ML, data, and design — full case studies and shorter records alike. Filter by field.",
+    // blurb:
+    //   "Every project across frontend, AI/ML, data, and design — full case studies and shorter records alike. Filter by field.",
 
     countLabel:
       "{count} projects",
