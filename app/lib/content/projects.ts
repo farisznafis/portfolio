@@ -633,19 +633,15 @@ export function getProjectBySlug(
 }
 
 /**
- * Internal case-study slug list.
+ * Internal detail-page slug list.
+ *
+ * Every project has a /work/[slug] page. Projects without a long-form
+ * case study render a shorter detail page from their summary and links.
  */
 function getCaseStudySlugList(
   stored: StoredProject[],
 ): string[] {
   return stored
-    .filter(
-      (project) =>
-        project.hasCaseStudy &&
-        Boolean(
-          project.caseStudy,
-        ),
-    )
     .slice()
     .sort(
       (a, b) =>
@@ -723,66 +719,8 @@ export function getNextCaseStudySlug(
   );
 }
 
-/**
- * Priority when choosing an external destination.
- */
-const LINK_PRIORITY: ProjectLink["type"][] =
-  [
-    "demo",
-    "github",
-    "figma",
-    "article",
-    "other",
-  ];
-
-export function getPrimaryLink(
-  view: ProjectView,
-): ViewLink | null {
-  /**
-   * Projects with a full case study should navigate to
-   * their internal case-study page first.
-   */
-  if (
-    view.hasCaseStudy
-  ) {
-    return null;
-  }
-
-  for (
-    const type of
-    LINK_PRIORITY
-  ) {
-    const link =
-      view.links.find(
-        (item) =>
-          item.type ===
-          type,
-      );
-
-    if (link) {
-      return link;
-    }
-  }
-
-  return (
-    view.links[0] ??
-    null
-  );
-}
-
 export function getProjectHref(
   view: ProjectView,
 ): string {
-  if (
-    view.hasCaseStudy
-  ) {
-    return `/work/${view.slug}`;
-  }
-
-  return (
-    getPrimaryLink(
-      view,
-    )?.url ??
-    "/projects"
-  );
+  return `/work/${view.slug}`;
 }

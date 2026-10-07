@@ -65,43 +65,59 @@ export function CaseStudy({
       nextKey,
     );
 
-  if (
-    !project?.caseStudy
-  ) {
+  if (!project) {
     return null;
   }
 
+  // Projects without a long-form case study still get a detail page:
+  // hero, metadata, links, cover and gallery, with label fallbacks.
   const study =
     project.caseStudy;
 
   const labels =
     content.caseStudy;
 
+  const overview =
+    study?.overview ||
+    project.description;
+
+  const atAGlance =
+    study?.atAGlance ||
+    labels.atAGlance;
+
+  const galleryLabel =
+    study?.galleryLabel ||
+    labels.gallery;
+
+  const nextLabel =
+    study?.nextLabel ||
+    labels.nextProject;
+
   const gallery =
     project.gallery ??
     [];
 
   const hasFeatures =
-    study.features.items.length >
-    0;
+    (study?.features.items.length ??
+      0) > 0;
 
   const hasOutcomes =
-    study.outcomes.items.length >
-    0;
+    (study?.outcomes.items.length ??
+      0) > 0;
 
   const hasSections =
-    study.sections.length >
-    0;
+    (study?.sections.length ??
+      0) > 0;
 
   const hasChallenge =
     Boolean(
-      study.challenge.lead ||
-        study.challenge.body,
+      study?.challenge.lead ||
+        study?.challenge.body,
     );
 
   const hasApproach =
-    study.approach.steps.length >
-    0;
+    (study?.approach.steps.length ??
+      0) > 0;
 
   const hasMeta =
     Boolean(
@@ -170,10 +186,10 @@ export function CaseStudy({
             }
           </h1>
 
-          {study.overview ? (
+          {overview ? (
             <p className="mt-4 max-w-[75ch] text-base leading-relaxed text-muted">
               {
-                study.overview
+                overview
               }
             </p>
           ) : null}
@@ -184,7 +200,7 @@ export function CaseStudy({
         hasLinks ? (
           <div
             aria-label={
-              study.atAGlance
+              atAGlance
             }
             className="mt-6 border-t border-line pt-5"
           >
@@ -397,8 +413,9 @@ export function CaseStudy({
       {/* ────────────────────────────────────────────────────────────────
           WHAT SHIPPED + OUTCOMES
       ──────────────────────────────────────────────────────────────── */}
-      {hasFeatures ||
-      hasOutcomes ? (
+      {study &&
+      (hasFeatures ||
+        hasOutcomes) ? (
         <div
           className={`grid gap-8 border-t border-line pt-8 sm:gap-12 sm:pt-12 ${
             hasFeatures &&
@@ -499,7 +516,8 @@ export function CaseStudy({
       {/* ────────────────────────────────────────────────────────────────
           LONG-FORM TECHNICAL / METHODOLOGY SECTIONS
       ──────────────────────────────────────────────────────────────── */}
-      {hasSections ? (
+      {study &&
+      hasSections ? (
         <div className="space-y-14 border-t border-line pt-8 sm:space-y-20 sm:pt-12">
           {study.sections.map(
             (
@@ -671,8 +689,9 @@ export function CaseStudy({
       {/* ────────────────────────────────────────────────────────────────
           PROCESS DETAILS
       ──────────────────────────────────────────────────────────────── */}
-      {hasChallenge ||
-      hasApproach ? (
+      {study &&
+      (hasChallenge ||
+        hasApproach) ? (
         <details
           key={slug}
           className="group border-y border-line"
@@ -807,7 +826,7 @@ export function CaseStudy({
               }
             >
               {
-                study.galleryLabel
+                galleryLabel
               }
             </h2>
 
@@ -921,20 +940,20 @@ export function CaseStudy({
         slug ? (
         <nav
           aria-label={
-            study.nextLabel
+            nextLabel
           }
           className="border-t border-line pt-6"
         >
           <Link
             href={`/work/${nextKey}`}
             data-cursor="Open"
-            aria-label={`${study.nextLabel}: ${next.title}`}
+            aria-label={`${nextLabel}: ${next.title}`}
             className="flex items-center justify-between gap-6 py-2 text-ink transition-colors hover:text-accent-bright"
           >
             <div className="min-w-0">
               <p className="font-mono text-xs uppercase tracking-[0.16em] text-muted">
                 {
-                  study.nextLabel
+                  nextLabel
                 }
               </p>
 

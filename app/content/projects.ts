@@ -799,19 +799,336 @@ approach: {
     title: "Optimization Models & Web Applications",
     role: t("Data Scientist Intern", "データサイエンティストインターン"),
     fields: ["Data / Optimization"],
-    stack: ["Gurobi", "Docker", "Google Kubernetes Engine"],
+    stack: ["Python", "Gurobi", "OR-Tools", "Gradio", "Docker", "Google Kubernetes Engine"],
     summary: t(
-      "Four optimization models built with Gurobi in a 5-member team, with deployment work using Docker and Google Kubernetes Engine.",
-      "5人のチームでGurobiを用いて構築した4つの最適化モデルと、Docker・Google Kubernetes Engineを使ったデプロイ関連の作業。",
+      "Four optimization models built with Gurobi and OR-Tools in a 5-member team, with deployment work using Docker and Google Kubernetes Engine. The live demo re-solves every model in the browser.",
+      "5人のチームでGurobiとOR-Toolsを用いて構築した4つの最適化モデルと、Docker・Google Kubernetes Engineを使ったデプロイ関連の作業。ライブデモではブラウザ上で各モデルを再計算できます。",
     ),
     featured: false,
     projectOrder: 12,
-    hasCaseStudy: false,
-    // Telkom internship work: no company-private material.
-    confidentiality: "limited",
-    links: [],
+    hasCaseStudy: true,
+    // Telkom internship work: only the published repo and demo, no company-private material.
+    confidentiality: "public",
+    links: [
+      {
+        type: "demo",
+        label: t("Live demo", "ライブデモ"),
+        url: "https://huggingface.co/spaces/farisznafis/optimization-internship",
+      },
+      {
+        type: "github",
+        label: t("Source", "ソースコード"),
+        url: "https://github.com/farisznafis/optimization-internship",
+      },
+    ],
+    cover: {
+      type: "image",
+      src: "/projects/optimization-web/demo-task-assignment.png",
+      alt: t(
+        "Live demo: the task-assignment model solved, with results per objective and a box plot of skill scores",
+        "ライブデモ：タスク割り当てモデルを解いた結果。目的ごとの結果表とスキルスコアの箱ひげ図",
+      ),
+    },
+    gallery: [
+      {
+        type: "image",
+        src: "/projects/optimization-web/demo-burrito-game.png",
+        alt: t(
+          "Burrito game tab: a map of Burritoville with three placed trucks and the buildings they serve",
+          "ブリトーゲームタブ：3台のトラックの配置と、それぞれが担当する建物を示したマップ",
+        ),
+        caption: t(
+          "Burrito game: three trucks serve all 14 buildings for a profit of 970.",
+          "ブリトーゲーム：3台のトラックで14棟すべてをカバーし、利益は970。",
+        ),
+      },
+      {
+        type: "image",
+        src: "/projects/optimization-web/demo-stock-selection.png",
+        alt: t(
+          "Stock selection tab: allocation bar chart and a risk-versus-return scatter plot",
+          "銘柄選択タブ：配分の棒グラフとリスク対リターンの散布図",
+        ),
+        caption: t(
+          "Stock selection: the best split of USD 10,000 within a 15% risk limit.",
+          "銘柄選択：リスク上限15%の範囲で1万ドルを最適に配分。",
+        ),
+      },
+      {
+        type: "image",
+        src: "/projects/optimization-web/demo-course-selection.png",
+        alt: t(
+          "Course selection tab: two tables listing the chosen courses with credits and cost",
+          "科目選択タブ：選ばれた科目と単位・費用を示す2つの表",
+        ),
+        caption: t(
+          "Course selection: the cheapest set of courses that still completes the degree.",
+          "科目選択：学位要件を満たしつつ最も安く済む科目の組み合わせ。",
+        ),
+      },
+      {
+        type: "image",
+        src: "/projects/optimization-web/score-comparison.png",
+        alt: t(
+          "Chart comparing goal programming with the three single-objective task-assignment models",
+          "目標計画法と3つの単一目的タスク割り当てモデルを比較したグラフ",
+        ),
+        caption: t(
+          "Full dataset: goal programming compared with each goal optimised on its own.",
+          "フルデータセット：目標計画法と、各目標を単独で最適化した場合の比較。",
+        ),
+      },
+    ],
     initials: "OW",
     tone: "amber",
+    caseStudy: {
+      overview: t(
+        "Every organisation makes the same kind of decision again and again: who does which job, where to put limited resources, how to spend a fixed budget. Optimization turns such a decision into a precise set of rules and goals, and a solver then searches every possible combination for the best one. During our internship we built four of these models, from a burrito-truck game to a tool that assigns sprint tasks to 109 people, and put them in a web app where anyone can change the inputs and watch the answer change.",
+        "どの組織も同じ種類の判断を繰り返しています。誰がどの仕事をするか、限られた資源をどこに置くか、決まった予算をどう使うか。最適化は、こうした判断を厳密なルールと目標に置き換え、ソルバーがあらゆる組み合わせの中から最良のものを探します。インターンでは、ブリトー屋台のゲームから109人にスプリントのタスクを割り当てるツールまで、4つのモデルを構築し、誰でも入力を変えて答えの変化を確かめられるWebアプリにまとめました。",
+      ),
+      atAGlance: t("Project at a glance", "プロジェクト概要"),
+      challenge: {
+        heading: t("Too many combinations to try by hand", "手作業では試しきれない組み合わせ"),
+        lead: t(
+          "Assigning 300 tasks to 109 people already has more possible plans than anyone could ever check, and every plan has to respect skills, workload limits and project boundaries at the same time.",
+          "300件のタスクを109人に割り当てるだけでも、人が確認できる数をはるかに超える割り当て案があります。しかも各案は、スキル、作業量の上限、プロジェクトの境界を同時に守らなければなりません。",
+        ),
+        body: t(
+          "The goals also pull against each other: keeping everyone busy, matching skills well and spreading work evenly cannot all be maximised at once. The work was to state each problem exactly, decide how to trade the goals off, and make the results easy to run and inspect.",
+          "さらに目標同士がぶつかります。全員に仕事を持たせること、スキルをよく合わせること、作業を均等に配ることを同時に最大化することはできません。各問題を厳密に定式化し、目標間のバランスを決め、結果を簡単に実行・確認できる形にすることが課題でした。",
+        ),
+      },
+      approach: {
+        kicker: t("Approach", "アプローチ"),
+        heading: t("From a business question to a solved model", "業務上の問いから解かれたモデルへ"),
+        steps: [
+          {
+            tag: t("Formulate", "定式化"),
+            title: t("Write the decision as variables, rules and goals", "判断を変数・ルール・目標として書く"),
+            description: t(
+              "Each yes/no choice becomes a binary variable, each business rule a constraint, and each goal an objective function.",
+              "それぞれのyes/noの選択を0-1変数に、業務ルールを制約に、目標を目的関数に置き換えます。",
+            ),
+          },
+          {
+            tag: t("Score", "スコア"),
+            title: t("Measure how well a person fits a task", "人とタスクの適合度を測る"),
+            description: t(
+              "For task assignment, a skill-matching score compares each talent's competency levels with what each task requires.",
+              "タスク割り当てでは、各人材の能力レベルと各タスクの要求レベルを比べるスキル適合スコアを計算します。",
+            ),
+          },
+          {
+            tag: t("Solve", "求解"),
+            title: t("Let Gurobi and OR-Tools search", "GurobiとOR-Toolsで探索する"),
+            description: t(
+              "Mixed-integer solvers find the provably best plan, or the best one found within a time limit for the largest dataset.",
+              "混合整数ソルバーが最適であることが保証された解を見つけます。最大のデータセットでは制限時間内の最良解を使います。",
+            ),
+          },
+          {
+            tag: t("Ship", "公開"),
+            title: t("One CLI, one container, one web demo", "1つのCLI、1つのコンテナ、1つのWebデモ"),
+            description: t(
+              "All four models run from the same `optim` command, in Docker, and from a Gradio demo that re-solves them live.",
+              "4つのモデルはすべて同じ`optim`コマンド、Docker、そしてライブで再計算するGradioデモから実行できます。",
+            ),
+          },
+        ],
+      },
+      features: {
+        heading: t("What shipped", "実装したもの"),
+        items: [
+          {
+            title: t("Scrum task-assignment model", "スクラム向けタスク割り当てモデル"),
+            description: t(
+              "Assigns 300 tasks across 5 projects to 109 talents, balancing three goals with goal programming.",
+              "5つのプロジェクトにまたがる300件のタスクを109人に割り当て、目標計画法で3つの目標のバランスを取ります。",
+            ),
+          },
+          {
+            title: t("Three warm-up challenges", "3つのウォームアップ課題"),
+            description: t(
+              "Course selection, stock portfolio selection and Gurobi's Burrito Optimization Game.",
+              "科目選択、株式ポートフォリオ選択、そしてGurobiのBurrito Optimization Game。",
+            ),
+          },
+          {
+            title: t("Interactive web demo", "インタラクティブなWebデモ"),
+            description: t(
+              "A Gradio app on Hugging Face Spaces with one tab per model; every Solve runs the real model.",
+              "Hugging Face Spaces上のGradioアプリ。モデルごとにタブがあり、「Solve」を押すたびに実際のモデルが動きます。",
+            ),
+          },
+          {
+            title: t("Reproducible packaging", "再現可能なパッケージング"),
+            description: t(
+              "An installable Python package and CLI, a Docker image, tests and CI that redeploys the demo on every push.",
+              "インストール可能なPythonパッケージとCLI、Dockerイメージ、テスト、そしてpushごとにデモを再デプロイするCI。",
+            ),
+          },
+        ],
+      },
+      sections: [
+        {
+          id: "plain-words",
+          kicker: t("In plain words", "かんたんに言うと"),
+          heading: t("What is an optimization model?", "最適化モデルとは？"),
+          paragraphs: [
+            t(
+              "Think of planning a road trip with a fixed budget: you want to see as many places as possible, but you cannot drive more than eight hours a day and the money has to last. You naturally juggle a goal (see more) against rules (time, money). An optimization model writes exactly that down in maths, so a computer can do the juggling for thousands of choices at once.",
+              "決まった予算で旅行を計画する場面を想像してください。できるだけ多くの場所を見たいけれど、1日に運転できるのは8時間まで、お金も足りなければなりません。私たちは自然と、目標（たくさん見る）とルール（時間とお金）を天秤にかけています。最適化モデルはそれを数式で書き表し、何千もの選択の調整をコンピューターに任せます。",
+            ),
+            t(
+              "A solver then does not guess or learn from examples, as machine learning does. It searches the space of valid plans systematically and can prove that the plan it returns is the best possible one under the rules given.",
+              "ソルバーは機械学習のように例から学んだり推測したりするのではありません。有効な計画の空間を体系的に探索し、与えられたルールのもとで返した計画が最良であることを証明できます。",
+            ),
+          ],
+          items: [
+            {
+              title: t("Who does which task?", "誰がどのタスクを担当する？"),
+              description: t(
+                "Like a team lead planning a sprint: give work to people whose skills fit, keep nobody idle, and keep nobody overloaded.",
+                "スプリントを計画するチームリーダーのように、スキルの合う人に仕事を渡し、手持ち無沙汰な人も、抱えすぎる人も出さないようにします。",
+              ),
+            },
+            {
+              title: t("Where do the food trucks park?", "屋台をどこに停める？"),
+              description: t(
+                "Each truck costs money, but customers only walk so far. Pick the spots that earn the most after costs.",
+                "トラックを出すたびにお金がかかり、お客さんは遠くまでは歩きません。費用を差し引いて最も稼げる場所を選びます。",
+              ),
+            },
+            {
+              title: t("How do I split my savings?", "貯金をどう分ける？"),
+              description: t(
+                "Spread USD 10,000 over seven stocks for the highest expected return without taking on too much risk.",
+                "1万ドルを7銘柄に分け、リスクを取りすぎずに期待リターンを最大にします。",
+              ),
+            },
+            {
+              title: t("Which courses should I take?", "どの科目を取る？"),
+              description: t(
+                "Finish a degree's 180 credits at the lowest possible cost, with enough computer-science credits.",
+                "情報科学の単位を十分に含めつつ、180単位の学位を最も安く修了します。",
+              ),
+            },
+          ],
+          note: t(
+            "You can try every one of these in the live demo: change a number, press Solve, and the model recalculates on the spot.",
+            "ライブデモですべて試せます。数値を変えて「Solve」を押すと、その場でモデルが再計算されます。",
+          ),
+        },
+        {
+          id: "task-assignment",
+          kicker: t("Main project", "メインプロジェクト"),
+          heading: t("Assigning Scrum tasks with goal programming", "目標計画法によるスクラムタスクの割り当て"),
+          paragraphs: [
+            t(
+              "The main project assigns sprint tasks from several client projects to a pool of data talents. First, every talent gets a skill-matching score for every task. The default method, Competency Assessment, weights each competency by how much the task needs it and averages the gap between the talent's level and the required level into a Mean Skill Gap. A Weighted Euclidean Distance score is available as an alternative.",
+              "メインプロジェクトでは、複数のクライアントプロジェクトのスプリントタスクをデータ人材のプールに割り当てます。まず、すべての人材とタスクの組み合わせにスキル適合スコアを付けます。標準のCompetency Assessmentは、タスクがどれだけその能力を必要とするかで各能力を重み付けし、人材のレベルと要求レベルの差を平均してMean Skill Gapを求めます。代替として重み付きユークリッド距離も選べます。",
+            ),
+            t(
+              "The model then assigns each task to exactly one person, keeps each person on at most one project and within a story-point limit, and pursues three goals: fewest idle talents, highest total skill score, and the lowest maximum workload. Each goal is solved on its own first; goal programming then finds one assignment that stays as close as possible to all three best values, weighted by priority.",
+              "次にモデルは、各タスクをちょうど1人に割り当て、各人を最大1つのプロジェクトとストーリーポイント上限内に収めながら、3つの目標を追います。待機人材の最小化、スキルスコア合計の最大化、最大作業量の最小化です。まず各目標を単独で解き、その後、目標計画法で3つの最良値すべてにできるだけ近い割り当てを優先度の重み付きで求めます。",
+            ),
+          ],
+          facts: [
+            {
+              label: t("Full dataset", "フルデータセット"),
+              value: t("109 talents × 300 tasks, 5 projects", "109人 × 300タスク、5プロジェクト"),
+            },
+            {
+              label: t("Model type", "モデルの種類"),
+              value: t("Mixed-integer program (MIP)", "混合整数計画（MIP）"),
+            },
+            {
+              label: t("Solver", "ソルバー"),
+              value: t("Gurobi", "Gurobi"),
+            },
+            {
+              label: t("Objectives", "目的"),
+              value: t("Idle talents · skill score · max workload", "待機人材・スキルスコア・最大作業量"),
+            },
+            {
+              label: t("Default weights", "標準の重み"),
+              value: t("0.03 · 0.90 · 0.07", "0.03 · 0.90 · 0.07"),
+            },
+            {
+              label: t("Workload limit", "作業量の上限"),
+              value: t("10 story points per talent (configurable)", "1人あたり10ストーリーポイント（変更可）"),
+            },
+          ],
+        },
+        {
+          id: "challenges",
+          kicker: t("Warm-up challenges", "ウォームアップ課題"),
+          heading: t("Three smaller models, three techniques", "3つの小さなモデル、3つの手法"),
+          items: [
+            {
+              title: t("Course selection · binary IP", "科目選択・0-1整数計画"),
+              description: t(
+                "Choose courses for exactly 180 credits with at least 120 from computer science, at minimum cost. A weighted multi-objective variant also penalises exam courses. Both reach a cost of 12,356. Solved with OR-Tools CP-SAT.",
+                "情報科学から120単位以上を含め、ちょうど180単位を最小費用で選びます。試験科目にペナルティを課す重み付き多目的版もあり、どちらも費用12,356に到達します。OR-Tools CP-SATで求解。",
+              ),
+            },
+            {
+              title: t("Stock selection · MIQCP", "銘柄選択・MIQCP"),
+              description: t(
+                "Maximise the annualised return of a seven-stock portfolio with at least three stocks, a minimum share per selected stock and a quadratic risk cap of 15%. Solved with Gurobi.",
+                "3銘柄以上、選んだ銘柄ごとの最低比率、二次形式のリスク上限15%のもとで、7銘柄ポートフォリオの年率リターンを最大化します。Gurobiで求解。",
+              ),
+            },
+            {
+              title: t("Burrito game · facility location", "ブリトーゲーム・施設配置"),
+              description: t(
+                "Gurobi's Burrito Optimization Game: decide where to park trucks so that revenue from nearby buildings outweighs the daily truck cost. Solved with OR-Tools CP-SAT.",
+                "GurobiのBurrito Optimization Game。近くの建物からの売上がトラックの日額費用を上回るよう、トラックの配置を決めます。OR-Tools CP-SATで求解。",
+              ),
+            },
+          ],
+        },
+        {
+          id: "engineering",
+          kicker: t("Engineering", "エンジニアリング"),
+          heading: t("From notebooks to a runnable product", "ノートブックから動くプロダクトへ"),
+          paragraphs: [
+            t(
+              "The models started as Colab notebooks. They were refactored into one installable Python package with an `optim` command-line tool, so every model runs the same way locally, in Docker, or on any container job runner. A YAML config holds the workload limit, solver parameters, time limit and goal-programming weights.",
+              "モデルはColabノートブックから始まりました。それらを`optim`コマンドを持つ1つのインストール可能なPythonパッケージに再構成し、ローカル、Docker、任意のコンテナジョブ実行環境で同じように動くようにしました。作業量の上限、ソルバーのパラメーター、制限時間、目標計画法の重みはYAML設定にまとめています。",
+            ),
+            t(
+              "The Gradio demo calls the same package, so its results are solved live rather than cached. CI runs the tests on the mini dataset and redeploys the demo to Hugging Face Spaces on every push to main.",
+              "GradioデモはCLIと同じパッケージを呼び出すため、結果はキャッシュではなくその場で解かれます。CIはミニデータセットでテストを実行し、mainへのpushごとにHugging Face Spacesへデモを再デプロイします。",
+            ),
+          ],
+          note: t(
+            "The public demo runs on Gurobi's free size-limited license, so task assignment is capped at 2,000 variables (the 5 × 10 mini dataset or small uploads) and 30 seconds per solve. The full 109 × 300 dataset needs a full license.",
+            "公開デモはGurobiの無料のサイズ制限付きライセンスで動いているため、タスク割り当ては2,000変数（5 × 10のミニデータセットや小さなアップロード）と1回30秒までに制限されています。109 × 300のフルデータセットにはフルライセンスが必要です。",
+          ),
+        },
+      ],
+      galleryLabel: t("Live demo", "ライブデモ"),
+      outcomes: {
+        kicker: t("Outcomes", "成果"),
+        heading: t("What changed", "変わったこと"),
+        items: [
+          t(
+            "Four optimization problems modelled and solved to optimality on their sample data.",
+            "4つの最適化問題をモデル化し、サンプルデータで最適解まで求解。",
+          ),
+          t(
+            "Task assignment balances idle time, skill fit and workload in a single plan instead of three competing ones.",
+            "タスク割り当てでは、待機・スキル適合・作業量を、競合する3つの案ではなく1つの計画でバランス。",
+          ),
+          t(
+            "Anyone can run the models without installing anything, through the public web demo.",
+            "公開Webデモにより、誰でも何もインストールせずにモデルを実行可能。",
+          ),
+        ],
+      },
+      nextLabel: t("Next project", "次のプロジェクト"),
+    },
   },
   {
     id: "himakom-visual",

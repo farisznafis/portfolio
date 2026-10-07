@@ -75,6 +75,9 @@ export interface Content {
     stack: string;
     processDetails: string;
     openImage: string;
+    atAGlance: string;
+    gallery: string;
+    nextProject: string;
   };
 
   work: {
@@ -179,6 +182,9 @@ export const en: Content = {
     stack: "Stack",
     processDetails: "Process details",
     openImage: "Open original image",
+    atAGlance: "Project at a glance",
+    gallery: "Gallery",
+    nextProject: "Next project",
   },
 
   nav: {
@@ -445,6 +451,15 @@ export const ja: Content = {
 
     openImage:
       "元の画像を開く",
+
+    atAGlance:
+      "プロジェクト概要",
+
+    gallery:
+      "ギャラリー",
+
+    nextProject:
+      "次のプロジェクト",
   },
 
   nav: {
@@ -604,7 +619,7 @@ export const ja: Content = {
       "この分野のプロジェクトはまだありません。",
 
     caseStudyCta:
-      "ケーススタディ",
+      "詳細",
 
     repoCta:
       "ソース",

@@ -8,7 +8,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import clsx from "clsx";
 import {
   getAllProjects,
-  getPrimaryLink,
+  getProjectHref,
   type ProjectView,
 } from "../../lib/content/projects";
 import { useLang } from "../../lib/i18n";
@@ -122,16 +122,8 @@ function ProjectRow({
 }) {
   const { content } = useLang();
 
-  // Primary destination: case study when one exists, otherwise the first
-  // public link (demo > github > figma > ...). Projects with no links at
-  // all render without a CTA.
-  const primaryLink = getPrimaryLink(project);
-  const primaryHref = project.hasCaseStudy
-    ? `/work/${project.slug}`
-    : primaryLink?.url;
-  const primaryLabel = project.hasCaseStudy
-    ? content.projects.caseStudyCta
-    : primaryLink?.label ?? content.projects.linkCta;
+  // Every project has a detail page; public links stay as secondary CTAs.
+  const detailHref = getProjectHref(project);
 
   return (
     <motion.li
@@ -148,7 +140,9 @@ function ProjectRow({
             {String(index + 1).padStart(2, "0")}
           </span>
           <h2 className="font-display text-2xl font-semibold tracking-tight text-ink transition-colors duration-300 group-hover:text-accent-bright sm:text-3xl">
-            {project.title}
+            <Link href={detailHref} data-cursor="View" className="hover:text-accent">
+              {project.title}
+            </Link>
           </h2>
           {project.year ? (
             <span className="font-mono text-xs uppercase tracking-[0.18em] text-muted">
@@ -218,54 +212,33 @@ function ProjectRow({
           )}
         </div>
 
-        {/* Links - rendered only when they actually exist */}
+        {/* Detail page first, then public links when they exist */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-          {primaryHref ? (
-            project.hasCaseStudy ? (
-              <Link
-                href={primaryHref}
-                data-cursor="View"
-                className="group/link inline-flex items-center gap-1.5 text-sm font-semibold text-accent-bright transition-colors hover:text-accent"
-              >
-                {primaryLabel}
-                <ArrowUpRight
-                  size={15}
-                  aria-hidden="true"
-                  className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5"
-                />
-              </Link>
-            ) : (
-              <a
-                href={primaryHref}
-                target="_blank"
-                rel="noreferrer"
-                data-cursor="Open"
-                className="group/link inline-flex items-center gap-1.5 text-sm font-semibold text-accent-bright transition-colors hover:text-accent"
-              >
-                {primaryLabel}
-                <ArrowUpRight
-                  size={15}
-                  aria-hidden="true"
-                  className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5"
-                />
-              </a>
-            )
-          ) : null}
+          <Link
+            href={detailHref}
+            data-cursor="View"
+            className="group/link inline-flex items-center gap-1.5 text-sm font-semibold text-accent-bright transition-colors hover:text-accent"
+          >
+            {content.projects.caseStudyCta}
+            <ArrowUpRight
+              size={15}
+              aria-hidden="true"
+              className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5"
+            />
+          </Link>
 
           {/* Secondary public links */}
-          {project.links
-            .filter((link) => link.url !== primaryHref)
-            .map((link) => (
-              <a
-                key={link.url}
-                href={link.url}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
-              >
-                {link.label}
-              </a>
-            ))}
+          {project.links.map((link) => (
+            <a
+              key={link.url}
+              href={link.url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-muted transition-colors hover:text-ink"
+            >
+              {link.label}
+            </a>
+          ))}
         </div>
       </div>
     </motion.li>
