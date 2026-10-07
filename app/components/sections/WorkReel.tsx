@@ -20,8 +20,10 @@ type ReelProject = ProjectView & { index: number };
  * in featuredOrder), never the full project list.
  *
  * Desktop: the section pins and the track pans horizontally (GSAP
- * ScrollTrigger, scrub 1). Scroll velocity adds a slight skew to the media,
- * settling back when scrolling stops. Mobile / reduced motion: the same
+ * ScrollTrigger, scrub 1). Scroll velocity adds a slight skew to each media
+ * block, settling back when scrolling stops. The skew deliberately never
+ * touches the track itself: a ~6000px-wide layer with a skew transform makes
+ * GPU-rasterized Chrome/Brave drop its tiles, so the whole reel goes blank. Mobile / reduced motion: the same
  * panels stack vertically in natural flow - one render path, orientation is
  * CSS; only the pin is conditional.
  *
@@ -98,6 +100,10 @@ export function WorkReel({
                 pin: true,
                 scrub: 1,
 
+                // Refresh before later triggers (Experience rail) so they
+                // measure with this pin's spacing in place.
+                refreshPriority: 1,
+
                 anticipatePin: 1,
 
                 invalidateOnRefresh:
@@ -106,15 +112,41 @@ export function WorkReel({
             },
         );
 
-        const skewTo =
-            gsap.quickTo(
+        const skewTargets =
+            gsap.utils.toArray<HTMLElement>(
+            "[data-reel-skew]",
             track,
-            "skewX",
-            {
-                duration: 0.5,
-                ease: "power3.out",
-            },
             );
+
+        const skewSetters =
+            skewTargets.map(
+            (target) =>
+                gsap.quickTo(
+                target,
+                "skewX",
+                {
+                    duration: 0.5,
+                    ease: "power3.out",
+                },
+                ),
+            );
+
+        const skewTo = (
+            value: number,
+        ) => {
+            skewSetters.forEach(
+            (set) => set(value),
+            );
+        };
+
+        // onUpdate stops firing when scrolling stops, so settle explicitly.
+        const settleSkew = () =>
+            skewTo(0);
+
+        ScrollTrigger.addEventListener(
+            "scrollEnd",
+            settleSkew,
+        );
 
         const velocityTrigger =
             ScrollTrigger.create({
@@ -179,8 +211,16 @@ export function WorkReel({
         );
 
         return () => {
+            ScrollTrigger.removeEventListener(
+            "scrollEnd",
+            settleSkew,
+            );
             velocityTrigger.kill();
             tween.kill();
+            gsap.set(
+            skewTargets,
+            { clearProps: "transform" },
+            );
         };
         },
     );
@@ -290,10 +330,9 @@ function TypographicMedia({
 
 function ReelPanel({ project }: { project: ReelProject }) {
   const { content } = useLang();
-  const flip = project.index % 2 === 1; // alternate composition per campaign
 
   return (
-    <article className="group relative flex items-center py-20 lg:w-[74vw] lg:shrink-0 lg:py-0">
+    <article className="group relative flex items-center py-20 lg:w-[80vw] lg:shrink-0 lg:py-0">
       <Link
         href={getProjectHref(project)}
         data-cursor="View"
@@ -301,11 +340,11 @@ function ReelPanel({ project }: { project: ReelProject }) {
         className="container-x grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-10"
       >
         {/* Copy block */}
-        <div className={clsx("lg:col-span-5", flip && "lg:order-last")}>
+        <div className="min-w-0 lg:col-span-5">
           <span className="font-mono text-sm tracking-[0.3em] text-accent">
             {String(project.index + 1).padStart(2, "0")}
           </span>
-          <h3 className="mt-4 font-display text-title font-semibold uppercase leading-[0.95] tracking-tight text-ink transition-colors duration-500 group-hover:text-accent-bright">
+          <h3 className="mt-4 break-words font-display text-[clamp(2rem,3.2vw,3.5rem)] font-semibold uppercase leading-[0.98] tracking-tight text-ink [text-wrap:balance] transition-colors duration-500 group-hover:text-accent-bright">
             {project.title}
           </h3>
           <ul className="mt-5 flex flex-wrap gap-x-6 gap-y-1 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
@@ -315,7 +354,7 @@ function ReelPanel({ project }: { project: ReelProject }) {
             ))}
             {project.role ? <li>{project.role}</li> : null}
           </ul>
-          <p className="mt-5 max-w-md text-sm leading-relaxed text-muted lg:text-base">
+          <p className="mt-5 max-w-md text-sm leading-relaxed text-muted lg:line-clamp-4 lg:text-base">
             {project.description}
           </p>
           <span className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-ink">
@@ -333,10 +372,8 @@ function ReelPanel({ project }: { project: ReelProject }) {
 
         {/* Media block - real screenshot when available, typographic fallback otherwise */}
         <div
-          className={clsx(
-            "relative aspect-[16/10] w-full overflow-hidden border border-line/60 bg-elevated lg:col-span-7 lg:h-[58vh] lg:w-auto",
-            flip && "lg:order-first",
-          )}
+          data-reel-skew
+          className="relative aspect-[16/10] w-full min-w-0 overflow-hidden border border-line/60 bg-elevated lg:col-span-7 lg:max-h-[62vh]"
         >
           {project.cover ? (
             <Image

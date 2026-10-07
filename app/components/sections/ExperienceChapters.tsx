@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { useLang } from "../../lib/i18n";
 import { getExperience } from "../../lib/content/experience";
 import { gsap, ScrollTrigger } from "../../motion/gsap";
+import { useIntro } from "../Loader";
 
 /**
  * Career history as chapters: the left rail pins a giant year that swaps as
@@ -18,11 +19,14 @@ export function ExperienceChapters() {
   const { content, lang } = useLang();
   const ref = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
+  const { done } = useIntro();
 
   const items = useMemo(() => getExperience(lang), [lang]);
 
+  // Wait for the loader: the WorkReel pin above is created once `done` flips,
+  // and these triggers must be measured after its pin spacing exists.
   useEffect(() => {
-    if (reduce) return;
+    if (reduce || !done) return;
     const el = ref.current;
     if (!el) return;
 
@@ -40,10 +44,13 @@ export function ExperienceChapters() {
       });
     }, el);
 
-    return () => ctx.revert();
-  }, [reduce]);
+    ScrollTrigger.sort();
+    ScrollTrigger.refresh();
 
-  const current = items[active];
+    return () => ctx.revert();
+  }, [reduce, done]);
+
+  const current = items[active] ?? items[0];
 
   return (
     <section
@@ -65,7 +72,7 @@ export function ExperienceChapters() {
                 <div className="relative h-40 overflow-hidden">
                   <AnimatePresence mode="popLayout">
                     <motion.span
-                      key={current.year}
+                      key={active}
                       initial={{ y: "70%", opacity: 0 }}
                       animate={{ y: "0%", opacity: 1 }}
                       exit={{ y: "-70%", opacity: 0 }}

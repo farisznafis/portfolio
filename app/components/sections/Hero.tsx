@@ -197,7 +197,7 @@ export function Hero() {
   const gate = reduce || done;
 
   return (
-    <section id="home" aria-label={content.hero.ariaSection} className="relative w-full">
+    <section id="home" aria-label={content.hero.ariaSection} className="relative isolate w-full">
       <div className="relative w-full overflow-hidden bg-night" style={{ height: "100dvh" }}>
         {/* Layer 1 - base portrait with Ken Burns zoom-out on load */}
         <motion.div

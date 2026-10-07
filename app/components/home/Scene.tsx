@@ -54,8 +54,12 @@ const vertexShader = /* glsl */ `
 
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
 
-    // Perspective-correct point size, a touch larger on peaks
-    gl_PointSize = (14.0 + e * 6.0) * (1.0 / -mvPosition.z);
+    // Perspective-correct point size, a touch larger on peaks. On wide
+    // viewports the tilted field's near edge reaches the camera, where the
+    // 1/depth term explodes into screen-sized additive sprites; hide those
+    // points and cap the rest.
+    float depth = -mvPosition.z;
+    gl_PointSize = depth > 1.5 ? min((14.0 + e * 6.0) / depth, 4.0) : 0.0;
     gl_Position = projectionMatrix * mvPosition;
   }
 `;

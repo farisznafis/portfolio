@@ -103,7 +103,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-40">
+      <header className="fixed inset-x-0 top-0 z-50">
         <div className="border-b border-line bg-night/85 backdrop-blur-xl">
           <nav
             aria-label={content.nav.ariaPrimary}

@@ -120,8 +120,9 @@ export function Manifesto() {
     <section
       ref={containerRef}
       aria-label={content.manifesto.ariaSection}
-      className="relative"
-      style={{ height: "260vh" }}
+      // Shorter on mobile, where the particle wave is hidden and a long
+      // pinned stage reads as empty space.
+      className="relative h-[170vh] md:h-[260vh]"
     >
       <div className="sticky top-0 flex h-[100dvh] items-center overflow-hidden">
         {/* Particle wave - decorative atmosphere, desktop only */}
