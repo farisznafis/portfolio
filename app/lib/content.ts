@@ -77,6 +77,9 @@ export interface Content {
     openImage: string;
     atAGlance: string;
     gallery: string;
+    figmaHeading: string;
+    figmaHint: string;
+    figmaOpen: string;
     nextProject: string;
   };
 
@@ -184,6 +187,9 @@ export const en: Content = {
     openImage: "Open original image",
     atAGlance: "Project at a glance",
     gallery: "Gallery",
+    figmaHeading: "Design file",
+    figmaHint: "Drag to pan, pinch or Ctrl + scroll to zoom",
+    figmaOpen: "Open in Figma",
     nextProject: "Next project",
   },
 
@@ -457,6 +463,15 @@ export const ja: Content = {
 
     gallery:
       "ギャラリー",
+
+    figmaHeading:
+      "デザインファイル",
+
+    figmaHint:
+      "ドラッグで移動、ピンチまたはCtrl＋スクロールで拡大縮小",
+
+    figmaOpen:
+      "Figmaで開く",
 
     nextProject:
       "次のプロジェクト",

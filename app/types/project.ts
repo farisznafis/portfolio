@@ -77,6 +77,21 @@ export type ProjectMedia = {
 };
 
 /**
+ * Interactive Figma file embedded in the case study.
+ *
+ * `url` is the regular figma.com/design link (with an optional node-id);
+ * the embed URL is derived from it. The file must be shared as
+ * "Anyone with the link can view".
+ */
+export type ProjectFigmaEmbed = {
+  url: string;
+
+  title: LocalizedText;
+
+  caption?: LocalizedText;
+};
+
+/**
  * Typographic fallback accent.
  */
 export type ProjectTone =
@@ -259,6 +274,8 @@ export type StoredProject = {
   cover?: ProjectMedia;
 
   gallery?: ProjectMedia[];
+
+  figmaEmbed?: ProjectFigmaEmbed;
 
   caseStudy?: CaseStudyContent;
 

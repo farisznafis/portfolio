@@ -30,6 +30,10 @@ import type {
   StoredProject,
 } from "../../types/project";
 
+import {
+  FigmaEmbed,
+} from "./FigmaEmbed";
+
 export function CaseStudy({
   slug,
   projects,
@@ -807,6 +811,23 @@ export function CaseStudy({
             ) : null}
           </div>
         </details>
+      ) : null}
+
+      {/* ────────────────────────────────────────────────────────────────
+          FIGMA EMBED
+      ──────────────────────────────────────────────────────────────── */}
+      {project.figmaEmbed ? (
+        <FigmaEmbed
+          embed={
+            project.figmaEmbed
+          }
+          labels={
+            labels
+          }
+          headingClass={
+            headingClass
+          }
+        />
       ) : null}
 
       {/* ────────────────────────────────────────────────────────────────

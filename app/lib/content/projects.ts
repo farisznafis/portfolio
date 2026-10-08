@@ -164,6 +164,19 @@ export type ProjectView = {
    */
   gallery: ViewMedia[];
 
+  /**
+   * Interactive Figma file, resolved to an embed URL.
+   */
+  figmaEmbed: {
+    src: string;
+
+    url: string;
+
+    title: string;
+
+    caption?: string;
+  } | null;
+
   hasCaseStudy: boolean;
 
   initials: string;
@@ -199,6 +212,42 @@ function mediaToView(
         lang,
       ),
   };
+}
+
+/**
+ * Turn a figma.com/design link into its embed.figma.com equivalent,
+ * keeping only the node-id so share-tracking params are dropped.
+ */
+function toFigmaEmbedUrl(
+  url: string,
+): string {
+  const source =
+    new URL(url);
+
+  const embed =
+    new URL(
+      source.pathname,
+      "https://embed.figma.com",
+    );
+
+  const nodeId =
+    source.searchParams.get(
+      "node-id",
+    );
+
+  if (nodeId) {
+    embed.searchParams.set(
+      "node-id",
+      nodeId,
+    );
+  }
+
+  embed.searchParams.set(
+    "embed-host",
+    "portfolio",
+  );
+
+  return embed.toString();
 }
 
 /**
@@ -514,6 +563,31 @@ function toView(
               lang,
             ),
         ),
+
+    figmaEmbed:
+      project.figmaEmbed
+        ? {
+            src:
+              toFigmaEmbedUrl(
+                project.figmaEmbed.url,
+              ),
+
+            url:
+              project.figmaEmbed.url,
+
+            title:
+              localized(
+                project.figmaEmbed.title,
+                lang,
+              ) ?? project.title,
+
+            caption:
+              localized(
+                project.figmaEmbed.caption,
+                lang,
+              ),
+          }
+        : null,
 
     hasCaseStudy:
       project.hasCaseStudy,

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+  <defs>
+    <pattern id="g" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#ffffff" stroke-opacity="0.05"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="1200" fill="#10181b"/>
+  <rect width="1600" height="1200" fill="url(#g)"/>
+  <rect x="620" y="450" width="360" height="200" fill="none" stroke="#00b5a5" stroke-opacity="0.6" stroke-width="3" stroke-dasharray="14 10"/>
+  <text x="800" y="730" fill="#f2f6f7" font-family="ui-monospace, Menlo, monospace" font-size="40" text-anchor="middle" letter-spacing="4">FIGMA FRAME 04</text>
+  <text x="800" y="785" fill="#94a6ad" font-family="ui-monospace, Menlo, monospace" font-size="26" text-anchor="middle" letter-spacing="3">PLACEHOLDER — REPLACE WITH EXPORT</text>
+</svg>

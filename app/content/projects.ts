@@ -185,10 +185,60 @@ approach: {
         label: t("Source", "ソースコード"),
         url: "https://github.com/farisznafis/kumamotalk",
       },
+      {
+        type: "figma",
+        label: t("Figma", "Figma"),
+        url: "https://www.figma.com/design/s2BfSvK4Fy0Fe1PRPkLhsV/Kumamon?node-id=0-1",
+      },
+    ],
+    cover: {
+      type: "image",
+      src: "/projects/kumamotalk/cover.png",
+      alt: t(
+        "Kumamotalk booth interface: a red-framed screen greeting the visitor in Japanese, with language buttons for Japanese, Taiwanese, and English",
+        "Kumamotalkのブース画面：赤い枠の画面に日本語の挨拶が表示され、日本語・台湾語・英語の言語ボタンが並ぶ",
+      ),
+    },
+    figmaEmbed: {
+      url: "https://www.figma.com/design/s2BfSvK4Fy0Fe1PRPkLhsV/Kumamon?node-id=0-1",
+      title: t(
+        "Kumamotalk design file in Figma",
+        "FigmaのKumamotalkデザインファイル",
+      ),
+      caption: t(
+        "The full UI design file — screens, states, and components for the booth interface.",
+        "ブース画面の画面・状態・コンポーネントをまとめたUIデザインファイル全体。",
+      ),
+    },
+    // TODO_REAL_IMAGE: replace placeholders with Figma frame exports (PNG 2x)
+    gallery: [
+      {
+        type: "image",
+        src: "/projects/kumamotalk/figma-01.svg",
+        alt: t("Figma frame 01 (placeholder)", "Figmaフレーム01（仮画像）"),
+        caption: t("Placeholder — Figma frame 01", "仮画像 — Figmaフレーム01"),
+      },
+      {
+        type: "image",
+        src: "/projects/kumamotalk/figma-02.svg",
+        alt: t("Figma frame 02 (placeholder)", "Figmaフレーム02（仮画像）"),
+        caption: t("Placeholder — Figma frame 02", "仮画像 — Figmaフレーム02"),
+      },
+      {
+        type: "image",
+        src: "/projects/kumamotalk/figma-03.svg",
+        alt: t("Figma frame 03 (placeholder)", "Figmaフレーム03（仮画像）"),
+        caption: t("Placeholder — Figma frame 03", "仮画像 — Figmaフレーム03"),
+      },
+      {
+        type: "image",
+        src: "/projects/kumamotalk/figma-04.svg",
+        alt: t("Figma frame 04 (placeholder)", "Figmaフレーム04（仮画像）"),
+        caption: t("Placeholder — Figma frame 04", "仮画像 — Figmaフレーム04"),
+      },
     ],
     initials: "KM",
     tone: "amber",
-    // TODO_REAL_IMAGE: expo photo / UI screenshot
     caseStudy: {
       overview: t(
         "An interactive AI conversation bot built for Kumamoto EXPO 2025 in a 3-person team. I designed and implemented the frontend — face-detection-driven reactions and microphone-aware interactions — and the bot was used by 80+ visitors at the event.",
