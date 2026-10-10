@@ -34,6 +34,7 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://farisznafis.com"),
   title: {
     default: "Faris Zaidan Nafis | Software Engineer — Frontend, UI/UX & AI",
     template: "%s | Faris Zaidan Nafis",

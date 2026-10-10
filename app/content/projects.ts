@@ -357,12 +357,62 @@ features: {
     featuredOrder: 3,
     projectOrder: 3,
     hasCaseStudy: true,
-    // Professional work: no public links.
-    confidentiality: "limited",
-    links: [],
+    confidentiality: "public",
+    links: [
+      {
+        type: "figma",
+        label: t("Figma", "Figma"),
+        url: "https://www.figma.com/design/m3mmdDxMVsRAPqMjVYvkb6/-CV--Seleksi-Makomti?node-id=0-1",
+      },
+    ],
+    cover: {
+      type: "image",
+      src: "/projects/makomti-recruitment/cover-makomti.png",
+      alt: t(
+        "MAKOMTI recruitment website cover: a desktop and mobile screen showing the hero section with a photo of a smiling person and a headline in Indonesian",
+        "MAKOMTI採用サイトのカバー：デスクトップとモバイルの画面に、笑顔の人物写真とインドネシア語の見出しが表示されたヒーローセクション",
+      ),
+    },
+    figmaEmbed: {
+      url: "https://www.figma.com/design/m3mmdDxMVsRAPqMjVYvkb6/-CV--Seleksi-Makomti?node-id=0-1",
+      title: t(
+        "MAKOMTI recruitment design file in Figma",
+        "FigmaのMAKOMTI採用サイトデザインファイル",
+      ),
+      caption: t(
+        "The full design file — desktop and mobile pages plus campaign visuals.",
+        "デスクトップ・モバイルのページとキャンペーンビジュアルをまとめたデザインファイル全体。",
+      ),
+    },
+    // TODO_REAL_IMAGE: replace placeholders with Figma frame exports (PNG 2x)
+    gallery: [
+      {
+        type: "image",
+        src: "/projects/makomti-recruitment/figma-01.svg",
+        alt: t("Figma frame 01 (placeholder)", "Figmaフレーム01（仮画像）"),
+        caption: t("Placeholder — Figma frame 01", "仮画像 — Figmaフレーム01"),
+      },
+      {
+        type: "image",
+        src: "/projects/makomti-recruitment/figma-02.svg",
+        alt: t("Figma frame 02 (placeholder)", "Figmaフレーム02（仮画像）"),
+        caption: t("Placeholder — Figma frame 02", "仮画像 — Figmaフレーム02"),
+      },
+      {
+        type: "image",
+        src: "/projects/makomti-recruitment/figma-03.svg",
+        alt: t("Figma frame 03 (placeholder)", "Figmaフレーム03（仮画像）"),
+        caption: t("Placeholder — Figma frame 03", "仮画像 — Figmaフレーム03"),
+      },
+      {
+        type: "image",
+        src: "/projects/makomti-recruitment/figma-04.svg",
+        alt: t("Figma frame 04 (placeholder)", "Figmaフレーム04（仮画像）"),
+        caption: t("Placeholder — Figma frame 04", "仮画像 — Figmaフレーム04"),
+      },
+    ],
     initials: "MK",
     tone: "accent",
-    // TODO_REAL_IMAGE: public-safe UI shots (if approved)
     caseStudy: {
       overview: t(
         "A recruitment website of roughly 21 pages, designed for desktop and mobile in a 3-person team, with supporting visual assets extending it into a recruitment campaign.",
