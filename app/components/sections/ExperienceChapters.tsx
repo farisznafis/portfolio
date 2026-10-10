@@ -23,8 +23,8 @@ export function ExperienceChapters() {
 
   const items = useMemo(() => getExperience(lang), [lang]);
 
-  // Wait for the loader: the WorkReel pin above is created once `done` flips,
-  // and these triggers must be measured after its pin spacing exists.
+  // Wait for the loader: pins above (Manifesto) are created once `done` flips,
+  // and these triggers must be measured after their pin spacing exists.
   useEffect(() => {
     if (reduce || !done) return;
     const el = ref.current;

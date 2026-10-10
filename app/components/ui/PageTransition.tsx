@@ -42,7 +42,7 @@ export function PageTransition({ children, className = "" }: PageTransitionProps
    * Once the entrance finishes, strip the inline transform/filter framer
    * leaves on the wrapper. A lingering `filter`/`transform` turns this div
    * into the containing block for `position: fixed`, which silently breaks
-   * ScrollTrigger's fixed-position pins (e.g. the WorkReel horizontal reel
+   * ScrollTrigger's fixed-position pins (e.g. the Manifesto stage
    * leaves a long empty pin-spacer behind it). Re-measure triggers after
    * clearing so every pin lines up with the clean ancestor chain.
    */

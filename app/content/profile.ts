@@ -63,8 +63,7 @@ export const socials = [
  *
  * Recommended:
  * - 1–3 photos
- * - direct video OR YouTube embed
- * - YouTube URL may still be supplied when direct video is used
+ * - any number of films, landscape or portrait, in display order
  */
 
 type LocalizedMediaText = {
@@ -78,34 +77,25 @@ export type VisualJournalPhoto = {
   caption?: LocalizedMediaText;
 };
 
+/**
+ * One film. Give either `youtubeId` (embed + thumbnail + "Watch on YouTube")
+ * or `src` (direct MP4; for large files prefer Supabase Storage over Git).
+ *
+ * `orientation` picks the frame: "landscape" = 16:9, "portrait" = 9:16
+ * (YouTube Shorts, Reels-style edits).
+ */
+export type JournalFilm = {
+  title: LocalizedMediaText;
+  orientation: "landscape" | "portrait";
+  youtubeId?: string;
+  src?: string;
+  /** Optional custom thumbnail; YouTube films fall back to YouTube's own. */
+  poster?: string;
+};
+
 export type VisualJournalConfig = {
   photos?: VisualJournalPhoto[];
-
-  /**
-   * Direct video.
-   *
-   * For large MP4 files, prefer Supabase Storage instead
-   * of committing the video into Git.
-   */
-  video?: {
-    src: string;
-    poster?: string;
-    title?: LocalizedMediaText;
-  };
-
-  /**
-   * YouTube.
-   *
-   * `id` enables an embedded player.
-   * `url` enables the "Watch on YouTube" link.
-   *
-   * You can provide only `url` if you do not want an embed.
-   */
-  youtube?: {
-    id?: string;
-    url?: string;
-    title?: LocalizedMediaText;
-  };
+  films?: JournalFilm[];
 };
 
 export const visualJournal: VisualJournalConfig = {
@@ -148,40 +138,29 @@ export const visualJournal: VisualJournalConfig = {
   ],
 
   /**
-   * OPTION A — direct MP4.
+   * YouTube ID = the part after `watch?v=` or `/shorts/`.
    *
-   * Uncomment when ready.
-   *
-   * Example using Supabase Storage:
+   * Direct MP4 example:
+   * { title: {...}, orientation: "landscape", src: "https://.../film.mp4", poster: "/images/journal/poster.webp" }
    */
-  // video: {
-  //   src: "https://YOUR_PROJECT.supabase.co/storage/v1/object/public/portfolio-media/journal/japan.mp4",
-  //   poster: "/images/journal/video-poster.webp",
-  //   title: {
-  //     en: "Japan visual journal",
-  //     ja: "日本のビジュアルジャーナル",
-  //   },
-  // },
-
-  /**
-   * OPTION B — YouTube.
-   *
-   * Replace the ID and URL, then uncomment.
-   *
-   * For:
-   * https://www.youtube.com/watch?v=abcdefghijk
-   *
-   * ID = abcdefghijk
-   */
-  youtube: {
-    id: "abcdefghijk",
-    // url: "https://youtube.com/shorts/W7x1RqQywzY?si=aHkFz2qYPKrNPnwL",
-    url: "https://www.youtube.com/embed/nhUbSx-ovoU?si=rZd66amkgkFXvGeq",
-    title: {
-      en: "Last Day Iftar in Japan",
-      ja: "日本での最後のイフタール",
+  films: [
+    {
+      youtubeId: "nhUbSx-ovoU",
+      orientation: "landscape",
+      title: {
+        en: "Perubahan Paradigma — Growth vs Fixed Mindset",
+        ja: "Perubahan Paradigma — 成長マインドセットと固定マインドセット",
+      },
     },
-  },
+    {
+      youtubeId: "W7x1RqQywzY",
+      orientation: "portrait",
+      title: {
+        en: "Last Day Iftar in Japan",
+        ja: "日本での最後のイフタール",
+      },
+    },
+  ],
 };
 
 /**
