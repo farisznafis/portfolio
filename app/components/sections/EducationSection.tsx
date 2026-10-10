@@ -1,11 +1,21 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { GraduationCap, Award } from "lucide-react";
+import { GraduationCap, Award, ArrowUpRight } from "lucide-react";
+import Link from "next/link";
 import { useMemo } from "react";
 import { useLang } from "../../lib/i18n";
 import { getEducation } from "../../lib/content/experience";
 import { EASE } from "../../lib/motion";
+import {
+  certificateHref,
+  certificateImage,
+  certificates,
+  featuredCertificateIds,
+} from "../../content/certificates";
+import CoverImage from "../ui/CoverImage";
+
+const featured = featuredCertificateIds.flatMap((id) => certificates.filter((c) => c.id === id));
 
 /**
  * Compact education & recognition strip for early-career credibility.
@@ -74,6 +84,43 @@ export function EducationSection() {
                 </li>
               ))}
             </ul>
+
+            {/* Featured certificate thumbnails - each opens its own certificate */}
+            <ul className="mt-6 grid grid-cols-3 gap-3">
+              {featured.map((cert) => (
+                <li key={cert.id}>
+                  <Link
+                    href={certificateHref(cert.id)}
+                    data-cursor="View"
+                    aria-label={cert.title}
+                    className="group block transition-transform duration-500 ease-out hover:-translate-y-1 active:scale-[0.98]"
+                  >
+                    <div className="relative aspect-[4/3] overflow-hidden border border-line/60 bg-elevated transition-colors duration-300 group-hover:border-accent/60">
+                      <CoverImage
+                        src={certificateImage(cert.id)}
+                        alt=""
+                        sizes="(min-width: 768px) 15vw, 30vw"
+                        className="transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                      />
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            <Link
+              href="/certificates"
+              data-cursor="View"
+              className="group/link mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-accent-bright transition-colors hover:text-accent"
+            >
+              {content.education.certificatesCta}
+              <span className="font-mono text-xs text-muted">({certificates.length})</span>
+              <ArrowUpRight
+                size={15}
+                aria-hidden="true"
+                className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5"
+              />
+            </Link>
           </motion.div>
         </div>
       </div>

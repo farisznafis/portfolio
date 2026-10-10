@@ -13,6 +13,11 @@ import {
 } from "../../lib/content/projects";
 import { useLang } from "../../lib/i18n";
 import { EASE } from "../../lib/motion";
+import {
+  certificateHref,
+  certificates,
+  fieldCertificateIds,
+} from "../../content/certificates";
 import { PROJECT_FIELDS, type ProjectField, type StoredProject } from "../../types/project";
 // import type { StoredProject } from "../../types/project";
 
@@ -125,6 +130,11 @@ function ProjectRow({
   // Every project has a detail page; public links stay as secondary CTAs.
   const detailHref = getProjectHref(project);
 
+  // Credentials behind this project's fields, deduped (AI + Data can share one).
+  const backing = certificates.filter((cert) =>
+    project.fields.some((field) => fieldCertificateIds[field] === cert.id),
+  );
+
   return (
     <motion.li
       initial={reduce ? {} : { opacity: 0, y: 24 }}
@@ -181,6 +191,29 @@ function ProjectRow({
           <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.16em] text-muted/70">
             {content.projects.confidentialNote}
           </p>
+        ) : null}
+
+        {backing.length > 0 ? (
+          <div className="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-2 border-l border-accent/40 pl-3">
+            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
+              {content.projects.backedBy}
+            </span>
+            {backing.map((cert) => (
+              <Link
+                key={cert.id}
+                href={certificateHref(cert.id)}
+                data-cursor="View"
+                className="group/cert inline-flex items-center gap-1 text-xs font-semibold text-ink/85 transition-colors hover:text-accent-bright"
+              >
+                {cert.title}
+                <ArrowUpRight
+                  size={13}
+                  aria-hidden="true"
+                  className="transition-transform group-hover/cert:-translate-y-0.5 group-hover/cert:translate-x-0.5"
+                />
+              </Link>
+            ))}
+          </div>
         ) : null}
       </div>
 

@@ -115,6 +115,7 @@ export interface Content {
     linkCta: string;
 
     confidentialNote: string;
+    backedBy: string;
   };
 
   experience: {
@@ -128,6 +129,19 @@ export interface Content {
     ariaSection: string;
     heading: string;
     recognitionHeading: string;
+    certificatesCta: string;
+  };
+
+  certificates: {
+    ariaSection: string;
+    heading: string;
+    blurb: string;
+    countLabel: string;
+    filterAria: string;
+    filters: { all: string; award: string; specialization: string; course: string };
+    verifyCta: string;
+    openAria: string;
+    close: string;
   };
 
   capabilities: {
@@ -339,6 +353,9 @@ export const en: Content = {
 
     confidentialNote:
       "Professional work — details kept general.",
+
+    backedBy:
+      "Backed by",
   },
 
   experience: {
@@ -364,6 +381,42 @@ export const en: Content = {
 
     recognitionHeading:
       "Program",
+
+    certificatesCta:
+      "All certificates",
+  },
+
+  certificates: {
+    ariaSection:
+      "Certificates and awards",
+
+    heading:
+      "Certificates",
+
+    blurb:
+      "Competition awards, specializations and the courses behind them — from data analytics to TensorFlow deployment. Every Coursera and Dicoding entry links to its public verification page.",
+
+    countLabel:
+      "{count} certificates",
+
+    filterAria:
+      "Filter certificates by type",
+
+    filters: {
+      all: "All",
+      award: "Awards",
+      specialization: "Specializations",
+      course: "Courses",
+    },
+
+    verifyCta:
+      "Verify",
+
+    openAria:
+      "View certificate: {title}",
+
+    close:
+      "Close",
   },
 
   capabilities: {
@@ -650,6 +703,9 @@ export const ja: Content = {
 
     confidentialNote:
       "業務プロジェクトのため、詳細は概要レベルで記載。",
+
+    backedBy:
+      "関連する認定",
   },
 
   experience: {
@@ -675,6 +731,42 @@ export const ja: Content = {
 
     recognitionHeading:
       "受賞・認定",
+
+    certificatesCta:
+      "すべての認定証",
+  },
+
+  certificates: {
+    ariaSection:
+      "認定証と受賞歴",
+
+    heading:
+      "認定証",
+
+    blurb:
+      "コンテストでの受賞、専門講座、そしてそれを構成する各コース。データ分析からTensorFlowのデプロイまで。CourseraとDicodingの認定証は公開の検証ページにリンクしています。",
+
+    countLabel:
+      "{count}件の認定証",
+
+    filterAria:
+      "種類で認定証を絞り込む",
+
+    filters: {
+      all: "すべて",
+      award: "受賞",
+      specialization: "専門講座",
+      course: "コース",
+    },
+
+    verifyCta:
+      "検証する",
+
+    openAria:
+      "認定証を表示：{title}",
+
+    close:
+      "閉じる",
   },
 
   capabilities: {
