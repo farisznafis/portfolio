@@ -33,30 +33,105 @@ export const projects: StoredProject[] = [
       "React",
       "TypeScript",
       "Vite",
+      "Tailwind CSS",
       "REST API",
       "React Router",
+      "TanStack Query",
       "React Hook Form",
       "Zod",
       "Zustand",
+      "Recharts",
     ],
     summary: t(
-      "B2B carbon monitoring SaaS developed in a 5-member team, featuring role-based workflows for Admin, Master, and User, a 4-step onboarding flow, and REST API integrations.",
-      "5人のチームで開発したB2B向けカーボンモニタリングSaaS。Admin・Master・Userのロール別ワークフロー、4ステップのオンボーディングフロー、REST API連携を担当しました。",
+      "B2B SaaS for managing J-Credit carbon projects, built in a 5-member team: role-based workflows for Admin, Master, and User, a 4-step onboarding flow, monitoring data and emissions dashboards.",
+      "5人のチームで開発した、J-クレジットのカーボンプロジェクトを管理するB2B向けSaaS。Admin・Master・Userのロール別ワークフロー、4ステップのオンボーディング、モニタリングデータと排出量のダッシュボードを担当しました。",
     ),
     featured: true,
     featuredOrder: 1,
     projectOrder: 1,
     hasCaseStudy: true,
-    // Professional/company work: no repo, no demo, no internal screenshots.
+    // Professional/company work: the public demo runs on mock data only, no real company data.
     confidentiality: "limited",
-    links: [],
+    links: [
+      {
+        type: "demo",
+        label: t("Live demo", "ライブデモ"),
+        url: "https://carbon.farisznafis.my.id",
+      },
+    ],
+    cover: {
+      type: "image",
+      src: "/projects/carbon-monitoring/admin-dashboard.png",
+      alt: t(
+        "Admin home: alert for a pending cancel request, counts for projects, companies, applications and requests, a project list with reduction bars, and notifications",
+        "管理者ホーム：未処理の取消依頼のアラート、プロジェクト・企業・申請・依頼の件数、削減量バー付きのプロジェクト一覧、お知らせ",
+      ),
+    },
+    gallery: [
+      {
+        type: "image",
+        src: "/projects/carbon-monitoring/admin-project.png",
+        alt: t(
+          "Admin project detail: emissions trend chart against the baseline, project summary, and project documents",
+          "管理者のプロジェクト詳細：ベースラインと比較した排出量の推移グラフ、プロジェクト概要、書類",
+        ),
+        caption: t(
+          "Admin project detail: emissions against the baseline, membership status and documents in one view.",
+          "管理者のプロジェクト詳細：ベースラインとの排出量比較、入会届の状況、書類を一画面に。",
+        ),
+      },
+      {
+        type: "image",
+        src: "/projects/carbon-monitoring/landing.png",
+        alt: t(
+          "Landing page: headline about turning carbon data into decisions, with an animated hero",
+          "ランディングページ：カーボンデータを意思決定に変えるという見出しとアニメーションのヒーロー",
+        ),
+        caption: t("Public landing page.", "公開ランディングページ。"),
+      },
+      {
+        type: "image",
+        src: "/projects/carbon-monitoring/signup.png",
+        alt: t(
+          "Signup step 1 of 4: company information form with a progress indicator",
+          "サインアップ4ステップ中の1：進捗表示付きの法人情報フォーム",
+        ),
+        caption: t(
+          "4-step signup: company, methodology and equipment, confirmation, completion.",
+          "4ステップのサインアップ：法人情報、方法論・設備、確認、完了。",
+        ),
+      },
+      {
+        type: "image",
+        src: "/projects/carbon-monitoring/site-dashboard.png",
+        alt: t(
+          "Site dashboard: projects the site has joined, with emission-reduction progress against the target",
+          "拠点ダッシュボード：拠点が入会しているプロジェクトと、目標に対する排出削減の進捗",
+        ),
+        caption: t(
+          "Site dashboard: reduction progress for each joined project.",
+          "拠点ダッシュボード：入会中のプロジェクトごとの削減進捗。",
+        ),
+      },
+      {
+        type: "image",
+        src: "/projects/carbon-monitoring/site-project.png",
+        alt: t(
+          "Site project detail: latest monitoring values for operating hours, generation, self-consumption and accuracy",
+          "拠点のプロジェクト詳細：稼働時間・発電量・自家消費量・測定精度の最新モニタリング値",
+        ),
+        caption: t(
+          "Project detail for a site: latest monitoring data and emissions analysis.",
+          "拠点のプロジェクト詳細：最新のモニタリングデータと排出量分析。",
+        ),
+      },
+    ],
     initials: "CM",
     tone: "accent",
-    // TODO_REAL_IMAGE: public-safe screenshot (if any is approved)
     caseStudy: {
       overview: t(
-        "A B2B carbon monitoring SaaS built in a 5-member team. I worked across UI/UX and frontend engineering: role-based workflows for Admin, Master, and User, a 4-step onboarding flow, and the REST API integrations that power them.",
-        "5人のチームで開発したB2B向けカーボンモニタリングSaaS。Admin・Master・Userのロール別ワークフロー、4ステップのオンボーディングフロー、そしてそれらを支えるREST API連携を、UI/UXとフロントエンドの両面で担当しました。",
+        "A B2B SaaS that helps companies run J-Credit carbon projects: register sites and equipment, join projects, submit monitoring data, and track emission reductions. Built in a 5-member team; I worked across UI/UX and frontend engineering, covering the role-based workflows for Admin, Master, and User, the 4-step onboarding flow, and the REST API integrations that power them.",
+        "企業がJ-クレジットのカーボンプロジェクトを運用するためのB2B向けSaaS。拠点と設備の登録、プロジェクトへの入会、モニタリングデータの提出、排出削減量の確認ができます。5人のチームで開発し、Admin・Master・Userのロール別ワークフロー、4ステップのオンボーディング、それらを支えるREST API連携を、UI/UXとフロントエンドの両面で担当しました。",
       ),
       atAGlance: t("Project at a glance", "プロジェクト概要"),
       challenge: {
@@ -136,6 +211,51 @@ approach: {
           },
         ],
       },
+      sections: [
+        {
+          id: "roles",
+          kicker: t("Roles", "ロール"),
+          heading: t("Who does what", "誰が何をするか"),
+          items: [
+            {
+              title: t("Admin (operator)", "Admin（運営者）"),
+              description: t(
+                "Registers projects and methodologies, reviews company applications and project memberships, approves or rejects monitoring data, and manages operators and their permissions.",
+                "プロジェクトと方法論の登録、企業申請と入会届の審査、モニタリングデータの承認・却下、運営者と権限の管理。",
+              ),
+            },
+            {
+              title: t("Master (company owner)", "Master（企業の管理者）"),
+              description: t(
+                "Manages the company's sites and employees, and applies to join projects for each site.",
+                "自社の拠点と社員を管理し、拠点ごとにプロジェクトへの入会を申請します。",
+              ),
+            },
+            {
+              title: t("User (site staff)", "User（拠点の担当者）"),
+              description: t(
+                "Sees the site dashboard and submits monitoring data for the site's equipment.",
+                "拠点ダッシュボードを確認し、拠点の設備のモニタリングデータを提出します。",
+              ),
+            },
+          ],
+        },
+        {
+          id: "demo",
+          kicker: t("Live demo", "ライブデモ"),
+          heading: t("Try it with mock data", "モックデータで試せます"),
+          paragraphs: [
+            t(
+              "The public demo runs the real frontend against a mock API in the browser, so no company data is involved. Log in at /login as master01 or tokyo01, or at /admin/login as admin. Any company ID and password work.",
+              "公開デモは本物のフロントエンドを、ブラウザ内のモックAPIで動かしているため、実際の企業データは含まれません。/loginでmaster01またはtokyo01、/admin/loginでadminとしてログインできます。企業IDとパスワードは何でも構いません。",
+            ),
+          ],
+          note: t(
+            "Changes made in the demo are kept in memory and reset when the page reloads.",
+            "デモでの変更はメモリ上にだけ保持され、ページを再読み込みするとリセットされます。",
+          ),
+        },
+      ],
       galleryLabel: t("Gallery", "ギャラリー"),
       outcomes: {
         kicker: t("Outcomes", "成果"),
