@@ -835,24 +835,150 @@ approach: {
     title: "Face-to-Comic Image Generator",
     // TODO_REAL_CONTENT: confirm year.
     fields: ["AI / ML"],
-    stack: ["Python", "Computer Vision"],
+    stack: ["Python", "TensorFlow", "Keras", "CycleGAN", "Streamlit", "VPS"],
     summary: t(
-      "Image generation pipeline that turns face photos into comic-style portraits.",
-      "顔写真をコミック風のポートレートに変換する画像生成パイプライン。",
+      "A CycleGAN that turns a face photo into a comic-style portrait, or a comic face back into a photo, served as a Streamlit web app.",
+      "顔写真をコミック風のポートレートに、またはコミックの顔を写真に変換するCycleGAN。Streamlitのwebアプリとして公開しています。",
     ),
     featured: false,
     projectOrder: 9,
-    hasCaseStudy: false,
+    hasCaseStudy: true,
     confidentiality: "public",
     links: [
+      {
+        type: "demo",
+        label: t("Live demo (VPS)", "ライブデモ（VPS）"),
+        url: "https://comic.farisznafis.my.id",
+      },
+      {
+        type: "demo",
+        label: t("Live demo (Streamlit Cloud)", "ライブデモ（Streamlit Cloud）"),
+        url: "https://real-to-comic-farisznafis.streamlit.app/",
+      },
       {
         type: "github",
         label: t("Source", "ソースコード"),
         url: "https://github.com/farisznafis/real-to-comic-photo",
       },
     ],
+    cover: {
+      type: "image",
+      src: "/projects/real-to-comic/cover.png",
+      alt: t(
+        "Live demo: the task-assignment model solved, with results per objective and a box plot of skill scores",
+        "ライブデモ：タスク割り当てモデルを解いた結果。目的ごとの結果表とスキルスコアの箱ひげ図",
+      ),
+    },
     initials: "FC",
     tone: "accent",
+    caseStudy: {
+      overview: t(
+        "Upload a face photo, take one with your camera, or pick a dataset example, and the app redraws it as a comic portrait. It also works the other way, from comic to photo. Under the hood is a CycleGAN trained on 10,000 photos and 10,000 comic faces.",
+        "顔写真をアップロードするか、カメラで撮るか、データセットの例を選ぶと、アプリがコミック風のポートレートに描き直します。コミックから写真への逆方向にも対応しています。中身は、10,000枚の写真と10,000枚のコミック顔で学習したCycleGANです。",
+      ),
+      atAGlance: t("Project at a glance", "プロジェクト概要"),
+      challenge: {
+        heading: t("Translating between two image styles", "2つの画風のあいだを変換する"),
+        lead: t(
+          "The model has to change the style of a face without losing who it is.",
+          "顔が誰なのかを失わずに、画風だけを変える必要があります。",
+        ),
+        body: t(
+          "CycleGAN learns this with two generators that translate in opposite directions. Converting a photo to a comic and back should return the original photo, which keeps the face recognisable.",
+          "CycleGANは逆方向に変換する2つの生成器でこれを学習します。写真をコミックに変換して元に戻すと元の写真になるよう学習するため、顔の特徴が保たれます。",
+        ),
+      },
+      approach: {
+        kicker: t("Approach", "アプローチ"),
+        heading: t("From notebook to web app", "ノートブックからwebアプリへ"),
+        steps: [
+          {
+            tag: t("Data", "データ"),
+            title: t("Face2Comics v2 dataset", "Face2Comics v2データセット"),
+            description: t(
+              "10,000 face photos and 10,000 comic versions, resized and randomly cropped to 128 px.",
+              "10,000枚の顔写真と10,000枚のコミック版を、リサイズして128 pxにランダムクロップ。",
+            ),
+          },
+          {
+            tag: t("Model", "モデル"),
+            title: t("ResNet generators + PatchGAN discriminators", "ResNet生成器 + PatchGAN識別器"),
+            description: t(
+              "Trained with adversarial, cycle-consistency and identity losses for 50 epochs.",
+              "敵対的損失・サイクル一貫性損失・恒等損失で50エポック学習。",
+            ),
+          },
+          {
+            tag: t("Refactor", "リファクタリング"),
+            title: t("Kaggle notebook to a Python package", "KaggleノートブックからPythonパッケージへ"),
+            description: t(
+              "Moved to TensorFlow 2.18+ / Keras 3, fixed swapped domains and loss bugs, and added a training CLI and tests.",
+              "TensorFlow 2.18+ / Keras 3に移行し、ドメインの取り違えや損失のバグを修正。学習用CLIとテストを追加。",
+            ),
+          },
+          {
+            tag: t("Deploy", "デプロイ"),
+            title: t("Streamlit, on two hosts", "Streamlitを2つの環境で"),
+            description: t(
+              "The same Streamlit app runs on Streamlit Community Cloud and on my own VPS.",
+              "同じStreamlitアプリをStreamlit Community Cloudと自分のVPSの両方で動かしています。",
+            ),
+          },
+        ],
+      },
+      features: {
+        heading: t("What shipped", "実装したもの"),
+        items: [
+          {
+            title: t("Two directions", "双方向の変換"),
+            description: t("Photo → Comic and Comic → Photo.", "写真 → コミック、コミック → 写真。"),
+          },
+          {
+            title: t("Three ways to input", "3つの入力方法"),
+            description: t(
+              "Upload an image, use the camera, or pick a random dataset example.",
+              "画像のアップロード、カメラ撮影、データセットからランダムに選択。",
+            ),
+          },
+          {
+            title: t("Download as PNG", "PNGでダウンロード"),
+            description: t(
+              "Choose the output size and save the result.",
+              "出力サイズを選んで結果を保存できます。",
+            ),
+          },
+        ],
+      },
+      sections: [
+        {
+          id: "deployment",
+          kicker: t("Deployment", "デプロイ"),
+          heading: t("Two live versions", "2つの公開版"),
+          paragraphs: [
+            t(
+              "comic.farisznafis.my.id is the same Streamlit app, hosted on my own VPS instead of Streamlit Community Cloud.",
+              "comic.farisznafis.my.idは同じStreamlitアプリを、Streamlit Community Cloudではなく自分のVPSでホストしたものです。",
+            ),
+          ],
+        },
+      ],
+      galleryLabel: t("Gallery", "ギャラリー"),
+      outcomes: {
+        kicker: t("Outcomes", "成果"),
+        heading: t("Result", "結果"),
+        items: [
+          t(
+            "A working photo ↔ comic translator anyone can try in the browser.",
+            "誰でもブラウザで試せる、写真 ↔ コミックの変換ツール。",
+          ),
+          t(
+            "A clean, tested codebase that can be retrained with one command.",
+            "1つのコマンドで再学習できる、テスト付きの整理されたコードベース。",
+          ),
+        ],
+      },
+      nextLabel: t("Next project", "次のプロジェクト"),
+    },
   },
   {
     id: "building-damage",
@@ -1248,32 +1374,5 @@ approach: {
     links: [],
     initials: "HV",
     tone: "accent",
-  },
-  {
-    id: "portfolio-v3",
-    slug: "portfolio-v3",
-    title: "Portfolio v3",
-    year: "2026",
-    role: t("Design & Development", "デザイン & 開発"),
-    fields: ["Frontend"],
-    stack: ["Next.js", "TypeScript", "GSAP", "Framer Motion", "Three.js", "React Three Fiber"],
-    summary: t(
-      "This site — an editorial, motion-heavy portfolio built with Next.js, GSAP, Framer Motion, and Three.js.",
-      "このサイト。Next.js・GSAP・Framer Motion・Three.jsで構築した、エディトリアルでモーション中心のポートフォリオ。",
-    ),
-    featured: false,
-    projectOrder: 14,
-    hasCaseStudy: false,
-    confidentiality: "public",
-    links: [
-      {
-        type: "github",
-        label: t("Source", "ソースコード"),
-        url: "https://github.com/farisznafis/portfolio",
-      },
-    ],
-    initials: "V3",
-    tone: "amber",
-    // TODO_REAL_IMAGE: a real screenshot of this site works here
   },
 ];
