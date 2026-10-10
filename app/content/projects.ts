@@ -983,7 +983,7 @@ approach: {
     ],
     cover: {
       type: "image",
-      src: "/projects/real-to-comic/cover.png",
+      src: "/projects/real-to-comic/cover.webp",
       alt: t(
         "Live demo: the task-assignment model solved, with results per objective and a box plot of skill scores",
         "ライブデモ：タスク割り当てモデルを解いた結果。目的ごとの結果表とスキルスコアの箱ひげ図",
