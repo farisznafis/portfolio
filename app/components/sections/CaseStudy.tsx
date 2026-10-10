@@ -396,7 +396,7 @@ export function CaseStudy({
               project.cover
                 .alt
             }
-            className="aspect-video max-h-[420px] w-full border border-line bg-elevated object-contain"
+            className="mx-auto block h-auto max-h-[80vh] w-auto max-w-full border border-line bg-elevated"
             loading="eager"
             fetchPriority="high"
           />
@@ -866,7 +866,8 @@ export function CaseStudy({
             </p>
           </div>
 
-          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Masonry columns so every image keeps its own aspect ratio */}
+          <div className="mt-6 columns-1 gap-4 sm:columns-2 lg:columns-3">
             {gallery.map(
               (
                 media,
@@ -905,10 +906,10 @@ export function CaseStudy({
                           ) *
                           0.06,
                   }}
-                  className={`group min-w-0 ${
+                  className={`group mb-4 min-w-0 break-inside-avoid ${
                     index ===
                     0
-                      ? "sm:col-span-2 lg:col-span-3"
+                      ? "[column-span:all]"
                       : ""
                   }`}
                 >
@@ -919,7 +920,12 @@ export function CaseStudy({
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`${labels.openImage}: ${media.alt}`}
-                    className="block overflow-hidden border border-line bg-elevated"
+                    className={`block overflow-hidden border border-line bg-elevated ${
+                      index ===
+                      0
+                        ? "mx-auto w-fit max-w-full"
+                        : ""
+                    }`}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -930,11 +936,11 @@ export function CaseStudy({
                         media.alt
                       }
                       loading="lazy"
-                      className={`w-full object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.03] ${
+                      className={`block h-auto transition-transform duration-700 ease-out motion-safe:group-hover:scale-[1.03] ${
                         index ===
                         0
-                          ? "aspect-[16/9] sm:aspect-[21/9]"
-                          : "aspect-[4/3]"
+                          ? "max-h-[80vh] w-auto max-w-full"
+                          : "w-full"
                       }`}
                     />
                   </a>

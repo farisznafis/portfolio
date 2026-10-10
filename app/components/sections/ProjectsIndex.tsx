@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import CoverImage from "../ui/CoverImage";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -188,12 +188,11 @@ function ProjectRow({
       <div className="flex flex-col justify-between gap-6">
         <div className="relative aspect-[16/9] w-full overflow-hidden border border-line/60 bg-elevated">
           {project.cover ? (
-            <Image
+            <CoverImage
               src={project.cover.src}
               alt={project.cover.alt}
-              fill
               sizes="(min-width: 768px) 42vw, 100vw"
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              className="transition-transform duration-700 ease-out group-hover:scale-[1.03]"
             />
           ) : (
             <div

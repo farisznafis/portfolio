@@ -1375,4 +1375,190 @@ approach: {
     initials: "HV",
     tone: "accent",
   },
+  {
+    id: "fire-segmentation",
+    slug: "fire-segmentation",
+    title: "Fire Segmentation",
+    // TODO_REAL_CONTENT: confirm year (repo created 2024).
+    fields: ["AI / ML"],
+    stack: ["Python", "PyTorch", "U-Net", "ONNX Runtime", "Streamlit", "VPS"],
+    summary: t(
+      "A U-Net that marks every pixel of fire in a photo, served as a Streamlit web app with a lightweight ONNX model.",
+      "写真の中の炎をピクセル単位で検出するU-Net。軽量なONNXモデルを使ったStreamlitのwebアプリとして公開しています。",
+    ),
+    featured: false,
+    projectOrder: 14,
+    hasCaseStudy: true,
+    confidentiality: "public",
+    links: [
+      {
+        type: "demo",
+        label: t("Live demo (VPS)", "ライブデモ（VPS）"),
+        url: "https://fire.farisznafis.my.id",
+      },
+      {
+        type: "demo",
+        label: t("Live demo (Streamlit Cloud)", "ライブデモ（Streamlit Cloud）"),
+        url: "https://fire-segmentation.streamlit.app/",
+      },
+      {
+        type: "github",
+        label: t("Source", "ソースコード"),
+        url: "https://github.com/farisznafis/fire-segmentation",
+      },
+    ],
+    cover: {
+      type: "image",
+      src: "/projects/fire-segmentation/example.jpg",
+      alt: t(
+        "Three test photos with their predicted fire masks and overlays; the fire-coloured sunset in the last row is correctly left empty",
+        "3枚のテスト写真と、予測された炎のマスクとオーバーレイ。最後の行の夕焼けは正しく炎なしと判定されています",
+      ),
+      caption: t(
+        "Input, predicted mask and overlay on photos the model never saw. The sunset is correctly left empty.",
+        "学習に使っていない写真での入力・予測マスク・オーバーレイ。夕焼けは正しく炎なしと判定。",
+      ),
+    },
+    initials: "FS",
+    tone: "amber",
+    caseStudy: {
+      overview: t(
+        "Upload a photo, or pick one of 50 samples, and the app highlights the regions that contain fire, shows how much of the image is on fire, and lets you download the mask. The model runs on CPU in a 23 MB ONNX file.",
+        "写真をアップロードするか50枚のサンプルから選ぶと、アプリが炎の領域をハイライトし、画像のうち炎が占める割合を表示します。マスクはダウンロードできます。モデルは23 MBのONNXファイルで、CPUで動きます。",
+      ),
+      atAGlance: t("Project at a glance", "プロジェクト概要"),
+      challenge: {
+        heading: t("Fire is not just a bright blob", "炎は「明るい塊」ではない"),
+        lead: t(
+          "The first model flagged sunsets, lamps and bright skies as fire.",
+          "最初のモデルは夕焼け、照明、明るい空まで炎と判定していました。",
+        ),
+        body: t(
+          "v1 was trained on grayscale video frames with no fire-free examples, so it learned that anything bright is fire. On unseen photos it raised a false alarm on 81% of fire-free images.",
+          "v1は炎のない例を含まないグレースケールの動画フレームで学習したため、明るいものはすべて炎だと覚えてしまいました。未知の写真では、炎のない画像の81%で誤検出していました。",
+        ),
+      },
+      approach: {
+        kicker: t("Approach", "アプローチ"),
+        heading: t("What changed in v2", "v2で変えたこと"),
+        steps: [
+          {
+            tag: t("Data", "データ"),
+            title: t("Real photos and hard negatives", "実写真と紛らわしい負例"),
+            description: t(
+              "2,683 video frames, 226 BoWFire photos including sunsets and lamps, and 320 fire-free photos.",
+              "2,683枚の動画フレーム、夕焼けや照明を含むBoWFireの写真226枚、炎のない写真320枚。",
+            ),
+          },
+          {
+            tag: t("Model", "モデル"),
+            title: t("U-Net with a pretrained encoder", "事前学習済みエンコーダー付きU-Net"),
+            description: t(
+              "RGB input and an ImageNet-pretrained EfficientNet-B0 encoder, 6.3M parameters.",
+              "RGB入力と、ImageNetで事前学習したEfficientNet-B0エンコーダー。パラメーター数は630万。",
+            ),
+          },
+          {
+            tag: t("Validate", "検証"),
+            title: t("Hold out whole videos", "動画単位でホールドアウト"),
+            description: t(
+              "Validation keeps entire videos out of training, so near-duplicate frames cannot leak.",
+              "動画ごと学習から外して検証するため、ほぼ同じフレームが漏れることはありません。",
+            ),
+          },
+          {
+            tag: t("Deploy", "デプロイ"),
+            title: t("ONNX + Streamlit, on two hosts", "ONNX + Streamlitを2つの環境で"),
+            description: t(
+              "Exported to ONNX so the app needs no deep-learning framework. The same app runs on Streamlit Community Cloud and on my own VPS.",
+              "ONNXに書き出したため、アプリにディープラーニングのフレームワークは不要です。同じアプリをStreamlit Community Cloudと自分のVPSで動かしています。",
+            ),
+          },
+        ],
+      },
+      features: {
+        heading: t("What shipped", "実装したもの"),
+        items: [
+          {
+            title: t("Upload or sample", "アップロードまたはサンプル"),
+            description: t(
+              "Use your own JPG, PNG or WEBP, or one of 50 bundled photos.",
+              "手持ちのJPG・PNG・WEBP、または同梱の50枚の写真を使えます。",
+            ),
+          },
+          {
+            title: t("Adjustable threshold", "しきい値の調整"),
+            description: t(
+              "Original, mask and overlay side by side, with fire coverage in percent.",
+              "元画像・マスク・オーバーレイを並べて表示し、炎の割合も表示。",
+            ),
+          },
+          {
+            title: t("Download the mask", "マスクのダウンロード"),
+            description: t("Save the predicted mask as a PNG.", "予測マスクをPNGで保存できます。"),
+          },
+        ],
+      },
+      sections: [
+        {
+          id: "results",
+          kicker: t("Results", "結果"),
+          heading: t("v1 vs v2 on unseen data", "未知のデータでのv1とv2の比較"),
+          facts: [
+            {
+              label: t("Fire IoU (BoWFire)", "炎のIoU（BoWFire）"),
+              value: t("0.18 → 0.81", "0.18 → 0.81"),
+            },
+            {
+              label: t("Precision / recall", "適合率 / 再現率"),
+              value: t("0.28 / 0.32 → 0.92 / 0.88", "0.28 / 0.32 → 0.92 / 0.88"),
+            },
+            {
+              label: t("False alarms, fire-free photos", "炎のない写真での誤検出"),
+              value: t("58% → 0%", "58% → 0%"),
+            },
+            {
+              label: t("Model size", "モデルサイズ"),
+              value: t("23 MB ONNX, CPU only", "23 MBのONNX、CPUのみ"),
+            },
+          ],
+          note: t(
+            "Small or distant flames can be missed, and vivid sunset clouds are still the most common false alarm.",
+            "小さい炎や遠くの炎は見逃すことがあり、鮮やかな夕焼け雲が今も最も多い誤検出です。",
+          ),
+        },
+        {
+          id: "deployment",
+          kicker: t("Deployment", "デプロイ"),
+          heading: t("Two live versions", "2つの公開版"),
+          paragraphs: [
+            t(
+              "fire.farisznafis.my.id is the same Streamlit app, hosted on my own VPS instead of Streamlit Community Cloud.",
+              "fire.farisznafis.my.idは同じStreamlitアプリを、Streamlit Community Cloudではなく自分のVPSでホストしたものです。",
+            ),
+          ],
+        },
+      ],
+      galleryLabel: t("Gallery", "ギャラリー"),
+      outcomes: {
+        kicker: t("Outcomes", "成果"),
+        heading: t("Result", "結果"),
+        items: [
+          t(
+            "Fire IoU on unseen photos went from 0.18 to 0.81.",
+            "未知の写真での炎のIoUが0.18から0.81に向上。",
+          ),
+          t(
+            "False alarms on fire-free photos dropped from 58% to 0%.",
+            "炎のない写真での誤検出が58%から0%に減少。",
+          ),
+          t(
+            "A lightweight web app anyone can try in the browser.",
+            "誰でもブラウザで試せる軽量なwebアプリ。",
+          ),
+        ],
+      },
+      nextLabel: t("Next project", "次のプロジェクト"),
+    },
+  },
 ];

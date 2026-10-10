@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import CoverImage from "../ui/CoverImage";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { useMemo, useRef } from "react";
@@ -103,12 +103,11 @@ function WorkPiece({ project, index }: { project: ProjectView; index: number }) 
           >
             <motion.div style={{ y: imageY }} className="absolute -inset-y-[8%] inset-x-0">
               {project.cover ? (
-                <Image
+                <CoverImage
                   src={project.cover.src}
                   alt={project.cover.alt}
-                  fill
                   sizes="(min-width: 1024px) 66vw, 100vw"
-                  className="object-cover transition-transform duration-[1.2s] ease-[var(--ease-signature)] group-hover:scale-[1.05]"
+                  className="transition-transform duration-[1.2s] ease-[var(--ease-signature)] group-hover:scale-[1.05]"
                 />
               ) : (
                 <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center">
