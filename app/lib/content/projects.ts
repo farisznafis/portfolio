@@ -47,6 +47,8 @@ export type ViewMedia = {
 
   src: string;
 
+  aspect?: string;
+
   alt: string;
 
   caption?: string;
@@ -160,7 +162,7 @@ export type ProjectView = {
   cover: ViewMedia | null;
 
   /**
-   * Gallery currently exposes image media only.
+   * Gallery exposes image and embed media.
    */
   gallery: ViewMedia[];
 
@@ -199,6 +201,9 @@ function mediaToView(
 
     src:
       media.src,
+
+    aspect:
+      media.aspect,
 
     alt:
       localized(
@@ -544,7 +549,7 @@ function toView(
         : null,
 
     /**
-     * Case-study gallery currently renders images.
+     * Case-study gallery renders images and iframe embeds (no video player yet).
      */
     gallery:
       (
@@ -553,8 +558,8 @@ function toView(
       )
         .filter(
           (media) =>
-            media.type ===
-            "image",
+            media.type !==
+            "video",
         )
         .map(
           (media) =>

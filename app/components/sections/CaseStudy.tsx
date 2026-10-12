@@ -913,6 +913,30 @@ export function CaseStudy({
                       : ""
                   }`}
                 >
+                  {media.type ===
+                  "embed" ? (
+                    <div
+                      className="relative w-full overflow-hidden border border-line bg-elevated"
+                      style={{
+                        aspectRatio:
+                          media.aspect ??
+                          "16 / 9",
+                      }}
+                    >
+                      <iframe
+                        src={
+                          media.src
+                        }
+                        title={
+                          media.alt
+                        }
+                        loading="lazy"
+                        allow="autoplay; fullscreen"
+                        allowFullScreen
+                        className="absolute inset-0 h-full w-full"
+                      />
+                    </div>
+                  ) : (
                   <a
                     href={
                       media.src
@@ -944,6 +968,7 @@ export function CaseStudy({
                       }`}
                     />
                   </a>
+                  )}
 
                   {media.caption ? (
                     <figcaption className="mt-2 text-base leading-relaxed text-muted">

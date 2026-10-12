@@ -635,17 +635,17 @@ approach: {
       nextLabel: t("Next project", "次のプロジェクト"),
     },
   },
-{
+  {
     id: "speech-emotion",
     slug: "speech-emotion",
     title: "Speech Emotion Recognition",
     year: "2024",
     role: t("Machine Learning Developer", "機械学習デベロッパー"),
     fields: ["AI / ML", "Data / Optimization"],
-    stack: ["Python", "TensorFlow", "Keras", "Librosa", "NumPy", "Pandas", "Streamlit"],
+    stack: ["Python", "TensorFlow / Keras", "LSTM", "Librosa", "Pydub", "Streamlit", "Pytest", "GitHub Actions"],
     summary: t(
-      "Audio emotion recognition system that extracts ZCR, RMS, and MFCC features and uses a TensorFlow/Keras model to classify speech into six emotion categories through a Streamlit interface.",
-      "ZCR・RMS・MFCCの特徴量を抽出し、TensorFlow/Kerasモデルで音声を6つの感情カテゴリに分類するシステム。Streamlitのインターフェースから利用できます。",
+      "Upload a short speech recording and a stacked LSTM classifies it into one of six emotions. ZCR, RMS and MFCC features from Librosa, served as a Streamlit app.",
+      "短い音声をアップロードすると、スタックLSTMが6つの感情のいずれかに分類します。LibrosaでZCR・RMS・MFCCを抽出し、Streamlitアプリとして公開しています。",
     ),
     featured: true,
     featuredOrder: 4,
@@ -654,107 +654,221 @@ approach: {
     confidentiality: "public",
     links: [
       {
+        type: "demo",
+        label: t("Live demo", "ライブデモ"),
+        url: "https://emotion.farisznafis.my.id",
+      },
+      {
         type: "github",
         label: t("Source", "ソースコード"),
         url: "https://github.com/farisznafis/emotion-sentiment",
       },
     ],
+    cover: {
+      type: "image",
+      src: "/projects/speech-emotion/result.webp",
+      alt: t(
+        "The Voice Emotion Recognition app after analysing an uploaded recording: detected emotion Happy at 57.2% confidence",
+        "アップロードした録音を分析した後のVoice Emotion Recognitionアプリ。検出された感情はHappy、信頼度57.2%",
+      ),
+      caption: t(
+        "Upload, play back, analyse: the detected emotion and the model's confidence.",
+        "アップロード、再生、分析。検出された感情とモデルの信頼度。",
+      ),
+    },
+    gallery: [
+      {
+        type: "image",
+        src: "/projects/speech-emotion/upload.webp",
+        alt: t(
+          "Start screen with an upload box for WAV, MP3, M4A, FLAC, OGG, AAC and AMR files",
+          "WAV・MP3・M4A・FLAC・OGG・AAC・AMRに対応したアップロード欄のある開始画面",
+        ),
+        caption: t("Start screen: seven audio formats, up to 15 MB.", "開始画面。7種類の音声形式、最大15 MB。"),
+      },
+      {
+        type: "image",
+        src: "/projects/speech-emotion/scores.webp",
+        alt: t(
+          "Bar chart and table of confidence for all six emotions: Happy 57%, Angry 38%, the rest under 4%",
+          "6つの感情すべての信頼度を示す棒グラフと表。Happy 57%、Angry 38%、その他は4%未満",
+        ),
+        caption: t(
+          "Confidence for every emotion, as a chart and a detailed table.",
+          "すべての感情の信頼度をグラフと詳細な表で表示。",
+        ),
+      },
+      {
+        type: "image",
+        src: "/projects/speech-emotion/mobile-result.webp",
+        alt: t(
+          "The result on a phone: detected emotion, confidence bar and per-emotion chart",
+          "スマートフォンでの結果表示。検出された感情、信頼度バー、感情ごとのグラフ",
+        ),
+        caption: t("The result screen on mobile.", "モバイルでの結果画面。"),
+      },
+      {
+        type: "image",
+        src: "/projects/speech-emotion/mobile-scores.webp",
+        alt: t(
+          "Detailed score table expanded on a phone, listing all six emotions by confidence",
+          "スマートフォンで展開した詳細スコア表。6つの感情を信頼度順に表示",
+        ),
+        caption: t("Detailed scores on mobile.", "モバイルでの詳細スコア。"),
+      },
+    ],
     initials: "SE",
     tone: "amber",
-    // TODO_REAL_IMAGE: Streamlit UI screenshot
     caseStudy: {
       overview: t(
-        "An audio emotion recognition system: ZCR, RMS, and MFCC features extracted with Librosa, classified by a TensorFlow/Keras model into six emotions, and served through a Streamlit interface.",
-        "音声の感情認識システム。LibrosaでZCR・RMS・MFCCの特徴量を抽出し、TensorFlow/Kerasモデルが6つの感情に分類、Streamlitのインターフェースから利用できます。",
+        "Upload a speech recording and the app trims silence, extracts 15 acoustic features per frame, and runs a small stacked LSTM that picks one of six emotions: neutral, happy, sad, angry, fear or disgust. It started as a notebook experiment and was later rebuilt into a tested, deployable app.",
+        "音声をアップロードすると、アプリが無音を除去し、フレームごとに15個の音響特徴を抽出して、小さなスタックLSTMが6つの感情（neutral・happy・sad・angry・fear・disgust）から一つを選びます。ノートブックでの実験から始まり、のちにテスト付きのデプロイ可能なアプリへ作り直しました。",
       ),
       atAGlance: t("Project at a glance", "プロジェクト概要"),
       challenge: {
         heading: t("Reading feeling from a waveform", "波形から感情を読む"),
         lead: t(
-          "Emotion hides in signal shape, not words. The model had to learn from raw audio features — zero-crossing rate, RMS energy, MFCCs — and separate six classes that overlap even for human listeners.",
-          "感情は言葉ではなく信号の形に宿ります。モデルはゼロ交差率・RMSエネルギー・MFCCといった生の音声特徴から学び、人間の聴き手ですら重なり合う6つのクラスを分離しなければなりませんでした。",
+          "Emotion is in how something is said, not what. The model only sees signal features, and six classes that even people mix up.",
+          "感情は「何を」ではなく「どう」話すかに表れます。モデルが見るのは信号の特徴だけで、6つのクラスは人間でも取り違えます。",
         ),
         body: t(
-          "The pipeline had to stay honest end to end: consistent feature extraction, a model that generalizes beyond its training recordings, and an interface that lets anyone test it without touching Python.",
-          "パイプラインは終端まで誠実である必要がありました。一貫した特徴抽出、学習録音を超えて一般化するモデル、そして誰もがPythonに触れずに試せるインターフェースです。",
+          "The original work lived in notebooks. Turning it into an app meant keeping the exact preprocessing the trained model expects, while separating inference from the notebook so it could be tested and deployed on its own.",
+          "元の成果物はノートブックの中にありました。アプリにするには、学習済みモデルが前提とする前処理をそのまま保ちつつ、推論をノートブックから切り離して単独でテスト・デプロイできるようにする必要がありました。",
         ),
       },
       approach: {
         kicker: t("Approach", "アプローチ"),
-        heading: t("Features first, then a classifier, then a face for it", "まず特徴量、次に分類器、そして顔となるUI"),
+        heading: t("From audio file to emotion", "音声ファイルから感情へ"),
         steps: [
           {
-            tag: t("Features", "特徴量"),
-            title: t("ZCR, RMS, and MFCC extraction", "ZCR・RMS・MFCCの抽出"),
+            tag: t("Audio", "音声"),
+            title: t("Trim and fix the length", "トリミングと長さの固定"),
             description: t(
-              "Librosa extracts the signal features that carry prosody — energy, rhythm, spectral shape — into a representation a model can learn from.",
-              "Librosaが韻律を運ぶ信号特徴 — エネルギー・リズム・スペクトルの形 — を、モデルが学べる表現へ抽出します。",
+              "Decode the upload, trim silence at both ends, then pad or cut to exactly 180,000 samples.",
+              "アップロードをデコードし、前後の無音を除去してから、ちょうど180,000サンプルにパディングまたは切り詰めます。",
+            ),
+          },
+          {
+            tag: t("Features", "特徴量"),
+            title: t("15 values per frame", "フレームごとに15個の値"),
+            description: t(
+              "Zero-crossing rate, RMS energy and 13 MFCCs for each of 352 frames: a 352 × 15 input.",
+              "352フレームそれぞれについて、ゼロ交差率・RMSエネルギー・13個のMFCC。入力は352 × 15。",
             ),
           },
           {
             tag: t("Model", "モデル"),
-            title: t("A TensorFlow/Keras classifier for six emotions", "6感情を分けるTensorFlow/Keras分類器"),
+            title: t("Two LSTM layers, 53,894 parameters", "2層のLSTM、パラメーター数53,894"),
             description: t(
-              "A Keras network maps extracted features to six classes: neutral, happy, sad, angry, fear, and disgust.",
-              "Kerasネットワークが抽出された特徴を6クラス — neutral・happy・sad・angry・fear・disgust — へマッピングします。",
+              "LSTM(64) → LSTM(64) → softmax over six emotions. Trained on RAVDESS, CREMA-D, TESS and SAVEE.",
+              "LSTM(64) → LSTM(64) → 6感情のsoftmax。RAVDESS・CREMA-D・TESS・SAVEEで学習。",
             ),
           },
           {
-            tag: t("Interface", "インターフェース"),
-            title: t("Streamlit as the product surface", "プロダクトの表面としてのStreamlit"),
+            tag: t("App", "アプリ"),
+            title: t("Streamlit, tested in CI", "Streamlit、CIでテスト"),
             description: t(
-              "A Streamlit app wraps the pipeline so recordings can be classified interactively — no code required.",
-              "Streamlitアプリがパイプラインを包み込み、録音を対話的に分類できます。コードは不要です。",
+              "Inference lives in its own modules, separate from the notebook, and GitHub Actions lints, tests, loads the model and runs a test prediction on every push.",
+              "推論はノートブックから独立したモジュールにあり、GitHub Actionsがプッシュごとにlint・テスト・モデル読み込み・テスト推論を実行します。",
             ),
           },
         ],
       },
-features: {
+      features: {
         heading: t("What shipped", "実装したもの"),
         items: [
           {
-            title: t("Signal-level features", "信号レベルの特徴量"),
+            title: t("Seven audio formats", "7種類の音声形式"),
             description: t(
-              "ZCR, RMS, and MFCC extraction with Librosa captures how something is said, not what.",
-              "LibrosaによるZCR・RMS・MFCC抽出が、何が言われたかではなくどう言われたかを捉えます。",
+              "WAV, MP3, M4A, FLAC, OGG, AAC and AMR, decoded with FFmpeg.",
+              "WAV・MP3・M4A・FLAC・OGG・AAC・AMRに対応し、FFmpegでデコード。",
             ),
           },
           {
-            title: t("Six-class classifier", "6クラス分類器"),
+            title: t("Confidence for every emotion", "すべての感情の信頼度"),
             description: t(
-              "A TensorFlow/Keras model separates neutral, happy, sad, angry, fear, and disgust.",
-              "TensorFlow/Kerasモデルがneutral・happy・sad・angry・fear・disgustを分離します。",
+              "The top emotion and its confidence, plus a chart and table for all six.",
+              "最も可能性の高い感情とその信頼度に加え、6つすべてをグラフと表で表示。",
             ),
           },
           {
-            title: t("Streamlit interface", "Streamlitインターフェース"),
+            title: t("Model contract checks", "モデルの入出力チェック"),
             description: t(
-              "The full pipeline is usable through a simple app, from audio in to emotion out.",
-              "音声入力から感情出力まで、パイプライン全体をシンプルなアプリから利用できます。",
+              "The app checks the model's input (352 × 15) and output (6 classes) and the label order before predicting.",
+              "推論の前に、モデルの入力（352 × 15）と出力（6クラス）、ラベルの順序を確認します。",
             ),
           },
           {
-            title: t("Reproducible data handling", "再現可能なデータ処理"),
+            title: t("Tests and CI", "テストとCI"),
             description: t(
-              "NumPy and Pandas keep feature and dataset handling consistent end to end.",
-              "NumPyとPandasが特徴量とデータセットの処理を終端まで一貫させます。",
+              "Pytest covers upload validation, preprocessing, feature shapes, labels and model loading; Ruff and GitHub Actions run on every push.",
+              "Pytestでアップロード検証・前処理・特徴量の形・ラベル・モデル読み込みをテストし、プッシュごとにRuffとGitHub Actionsが走ります。",
             ),
           },
         ],
       },
+      sections: [
+        {
+          id: "evaluation",
+          kicker: t("Evaluation", "評価"),
+          heading: t("What the numbers do and don't say", "数字が示すこと、示さないこと"),
+          facts: [
+            {
+              label: t("Validation accuracy (notebook)", "検証精度（ノートブック）"),
+              value: t("0.94 on 263 samples", "263サンプルで0.94"),
+            },
+            {
+              label: t("Macro F1 (notebook)", "マクロF1（ノートブック）"),
+              value: t("≈ 0.93", "≈ 0.93"),
+            },
+            {
+              label: t("Model size", "モデルサイズ"),
+              value: t("53,894 parameters", "パラメーター数53,894"),
+            },
+            {
+              label: t("Training data", "学習データ"),
+              value: t("4 acted-speech datasets", "演技音声のデータセット4種"),
+            },
+          ],
+          paragraphs: [
+            t(
+              "When rebuilding the project I re-checked the old notebook and found problems: two class names in the old report were swapped, the early-stopping callback watched a metric that didn't exist, and the deployed model is a different checkpoint from the one the notebook evaluated.",
+              "プロジェクトを作り直す際に古いノートブックを見直し、問題を見つけました。古いレポートでは2つのクラス名が入れ替わっており、早期終了のコールバックは存在しない指標を監視していて、デプロイされたモデルはノートブックが評価したものとは別のチェックポイントでした。",
+            ),
+          ],
+          note: t(
+            "So the 0.94 is a historical result, not a measured score for the live model.",
+            "そのため0.94は過去の実験結果であり、公開中のモデルを測った値ではありません。",
+          ),
+        },
+        {
+          id: "limitations",
+          kicker: t("Limitations", "制約"),
+          heading: t("An experiment, not an emotion detector", "感情検出器ではなく、実験"),
+          paragraphs: [
+            t(
+              "The training data is acted speech, and the experiment used only female speakers. Language, microphone and background noise all change the result, and the confidence scores are not calibrated probabilities. It should not be used for medical, hiring or other high-stakes decisions.",
+              "学習データは演技による音声で、実験では女性話者のみを使いました。言語・マイク・背景ノイズで結果は変わり、信頼度スコアは校正された確率ではありません。医療・採用などの重要な判断には使うべきではありません。",
+            ),
+          ],
+        },
+      ],
       galleryLabel: t("Gallery", "ギャラリー"),
       outcomes: {
         kicker: t("Outcomes", "成果"),
         heading: t("What changed", "変わったこと"),
         items: [
-          t("Classifies speech into six emotion categories.", "音声を6つの感情カテゴリに分類します。"),
           t(
-            "Feature extraction, training, and inference share one Python stack.",
-            "特徴抽出・学習・推論が一つのPythonスタックを共有します。",
+            "A live web app that classifies speech into six emotions.",
+            "音声を6つの感情に分類する、公開中のwebアプリ。",
           ),
           t(
-            "The Streamlit interface makes the model usable without any code.",
-            "Streamlitインターフェースにより、コードなしでモデルを利用できます。",
+            "Inference separated from the notebook, with tests and CI on every push.",
+            "推論をノートブックから分離し、プッシュごとにテストとCIを実行。",
+          ),
+          t(
+            "An honest write-up of what the old evaluation can and cannot claim.",
+            "過去の評価で言えること・言えないことを正直にまとめました。",
           ),
         ],
       },
@@ -768,10 +882,10 @@ features: {
     year: "2023",
     role: t("Machine Learning Engineer", "機械学習エンジニア"),
     fields: ["AI / ML", "Data / Optimization"],
-    stack: ["Python", "TensorFlow / Keras", "LSTM", "Pandas", "Flask", "Docker"],
+    stack: ["Python", "scikit-learn", "Pandas", "TensorFlow / Keras", "Flask", "Pytest", "Docker"],
     summary: t(
-      "Machine-learning application for forecasting inflation across Indonesian cities and periods using an LSTM model, developed as a Bangkit capstone project.",
-      "Bangkitのキャップストーンプロジェクトとして開発した、LSTMモデルによるインドネシア各都市・各期間のインフレ予測アプリケーション。",
+      "Pick an Indonesian city and see next month's inflation forecast, then how rising prices change the cost of a savings goal and the time to reach it. A Bangkit capstone, later rebuilt with real data and honest evaluation.",
+      "インドネシアの都市を選ぶと翌月のインフレ予測が表示され、物価上昇が貯蓄目標の金額と達成までの期間をどう変えるかが分かります。Bangkitのキャップストーンを、のちに実データと誠実な評価で作り直しました。",
     ),
     featured: true,
     featuredOrder: 5,
@@ -780,57 +894,207 @@ features: {
     confidentiality: "public",
     links: [
       {
+        type: "demo",
+        label: t("Live demo", "ライブデモ"),
+        url: "https://financify.farisznafis.my.id",
+      },
+      {
         type: "github",
         label: t("Source", "ソースコード"),
-        url: "https://github.com/farisznafis/bangkit-financify",
+        url: "https://github.com/farisznafis/bangkit-financify/tree/portfolio",
+      },
+    ],
+    cover: {
+      type: "image",
+      src: "/projects/financify/cover.webp",
+      alt: t(
+        "Financify web app showing Yogyakarta's forecast for October 2026: 0.28% month-to-month, flat versus September, with a 24-month chart and a ±0.44 pp error band",
+        "Financifyのwebアプリ。ジョグジャカルタの2026年10月の予測は前月比0.28%で9月から横ばい。24か月のグラフと±0.44ppの誤差帯を表示",
+      ),
+      caption: t(
+        "Step 1: next month's inflation for a city, against the last 24 months.",
+        "ステップ1：都市の翌月インフレを、直近24か月と並べて表示。",
+      ),
+    },
+    gallery: [
+      {
+        type: "image",
+        src: "/projects/financify/planner.webp",
+        alt: t(
+          "Savings planner with the Wedding goal selected: 150 million rupiah goal, 3 years 2 months to reach it, costing Rp166.2 million by then",
+          "結婚の目標を選んだ貯蓄プランナー。目標1億5千万ルピア、達成まで3年2か月、その時点の費用は1億6,620万ルピア",
+        ),
+        caption: t(
+          "Step 2: inflation adds Rp16.2 million and 4 months to a wedding goal.",
+          "ステップ2：インフレで結婚資金の目標に1,620万ルピアと4か月が加わる。",
+        ),
+      },
+      {
+        type: "image",
+        src: "/projects/financify/mobile-forecast.webp",
+        alt: t(
+          "The forecast card on a phone: city picker, 0.28% forecast, chart and the model's typical error",
+          "スマートフォンでの予測カード。都市の選択、0.28%の予測、グラフとモデルの典型的な誤差",
+        ),
+        caption: t("The forecast on mobile.", "モバイルでの予測。"),
+      },
+      {
+        type: "image",
+        src: "/projects/financify/mobile-plan.webp",
+        alt: t(
+          "Planner result on a phone for a traveling goal: 4 months to goal, Rp30.3 million when reached",
+          "スマートフォンでの旅行目標のプランナー結果。達成まで4か月、その時点で3,030万ルピア",
+        ),
+        caption: t("A planner estimate on mobile.", "モバイルでのプランナーの試算。"),
+      },
+      {
+        type: "image",
+        src: "/projects/financify/actual-vs-predicted.webp",
+        alt: t(
+          "Line chart of the test period 2025-01 to 2026-09: actual inflation averaged across cities, the model's prediction and the naive baseline",
+          "テスト期間2025-01〜2026-09の折れ線グラフ。都市平均の実績インフレ、モデルの予測、ナイーブなベースライン",
+        ),
+        caption: t(
+          "Test period, mean across cities: the model (orange) against actual inflation and last month's value.",
+          "テスト期間の都市平均。モデル（オレンジ）と実績値、前月値との比較。",
+        ),
+      },
+      {
+        type: "image",
+        src: "/projects/financify/app-design-2023.webp",
+        alt: t(
+          "Eight screens of the 2023 Financify Android app design: home with finance tips, goal categories, prediction form and result, Finbot chat, sign-up and login",
+          "2023年のFinancify Androidアプリの8画面。金融ヒント付きのホーム、目標カテゴリ、予測フォームと結果、Finbotチャット、登録とログイン",
+        ),
+        caption: t(
+          "The 2023 Android app design. The web app keeps its palette and goal categories.",
+          "2023年のAndroidアプリのデザイン。webアプリは配色と目標カテゴリを引き継いでいます。",
+        ),
+      },
+      {
+        type: "image",
+        src: "/projects/financify/app-2023-result.webp",
+        alt: t(
+          "The 2023 Android app's calculation screen for Yogyakarta: 0 years 10 months to the goal, inflation trend up",
+          "2023年のAndroidアプリの計算画面（ジョグジャカルタ）。目標まで0年10か月、インフレ傾向は上昇",
+        ),
+        caption: t(
+          "The capstone build in 2023: the Android app calling the LSTM API.",
+          "2023年のキャップストーン版。AndroidアプリがLSTMのAPIを呼び出します。",
+        ),
+      },
+      {
+        type: "embed",
+        src: "https://drive.google.com/file/d/1CxzKiUlE549Lr9h-4eeIpBBiR7OOzwYa/preview",
+        aspect: "9 / 16",
+        alt: t(
+          "Screen recording of the 2023 Financify Android app",
+          "2023年のFinancify Androidアプリの画面録画",
+        ),
+        caption: t(
+          "Demo of the 2023 app: finance tips, goal categories and a calculation for Yogyakarta.",
+          "2023年のアプリのデモ。金融ヒント、目標カテゴリ、ジョグジャカルタでの計算。",
+        ),
+      },
+      {
+        type: "image",
+        src: "/projects/financify/finbot.webp",
+        alt: t(
+          "Finbot mascot in four expressions: joyful, happy, smile and angry",
+          "Finbotマスコットの4つの表情：joyful、happy、smile、angry",
+        ),
+        caption: t(
+          "Finbot, the assistant mascot designed for the 2023 app.",
+          "2023年のアプリ用にデザインしたアシスタントのマスコット、Finbot。",
+        ),
+      },
+      {
+        type: "embed",
+        src: "https://drive.google.com/file/d/1Ks1e0Dr_E3ukfYpkDO359aFTF2DATj6l/preview",
+        alt: t(
+          "Animated Financify title card with the logo and two Finbot mascots",
+          "ロゴと2体のFinbotマスコットが動くFinancifyのタイトルカード",
+        ),
+        caption: t(
+          "Animated background made for the capstone presentation.",
+          "キャップストーン発表用に作ったアニメーション背景。",
+        ),
+      },
+      {
+        type: "embed",
+        src: "https://drive.google.com/file/d/1DSNp1x98TO2uNuTh5cQs-uFK1wnHYiAu/preview",
+        alt: t(
+          "Financify go-to-market presentation, 18 slides",
+          "Financifyのゴー・トゥ・マーケット資料（18スライド）",
+        ),
+        caption: t(
+          "The go-to-market deck from the 2023 capstone.",
+          "2023年のキャップストーンのゴー・トゥ・マーケット資料。",
+        ),
+      },
+      {
+        type: "image",
+        src: "/projects/financify/team.webp",
+        alt: t(
+          "The Bangkit capstone team working together at a café, with one member joining by video call",
+          "カフェで作業するBangkitキャップストーンチーム。一人はビデオ通話で参加",
+        ),
+        caption: t("Team CH2-PS231 during the 2023 capstone.", "2023年のキャップストーン中のチームCH2-PS231。"),
       },
     ],
     initials: "FI",
     tone: "accent",
-    // TODO_REAL_IMAGE: app/model screenshot
     caseStudy: {
       overview: t(
-        "A Bangkit capstone project: an LSTM model forecasting inflation across Indonesian cities and periods, served through a Flask application layer that the team's mobile app consumes.",
-        "Bangkitのキャップストーンプロジェクト。LSTMモデルがインドネシア各都市・各期間のインフレを予測し、Flaskのアプリケーション層を通じてチームのモバイルアプリが消費します。",
+        "Financify helps someone saving towards a goal see how rising prices in their city affect it. Step 1 forecasts next month's inflation for one of 82 Indonesian cities. Step 2 estimates what the goal will cost after inflation and how long it takes to save for it. It began as a 2023 Bangkit capstone (an LSTM behind a Flask API for an Android app) and was later rebuilt end to end.",
+        "Financifyは、目標に向けて貯蓄する人が、自分の都市の物価上昇がそれにどう影響するかを知るためのアプリです。ステップ1でインドネシア82都市の翌月インフレを予測し、ステップ2でインフレ後の目標金額と貯蓄にかかる期間を試算します。2023年のBangkitキャップストーン（Androidアプリ向けのFlask APIの裏にLSTM）として始まり、のちに全体を作り直しました。",
       ),
       atAGlance: t("Project at a glance", "プロジェクト概要"),
       challenge: {
         heading: t("Forecasting an economy, city by city", "都市ごとに読む経済"),
         lead: t(
-          "Inflation moves differently in every Indonesian city and every period. A single global curve would be useless — the model had to learn temporal patterns per city and serve them through an interface other teams could build on.",
-          "インフレは都市ごと、期間ごとに異なる動きをします。一本の全体曲線では役に立ちません。モデルは都市ごとの時系列パターンを学び、他のチームがその上に構築できる形で予測を提供する必要がありました。",
+          "Inflation moves differently in every Indonesian city, and one month of it is noisy. The forecast had to beat simple guesses on data it had never seen, and say plainly how wrong it can be.",
+          "インフレは都市ごとに異なる動きをし、1か月単位では変動が大きい。予測は未知のデータで単純な推測を上回り、どれだけ外れうるかを率直に示す必要がありました。",
         ),
         body: t(
-          "As the machine-learning engineer, my work sat between data and product: prepare the series, design an LSTM that respects their sequence structure, and expose forecasts through a Flask layer the mobile team could integrate.",
-          "機械学習エンジニアとして、私の仕事はデータとプロダクトの間にありました。時系列を整え、その系列構造を尊重するLSTMを設計し、Flask層を通じてモバイルチームが統合できる予測を公開することです。",
+          "The 2023 capstone used a hand-compiled dataset and was never compared against a baseline. Rebuilding it meant real data sources, a strict time-based split, and choosing every feature on validation only.",
+          "2023年のキャップストーンは手作業でまとめたデータセットを使い、ベースラインとの比較もしていませんでした。作り直すにあたり、実際のデータソース、厳密な時系列分割、そして検証データだけでの特徴量選択が必要でした。",
         ),
       },
-approach: {
+      approach: {
         kicker: t("Approach", "アプローチ"),
-        heading: t("Series in, forecasts out, API in between", "系列を入れ、予測を出し、間にAPIを置く"),
+        heading: t("From price data to a savings plan", "価格データから貯蓄計画へ"),
         steps: [
           {
             tag: t("Data", "データ"),
-            title: t("Indonesian inflation series, prepared", "整えられたインドネシアのインフレ系列"),
+            title: t("Official inflation plus market prices", "公式インフレと市場価格"),
             description: t(
-              "City-level inflation data cleaned and shaped with Pandas into sequences the model can learn from.",
-              "Pandasで都市レベルのインフレデータを清掃・整形し、モデルが学べる系列へ変換します。",
+              "Month-to-month inflation for 82 cities from BPS (2008 onward) and daily traditional-market prices for 10 foods from Bank Indonesia's PIHPS, with checks for duplicates, gaps and placeholder zeros.",
+              "BPSの82都市の前月比インフレ（2008年以降）と、Bank IndonesiaのPIHPSによる10品目の伝統市場の日次価格。重複・欠損・プレースホルダーの0をチェックしています。",
+            ),
+          },
+          {
+            tag: t("Features", "特徴量"),
+            title: t("Lags, calendar and a food nowcast", "ラグ、カレンダー、食品のナウキャスト"),
+            description: t(
+              "Twelve months of lags, seasonality, Ramadan and Eid flags, food price changes, and a nowcast from the first 5 trading days of the target month.",
+              "12か月分のラグ、季節性、ラマダンとイードのフラグ、食品価格の変化、そして対象月の最初の5営業日からのナウキャスト。",
             ),
           },
           {
             tag: t("Model", "モデル"),
-            title: t("An LSTM for temporal patterns", "時系列パターンを学ぶLSTM"),
+            title: t("Chosen on validation, scored on test once", "検証で選び、テストは一度だけ"),
             description: t(
-              "A TensorFlow/Keras LSTM learns the sequence structure of inflation across cities and forecast periods.",
-              "TensorFlow/KerasのLSTMが、都市と予測期間をまたぐインフレの系列構造を学習します。",
+              "Naive, seasonal naive, Ridge and gradient boosting compared over four rolling yearly folds (2021–2024). Feature groups are kept only if they lower validation error.",
+              "ナイーブ、季節ナイーブ、Ridge、勾配ブースティングを4つの年次ローリング分割（2021〜2024年）で比較。検証誤差を下げる特徴量グループだけを残します。",
             ),
           },
           {
-            tag: t("Delivery", "デリバリー"),
-            title: t("Flask and Docker as the handoff", "引き継ぎとしてのFlaskとDocker"),
+            tag: t("App", "アプリ"),
+            title: t("A static page with every forecast inside", "全予測を内蔵した静的ページ"),
             description: t(
-              "A Flask application layer exposes predictions, packaged with Docker so the team's mobile app integrates against a stable interface.",
-              "Flaskのアプリケーション層が予測を公開し、Dockerでパッケージ化。モバイルチームは安定したインターフェースに対して統合できます。",
+              "Every city's forecast is embedded in one bilingual page and the planner runs in the browser, so it needs no server. Flask serves the same page plus a JSON API.",
+              "全都市の予測を一つのバイリンガルページに埋め込み、プランナーはブラウザで動くためサーバーは不要。Flaskは同じページとJSON APIも提供します。",
             ),
           },
         ],
@@ -839,51 +1103,97 @@ approach: {
         heading: t("What shipped", "実装したもの"),
         items: [
           {
-            title: t("LSTM forecasting", "LSTMによる予測"),
+            title: t("82-city forecast", "82都市の予測"),
             description: t(
-              "Sequence modeling tuned to inflation's temporal structure.",
-              "インフレの時系列構造に合わせた系列モデリング。",
+              "Next month's inflation, up or down versus last month, a 24-month chart and the model's typical error.",
+              "翌月のインフレ、前月比の上昇・下降、24か月のグラフ、モデルの典型的な誤差。",
             ),
           },
           {
-            title: t("Multi-city coverage", "複数都市のカバー"),
+            title: t("Savings planner", "貯蓄プランナー"),
             description: t(
-              "Forecasts across Indonesian cities and periods, not one aggregate curve.",
-              "一本の集計曲線ではなく、インドネシアの都市と期間をまたぐ予測。",
+              "Goal categories from the 2023 app; shows the goal's cost when reached and how many months inflation adds.",
+              "2023年のアプリの目標カテゴリを使い、達成時の目標金額とインフレで何か月延びるかを表示。",
             ),
           },
           {
-            title: t("Flask application layer", "Flaskアプリケーション層"),
+            title: t("Bilingual, no server", "バイリンガル、サーバー不要"),
             description: t(
-              "Predictions served through an API the rest of the team builds on.",
-              "チームの他のメンバーがその上に構築できるAPIを通じて予測を提供。",
+              "Indonesian and English, one self-contained page; a link like ?city=yogyakarta opens straight to a city.",
+              "インドネシア語と英語、単一の自己完結ページ。?city=yogyakartaのようなリンクで都市を直接開けます。",
             ),
           },
           {
-            title: t("Docker packaging", "Dockerパッケージング"),
+            title: t("Tests", "テスト"),
             description: t(
-              "The service ships in a container, ready for deployment.",
-              "サービスはコンテナに梱包され、デプロイの準備ができています。",
+              "Pytest covers data cleaning, leak-free features and splits, the API, and that the JavaScript and Python planners agree.",
+              "Pytestでデータ清掃、リークのない特徴量と分割、API、そしてJavaScriptとPythonのプランナーが一致することをテスト。",
             ),
           },
         ],
       },
+      sections: [
+        {
+          id: "evaluation",
+          kicker: t("Evaluation", "評価"),
+          heading: t("Test period 2025-01 to 2026-09", "テスト期間 2025-01〜2026-09"),
+          facts: [
+            {
+              label: t("Model MAE", "モデルのMAE"),
+              value: t("0.44 pp", "0.44 pp"),
+            },
+            {
+              label: t("Naive MAE (last month)", "ナイーブのMAE（前月値）"),
+              value: t("0.69 pp", "0.69 pp"),
+            },
+            {
+              label: t("Error reduction", "誤差の削減"),
+              value: t("37% vs naive", "ナイーブ比37%"),
+            },
+            {
+              label: t("Test set", "テストセット"),
+              value: t("82 cities, 1,722 city-months", "82都市、1,722都市月"),
+            },
+          ],
+          paragraphs: [
+            t(
+              "The food-price nowcast gave the largest single gain. Errors are largest in policy-shock months, such as the early-2025 electricity discount (MAE 0.74 vs 0.99 for naive), and in small eastern cities.",
+              "最も大きな改善は食品価格のナウキャストによるものでした。誤差が大きいのは、2025年初めの電気料金割引のような政策ショックの月（MAE 0.74、ナイーブは0.99）と、東部の小さな都市です。",
+            ),
+          ],
+          note: t(
+            "An earlier version of the pipeline was scored on the same test period, so it is not fully unseen by me, even though selection never looks at it.",
+            "パイプラインの以前のバージョンを同じテスト期間で評価したため、選択には一切使っていないものの、私にとって完全に未見のデータではありません。",
+          ),
+        },
+        {
+          id: "limitations",
+          kicker: t("Limitations", "制約"),
+          heading: t("A direction, not a promise", "約束ではなく、方向性"),
+          paragraphs: [
+            t(
+              "The model sees only each city's inflation history, the calendar and food prices: no fuel or electricity prices, exchange or policy rates. The planner assumes constant income, expenses and inflation and no investment return. It is a planning estimate, not financial advice.",
+              "モデルが見るのは各都市のインフレ履歴、カレンダー、食品価格だけで、燃料・電気料金、為替、政策金利は含みません。プランナーは収入・支出・インフレが一定で投資収益がないと仮定しています。計画のための試算であり、金融アドバイスではありません。",
+            ),
+          ],
+        },
+      ],
       galleryLabel: t("Gallery", "ギャラリー"),
       outcomes: {
         kicker: t("Outcomes", "成果"),
         heading: t("What changed", "変わったこと"),
         items: [
           t(
-            "Forecasts inflation across Indonesian cities and periods.",
-            "インドネシアの都市と期間をまたぐインフレ予測。",
+            "A live, bilingual web app covering 82 Indonesian cities.",
+            "インドネシア82都市をカバーする、公開中のバイリンガルwebアプリ。",
           ),
           t(
-            "Built within the Bangkit Machine Learning learning-path team.",
-            "Bangkitの機械学習ラーニングパスチーム内で構築。",
+            "A forecast that beats the naive baseline by 37% on held-out months.",
+            "未使用の月で、ナイーブなベースラインより誤差を37%削減した予測。",
           ),
           t(
-            "The Flask layer lets the team's mobile application consume the model.",
-            "Flask層により、チームのモバイルアプリケーションがモデルを利用できます。",
+            "Built first with the Bangkit team CH2-PS231 across machine learning, cloud and mobile.",
+            "最初は機械学習・クラウド・モバイルにまたがるBangkitチームCH2-PS231で構築。",
           ),
         ],
         // TODO_REAL_CONTENT: "Top 50 Product-based Capstone Projects" —
@@ -908,6 +1218,24 @@ approach: {
     hasCaseStudy: false,
     confidentiality: "limited",
     links: [],
+    cover: {
+      type: "image",
+      src: "/projects/blastout/cover.webp",
+      alt: t(
+        "BLASTOUT 2023 tryout website for Balairung Klass, shown on a laptop, tablet and phone",
+        "Balairung KlassのBLASTOUT 2023トライアウトサイト。ノートPC・タブレット・スマートフォンでの表示",
+      ),
+    },
+    gallery: [
+      {
+        type: "image",
+        src: "/projects/blastout/web-design.webp",
+        alt: t(
+          "BLASTOUT 2023 page sections: about, event lineup, timeline, testimonials, sponsors and media partners",
+          "BLASTOUT 2023のページ構成：概要、イベント一覧、タイムライン、体験談、スポンサー、メディアパートナー",
+        ),
+      },
+    ],
     initials: "BO",
     tone: "amber",
   },
@@ -934,20 +1262,191 @@ approach: {
     id: "suicide-risk",
     slug: "suicide-risk",
     title: "Suicide Risk Detection from Text",
-    // TODO_REAL_CONTENT: confirm year + whether a public repo exists.
+    year: "2023",
     fields: ["AI / ML"],
-    stack: ["Python", "NLP"],
+    stack: ["Python", "NLP", "NLTK", "scikit-learn", "LightGBM", "Streamlit"],
     summary: t(
-      "NLP model detecting suicide-risk signals from text.",
-      "テキストから自殺リスクの兆候を検出するNLPモデル。",
+      "A text classifier that flags suicide-risk posts with 95% accuracy, built for Data Royale 2023 where our team won 3rd place.",
+      "自殺リスクのある投稿を95%の精度で検出するテキスト分類器。Data Royale 2023で作り、チームで3位に入賞しました。",
     ),
     featured: false,
     projectOrder: 8,
-    hasCaseStudy: false,
+    hasCaseStudy: true,
     confidentiality: "public",
-    links: [],
+    links: [
+      {
+        type: "figma",
+        label: t("Presentation", "プレゼンテーション"),
+        url: "https://www.figma.com/proto/UF5TFZscGPrRDzguksTDQL/The-Untouchaballs?page-id=0%3A1&type=design&node-id=5-55&viewport=-154%2C941%2C0.18&t=Zwy7yYTMWd2uwcT1-8&scaling=contain&starting-point-node-id=5%3A55&hide-ui=1",
+      },
+      {
+        type: "demo",
+        label: t("Live demo", "ライブデモ"),
+        url: "https://suicide-text-detection.streamlit.app/",
+      },
+      {
+        type: "github",
+        label: t("Source", "ソースコード"),
+        url: "https://github.com/farisznafis/suicide-text-detection",
+      },
+      {
+        type: "other",
+        label: t("Winner certificate", "入賞証明書"),
+        url: "https://drive.google.com/file/d/1sm8m6O9ZKIeEllFpNGEUyBO3EK_zod-0/view?usp=sharing",
+      },
+    ],
+    cover: {
+      type: "image",
+      src: "/projects/suicide-risk/cover.webp",
+      alt: t(
+        "Data Royale competition logo: gold letters on a blue shield above clouds",
+        "Data Royaleコンテストのロゴ：雲の上の青い盾に金色の文字",
+      ),
+    },
+    gallery: [
+      {
+        type: "image",
+        src: "/projects/suicide-risk/confusion-matrix-lgbm.webp",
+        alt: t(
+          "Confusion matrix of the LightGBM model on the test set",
+          "テストセットにおけるLightGBMモデルの混同行列",
+        ),
+        caption: t(
+          "LightGBM on 46,415 test posts: 95% accuracy.",
+          "46,415件のテスト投稿でのLightGBM：精度95%。",
+        ),
+      },
+    ],
     initials: "SR",
     tone: "amber",
+    caseStudy: {
+      overview: t(
+        "Type a post and the app says whether it shows signs of suicide risk. It is a LightGBM model trained on 232,074 Reddit posts, made by our team The Untouchaballs for Data Royale 2023, where we won 3rd place in the senior division. It is a competition project, not a clinical tool.",
+        "投稿を入力すると、自殺リスクの兆候があるかをアプリが判定します。232,074件のReddit投稿で学習したLightGBMモデルで、チームThe UntouchaballsとしてData Royale 2023に出場し、シニア部門で3位に入賞しました。コンテスト用のプロジェクトであり、臨床用のツールではありません。",
+      ),
+      atAGlance: t("Project at a glance", "プロジェクト概要"),
+      challenge: {
+        heading: t("Spotting risk in short, informal text", "短くくだけた文章からリスクを見つける"),
+        lead: t(
+          "Posts are short, messy and full of slang, and a missed risk post costs more than a false alarm.",
+          "投稿は短く、表記が乱れ、スラングも多い。そしてリスクのある投稿の見逃しは、誤検知よりも重大です。",
+        ),
+        body: t(
+          "We used the Kaggle Suicide and Depression Detection dataset: 232,074 posts, half labelled suicide and half non-suicide, with no missing or duplicate rows.",
+          "KaggleのSuicide and Depression Detectionデータセットを使いました。232,074件の投稿で、半分がsuicide、半分がnon-suicideのラベル付き。欠損や重複はありません。",
+        ),
+      },
+      approach: {
+        kicker: t("Approach", "アプローチ"),
+        heading: t("From raw posts to a web app", "生の投稿からwebアプリへ"),
+        steps: [
+          {
+            tag: t("Clean", "前処理"),
+            title: t("Text preprocessing with NLTK", "NLTKによるテキスト前処理"),
+            description: t(
+              "Lowercase, remove punctuation and stopwords, tokenize and lemmatize.",
+              "小文字化、句読点とストップワードの除去、トークン化、見出し語化。",
+            ),
+          },
+          {
+            tag: t("Features", "特徴量"),
+            title: t("Character-level TF-IDF", "文字単位のTF-IDF"),
+            description: t(
+              "1–3 character n-grams, 5,000 features, which copes well with typos and slang.",
+              "1〜3文字のn-gramで5,000特徴量。誤字やスラングにも強い表現です。",
+            ),
+          },
+          {
+            tag: t("Train", "学習"),
+            title: t("Three models compared", "3つのモデルを比較"),
+            description: t(
+              "Random Forest, LightGBM and Naive Bayes on an 80/20 stratified split.",
+              "80/20の層化分割で、Random Forest・LightGBM・Naive Bayesを学習。",
+            ),
+          },
+          {
+            tag: t("Deploy", "デプロイ"),
+            title: t("Streamlit demo", "Streamlitデモ"),
+            description: t(
+              "The best model, LightGBM, runs in a Streamlit app on Streamlit Community Cloud.",
+              "最も良かったLightGBMを、Streamlit Community Cloud上のStreamlitアプリで動かしています。",
+            ),
+          },
+        ],
+      },
+      features: {
+        heading: t("What shipped", "実装したもの"),
+        items: [
+          {
+            title: t("Live classifier", "ライブ分類器"),
+            description: t(
+              "Paste any English text and get suicide / non-suicide back.",
+              "英語の文章を貼り付けると、suicide / non-suicideを返します。",
+            ),
+          },
+          {
+            title: t("Reproducible notebooks", "再現可能なノートブック"),
+            description: t(
+              "Preprocessing, training and EDA notebooks, run in order.",
+              "前処理・学習・EDAのノートブックを順番に実行するだけ。",
+            ),
+          },
+          {
+            title: t("Competition report and deck", "レポートと発表資料"),
+            description: t(
+              "A written report and a Figma presentation for the final.",
+              "決勝用のレポートとFigmaのプレゼンテーション。",
+            ),
+          },
+        ],
+      },
+      sections: [
+        {
+          id: "evaluation",
+          kicker: t("Evaluation", "評価"),
+          heading: t("Model comparison", "モデルの比較"),
+          paragraphs: [
+            t("Scores on the 46,415-post test set.", "46,415件のテストセットでのスコア。"),
+          ],
+          facts: [
+            { label: t("LightGBM", "LightGBM"), value: t("95% accuracy · 0.95 F1", "精度95% · F1 0.95") },
+            { label: t("Random Forest", "Random Forest"), value: t("90% accuracy · 0.90 F1", "精度90% · F1 0.90") },
+            { label: t("Naive Bayes", "Naive Bayes"), value: t("84% accuracy · 0.83 F1", "精度84% · F1 0.83") },
+          ],
+          note: t(
+            "LightGBM was both the most accurate and small enough to deploy (3.8 MB, against 226 MB for Random Forest).",
+            "LightGBMは最も精度が高く、デプロイできるほど軽量でした（Random Forestの226 MBに対して3.8 MB）。",
+          ),
+        },
+        {
+          id: "eda",
+          kicker: t("EDA", "探索的分析"),
+          heading: t("What risk posts sound like", "リスクのある投稿の特徴"),
+          paragraphs: [
+            t(
+              "The most frequent bigrams in suicide-risk posts were “feel like”, “don't know”, “don't want”, “want die”, “I'm tired” and “I'm scared”.",
+              "リスクのある投稿で最も多いバイグラムは「feel like」「don't know」「don't want」「want die」「I'm tired」「I'm scared」でした。",
+            ),
+          ],
+        },
+      ],
+      galleryLabel: t("Gallery", "ギャラリー"),
+      outcomes: {
+        kicker: t("Outcomes", "成果"),
+        heading: t("Result", "結果"),
+        items: [
+          t(
+            "3rd place, Senior Division, Data Royale 2023 (Kotak Riset & DSAI OmahTI, Universitas Gadjah Mada).",
+            "Data Royale 2023 シニア部門3位（Kotak Riset & DSAI OmahTI、ガジャマダ大学）。",
+          ),
+          t(
+            "A 95%-accurate classifier anyone can try in the browser.",
+            "誰でもブラウザで試せる、精度95%の分類器。",
+          ),
+        ],
+      },
+      nextLabel: t("Next project", "次のプロジェクト"),
+    },
   },
   {
     id: "face-to-comic",

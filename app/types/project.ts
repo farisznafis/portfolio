@@ -64,12 +64,21 @@ export type ProjectLink = {
  */
 export type ProjectMediaType =
   | "image"
-  | "video";
+  | "video"
+  | "embed";
 
 export type ProjectMedia = {
   type: ProjectMediaType;
 
+  /**
+   * For "embed": an iframe URL, e.g. a Google Drive /preview link.
+   */
   src: string;
+
+  /**
+   * CSS aspect-ratio for "embed" iframes, e.g. "16 / 9". Defaults to 16 / 9.
+   */
+  aspect?: string;
 
   alt: LocalizedText;
 
