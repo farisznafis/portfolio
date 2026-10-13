@@ -13,11 +13,6 @@ import {
 } from "../../lib/content/projects";
 import { useLang } from "../../lib/i18n";
 import { EASE } from "../../lib/motion";
-import {
-  certificateHref,
-  certificates,
-  fieldCertificateIds,
-} from "../../content/certificates";
 import { PROJECT_FIELDS, type ProjectField, type StoredProject } from "../../types/project";
 
 type Filter = "All" | ProjectField;
@@ -27,7 +22,7 @@ const MAX_STACK = 4;
 /**
  * The /projects index: every real project, filterable by field.
  * A project may belong to several fields - it appears under each of them.
- * Compact editorial rows (thumbnail + copy), two columns on wide screens.
+ * Gallery cards: a large cover on top, tight copy underneath.
  * Reduced motion: entrances collapse to static.
  */
 export function ProjectsIndex({
@@ -102,11 +97,11 @@ export function ProjectsIndex({
         </p>
       </div>
 
-      {/* Two columns on wide screens to halve the scroll length */}
+      {/* Cover-first gallery: 1 / 2 / 3 columns keeps the page short without shrinking covers */}
       {filtered.length === 0 ? (
         <p className="mt-10 border-t border-line pt-10 text-muted">{content.projects.empty}</p>
       ) : (
-        <ul className="mt-6 grid border-t border-line lg:grid-cols-2 lg:gap-x-12">
+        <ul className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map((project, index) => (
             <ProjectRow
               key={`${filter}-${project.slug}`}
@@ -134,36 +129,30 @@ function ProjectRow({
 
   // Every project has a detail page; public links stay as secondary CTAs.
   const detailHref = getProjectHref(project);
-
-  // Credentials behind this project's fields, deduped (AI + Data can share one).
-  const backing = certificates.filter((cert) =>
-    project.fields.some((field) => fieldCertificateIds[field] === cert.id),
-  );
-
   const extraStack = project.stack.length - MAX_STACK;
 
   return (
     <motion.li
       initial={reduce ? false : { opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5, delay: Math.min(index * 0.04, 0.24), ease: EASE }}
-      className="group relative grid grid-cols-[112px_minmax(0,1fr)] gap-4 border-b border-line py-5 sm:grid-cols-[176px_minmax(0,1fr)] sm:gap-5"
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.5, delay: Math.min((index % 3) * 0.06, 0.18), ease: EASE }}
+      className="group relative flex flex-col"
     >
-      {/* Thumbnail */}
-      <div className="relative aspect-[4/3] w-full self-start overflow-hidden border border-line/60 bg-elevated">
+      {/* Cover */}
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg border border-line bg-elevated shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-[border-color] duration-500 group-hover:border-accent/40">
         {project.cover ? (
           <CoverImage
             src={project.cover.src}
             alt={project.cover.alt}
-            sizes="(min-width: 640px) 176px, 112px"
-            className="transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+            sizes="(min-width: 1280px) 400px, (min-width: 640px) 50vw, 100vw"
+            className="transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
           />
         ) : (
           <div aria-hidden="true" className="absolute inset-0 flex items-center justify-center">
             <span
               className={clsx(
-                "font-display text-3xl font-semibold leading-none tracking-tighter text-outline sm:text-4xl",
+                "font-display text-6xl font-semibold leading-none tracking-tighter text-outline",
                 project.tone === "accent" ? "opacity-90" : "opacity-70",
               )}
             >
@@ -171,103 +160,97 @@ function ProjectRow({
             </span>
           </div>
         )}
-      </div>
 
-      {/* Copy */}
-      <div className="min-w-0">
-        <div className="flex items-baseline gap-3">
-          <span className="font-mono text-[11px] text-accent">
+        {/* Index + year chips over the cover */}
+        <div className="pointer-events-none absolute inset-x-3 top-3 flex items-start justify-between font-mono text-[10px] uppercase tracking-[0.18em]">
+          <span className="rounded-full bg-night/75 px-2 py-1 text-accent backdrop-blur-md">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <h2 className="min-w-0 flex-1 font-display text-lg font-semibold leading-tight tracking-tight text-ink transition-colors duration-300 group-hover:text-accent-bright sm:text-xl">
-            {/* Stretched link: the whole row is the hit area; secondary links sit above it */}
-            <Link
-              href={detailHref}
-              data-cursor="View"
-              className="before:absolute before:inset-0 focus-visible:outline-none focus-visible:before:outline focus-visible:before:outline-1 focus-visible:before:outline-accent"
-            >
-              {project.title}
-            </Link>
-          </h2>
           {project.year ? (
-            <span className="shrink-0 font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
+            <span className="rounded-full bg-night/75 px-2 py-1 text-ink/80 backdrop-blur-md">
               {project.year}
             </span>
           ) : null}
-          <ArrowUpRight
-            size={16}
-            aria-hidden="true"
-            className="shrink-0 self-center text-muted transition-[color,transform] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent-bright"
-          />
         </div>
 
-        <ul className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
+        <span
+          aria-hidden="true"
+          className="absolute bottom-3 right-3 flex size-9 items-center justify-center rounded-full bg-accent text-on-accent opacity-0 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] translate-y-2 group-hover:translate-y-0 group-hover:opacity-100"
+        >
+          <ArrowUpRight size={16} />
+        </span>
+      </div>
+
+      {/* Copy */}
+      <div className="mt-4 flex min-w-0 flex-1 flex-col">
+        <ul className="flex flex-wrap gap-x-3 gap-y-0.5 font-mono text-[10px] uppercase tracking-[0.16em] text-accent/90">
           {project.fields.map((field) => (
-            <li key={field} className="text-accent/90">
-              {content.fields[field]}
-            </li>
+            <li key={field}>{content.fields[field]}</li>
           ))}
-          {project.role ? <li>{project.role}</li> : null}
-          {project.confidentiality !== "public" ? (
-            <li className="text-muted/70">{content.projects.confidentialNote}</li>
-          ) : null}
         </ul>
+
+        <h2 className="mt-1.5 font-display text-lg font-semibold leading-snug tracking-tight text-ink transition-colors duration-300 group-hover:text-accent-bright sm:text-xl">
+          {/* Stretched link: the whole card is the hit area; secondary links sit above it */}
+          <Link
+            href={detailHref}
+            data-cursor="View"
+            className="before:absolute before:inset-0 focus-visible:outline-none focus-visible:before:rounded-lg focus-visible:before:outline focus-visible:before:outline-1 focus-visible:before:outline-offset-4 focus-visible:before:outline-accent"
+          >
+            {project.title}
+          </Link>
+        </h2>
+
+        {project.role || project.confidentiality !== "public" ? (
+          <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
+            {project.role}
+            {project.role && project.confidentiality !== "public" ? " — " : null}
+            {project.confidentiality !== "public" ? (
+              <span className="text-muted/70">{content.projects.confidentialNote}</span>
+            ) : null}
+          </p>
+        ) : null}
 
         <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted">
           {project.description}
         </p>
 
-        <ul className="mt-3 flex flex-wrap gap-1.5" aria-label={content.work.techAria}>
-          {project.stack.slice(0, MAX_STACK).map((tech) => (
-            <li
-              key={tech}
-              className="rounded-full border border-line bg-white/[0.03] px-2.5 py-0.5 font-mono text-[10px] text-muted"
-            >
-              {tech}
-            </li>
-          ))}
-          {extraStack > 0 ? (
-            <li
-              className="px-1 py-0.5 font-mono text-[10px] text-muted/70"
-              title={project.stack.slice(MAX_STACK).join(", ")}
-            >
-              +{extraStack}
-            </li>
-          ) : null}
-        </ul>
-
-        {backing.length > 0 || project.links.length > 0 ? (
-          <div className="relative z-10 mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-xs">
-            {project.links.map((link) => (
-              <a
-                key={link.url}
-                href={link.url}
-                target="_blank"
-                rel="noreferrer"
-                className="font-semibold text-ink/85 underline decoration-line underline-offset-4 transition-colors hover:text-accent-bright hover:decoration-accent"
+        {/* Pinned to the card bottom so rows line up across columns */}
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-4">
+          <ul className="flex flex-wrap gap-1.5" aria-label={content.work.techAria}>
+            {project.stack.slice(0, MAX_STACK).map((tech) => (
+              <li
+                key={tech}
+                className="rounded-full border border-line bg-white/[0.03] px-2.5 py-0.5 font-mono text-[10px] text-muted"
               >
-                {link.label}
-              </a>
+                {tech}
+              </li>
             ))}
-            {backing.length > 0 ? (
-              <span className="inline-flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
-                  {content.projects.backedBy}
-                </span>
-                {backing.map((cert) => (
-                  <Link
-                    key={cert.id}
-                    href={certificateHref(cert.id)}
-                    data-cursor="View"
-                    className="font-semibold text-ink/70 transition-colors hover:text-accent-bright"
-                  >
-                    {cert.title}
-                  </Link>
-                ))}
-              </span>
+            {extraStack > 0 ? (
+              <li
+                className="px-1 py-0.5 font-mono text-[10px] text-muted/70"
+                title={project.stack.slice(MAX_STACK).join(", ")}
+              >
+                +{extraStack}
+              </li>
             ) : null}
-          </div>
-        ) : null}
+          </ul>
+
+          {project.links.length > 0 ? (
+            <div className="relative z-10 flex flex-wrap gap-x-3 text-xs">
+              {project.links.map((link) => (
+                <a
+                  key={link.url}
+                  href={link.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-semibold text-ink/85 underline decoration-line underline-offset-4 transition-colors hover:text-accent-bright hover:decoration-accent"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          ) : null}
+        </div>
       </div>
     </motion.li>
   );

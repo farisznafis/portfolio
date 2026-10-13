@@ -3,7 +3,6 @@
  * Images are first pages rendered from the original PDFs into
  * public/certificates/. `date` is ISO so the UI can localize it.
  */
-import type { ProjectField } from "../types/project";
 
 export type CertificateKind = "award" | "specialization" | "course";
 
@@ -80,11 +79,5 @@ export const featuredCertificateIds = [
   "deeplearning-ai-tensorflow-specialization",
   "coursera-machine-learning-specialization",
 ];
-
-/** Credential that backs each project field on /projects. */
-export const fieldCertificateIds: Partial<Record<ProjectField, string>> = {
-  "AI / ML": "deeplearning-ai-tensorflow-specialization",
-  "Data / Optimization": "data-royale-2023",
-};
 
 export const certificateHref = (id: string) => `/certificates?c=${id}`;

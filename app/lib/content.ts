@@ -115,7 +115,6 @@ export interface Content {
     linkCta: string;
 
     confidentialNote: string;
-    backedBy: string;
   };
 
   experience: {
@@ -353,9 +352,6 @@ export const en: Content = {
 
     confidentialNote:
       "Professional work — details kept general.",
-
-    backedBy:
-      "Backed by",
   },
 
   experience: {
@@ -703,9 +699,6 @@ export const ja: Content = {
 
     confidentialNote:
       "業務プロジェクトのため、詳細は概要レベルで記載。",
-
-    backedBy:
-      "関連する認定",
   },
 
   experience: {
