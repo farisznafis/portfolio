@@ -1288,25 +1288,6 @@ approach: {
     tone: "amber",
   },
   {
-    id: "co2-emission",
-    slug: "co2-emission",
-    title: "CO2 Emission Prediction for Four-Wheeled Vehicles",
-    // TODO_REAL_CONTENT: confirm year + whether a public repo exists.
-    fields: ["AI / ML", "Data / Optimization"],
-    stack: ["Python", "Machine Learning"],
-    summary: t(
-      "Machine-learning model predicting CO2 emissions for four-wheeled vehicles.",
-      "四輪車のCO2排出量を予測する機械学習モデル。",
-    ),
-    featured: false,
-    projectOrder: 7,
-    hasCaseStudy: false,
-    confidentiality: "public",
-    links: [],
-    initials: "C2",
-    tone: "accent",
-  },
-  {
     id: "suicide-risk",
     slug: "suicide-risk",
     title: "Suicide Risk Detection from Text",
@@ -1646,25 +1627,6 @@ approach: {
       },
       nextLabel: t("Next project", "次のプロジェクト"),
     },
-  },
-  {
-    id: "building-damage",
-    slug: "building-damage",
-    title: "Building Damage Grade Prediction",
-    // TODO_REAL_CONTENT: confirm year + whether a public repo exists.
-    fields: ["AI / ML", "Data / Optimization"],
-    stack: ["Python", "Machine Learning"],
-    summary: t(
-      "Model predicting building damage grades from survey data.",
-      "調査データから建物の損傷グレードを予測するモデル。",
-    ),
-    featured: false,
-    projectOrder: 10,
-    hasCaseStudy: false,
-    confidentiality: "public",
-    links: [],
-    initials: "BD",
-    tone: "amber",
   },
   {
     id: "optimization-web",
@@ -2019,7 +1981,127 @@ approach: {
     hasCaseStudy: false,
     confidentiality: "public",
     links: [],
+    cover: {
+      type: "image",
+      src: "/projects/himakom-visual/instagram.webp",
+      alt: t(
+        "Two phones showing the @himakomugm Instagram grid: a feed of cabinet member profiles and a feed of event posts in orange, pink and blue",
+        "@himakomugmのInstagramグリッドを表示した2台のスマートフォン：役員紹介のフィードと、オレンジ・ピンク・青のイベント投稿のフィード",
+      ),
+    },
+    gallery: [
+      {
+        type: "image",
+        src: "/projects/himakom-visual/among-tamu.webp",
+        alt: t(
+          "Among Tamu event kit for the HIMAKOM UGM × HMIF UNDIP visit on 20 November 2022: committee ID card, souvenir plaque and poster",
+          "2022年11月20日のHIMAKOM UGM × HMIF UNDIP交流イベント「Among Tamu」のキット：委員のIDカード、記念盾、ポスター",
+        ),
+        caption: t(
+          "Among Tamu, HIMAKOM UGM × HMIF UNDIP (2022): ID card, plaque and poster.",
+          "Among Tamu、HIMAKOM UGM × HMIF UNDIP（2022年）：IDカード、記念盾、ポスター。",
+        ),
+      },
+    ],
     initials: "HV",
+    tone: "accent",
+  },
+  {
+    id: "rpld-recruitment",
+    slug: "rpld-recruitment",
+    title: "RPLD Lab Recruitment & Merch",
+    year: "2023",
+    fields: ["Visual Design"],
+    stack: ["Visual Design", "Illustration", "Print Design"],
+    summary: t(
+      "Open-recruitment guidebook and 2023 crew jacket for the Software Engineering and Data Laboratory (RPLD), with a VR illustration that ties them together.",
+      "ソフトウェア工学・データ研究室（RPLD）の募集ガイドブックと2023年のクルージャケット。両方をつなぐVRイラストも制作しました。",
+    ),
+    featured: false,
+    projectOrder: 15,
+    hasCaseStudy: false,
+    confidentiality: "public",
+    links: [],
+    cover: {
+      type: "image",
+      src: "/projects/rpld-recruitment/guidebook.webp",
+      alt: t(
+        "Pages of the RPLD open-recruitment guidebook in dark navy and neon blue: cover with a VR headset illustration, division pages and contact list",
+        "濃紺とネオンブルーのRPLD募集ガイドブックのページ：VRヘッドセットのイラストの表紙、各部門のページ、連絡先",
+      ),
+      caption: t(
+        "The open-recruitment guidebook: one page per division, from web development to VR/AR.",
+        "募集ガイドブック。Web開発からVR/ARまで、部門ごとに1ページ。",
+      ),
+    },
+    gallery: [
+      {
+        type: "image",
+        src: "/projects/rpld-recruitment/jacket.webp",
+        alt: t(
+          "Navy RPLD 2023 jacket, front and back: the back shows a wireframe VR headset and hand with the words Crew, Software Engineering and Data Laboratory",
+          "紺色のRPLD 2023ジャケットの前面と背面：背面にはワイヤーフレームのVRヘッドセットと手、Crew、Software Engineering and Data Laboratoryの文字",
+        ),
+        caption: t(
+          "The 2023 crew jacket: VR illustration and layout.",
+          "2023年のクルージャケット：VRイラストとレイアウト。",
+        ),
+      },
+    ],
+    initials: "RL",
+    tone: "amber",
+  },
+  {
+    id: "early-visual-work",
+    slug: "early-visual-work",
+    title: "Early Visual Work",
+    fields: ["Visual Design"],
+    stack: ["Visual Design", "Social Media", "Logo Design"],
+    summary: t(
+      "Earlier design work: the Instagram feed and club logos for Student Club SMAN 1 Depok, plus posters from competitions and school assignments.",
+      "初期のデザイン作品：SMAN 1 DepokのStudent ClubのInstagramフィードと部活動ロゴ、コンテストや学校の課題で作ったポスター。",
+    ),
+    featured: false,
+    projectOrder: 16,
+    hasCaseStudy: false,
+    confidentiality: "public",
+    links: [],
+    cover: {
+      type: "image",
+      src: "/projects/early-visual-work/student-club-instagram.webp",
+      alt: t(
+        "Two phones showing the Student Club SMAN 1 Depok Instagram grid: an illustrated landscape panorama for the 2020/2021 regeneration and an H-3 to H-day countdown",
+        "SMAN 1 DepokのStudent ClubのInstagramグリッドを表示した2台のスマートフォン：2020/2021年の代替わりのイラストのパノラマと、当日までのカウントダウン",
+      ),
+      caption: t(
+        "Student Club SMAN 1 Depok on Instagram (2020/2021).",
+        "SMAN 1 DepokのStudent ClubのInstagram（2020/2021年）。",
+      ),
+    },
+    gallery: [
+      {
+        type: "image",
+        src: "/projects/early-visual-work/student-club-logos.webp",
+        alt: t(
+          "Remade round logos for the Student Club subject clubs: geoscience, chemistry, computer, astronomy, biology, economy, mathematics, physics and geography",
+          "Student Clubの各部のロゴを作り直した丸いロゴ：地学、化学、コンピューター、天文、生物、経済、数学、物理、地理",
+        ),
+        caption: t("Student Club logos, remade.", "作り直したStudent Clubのロゴ。"),
+      },
+      {
+        type: "image",
+        src: "/projects/early-visual-work/posters.webp",
+        alt: t(
+          "A collage of posters: an invitation, a historical illustration, an inflation-prediction research poster, a theatre poster and an actuarial science infographic",
+          "ポスターのコラージュ：招待状、歴史のイラスト、インフレ予測の研究ポスター、演劇のポスター、アクチュアリー学のインフォグラフィック",
+        ),
+        caption: t(
+          "Posters from competitions and school assignments.",
+          "コンテストや学校の課題で作ったポスター。",
+        ),
+      },
+    ],
+    initials: "EV",
     tone: "accent",
   },
   {
