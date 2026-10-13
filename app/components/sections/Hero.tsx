@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
 import { motion, useMotionValue, useReducedMotion, useTransform, type MotionValue, type Variants } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { heroImages, heroName } from "../../content/profile";
@@ -12,8 +13,11 @@ import { RolloverText } from "../ui/RolloverText";
 import { Magnetic } from "../ui/Magnetic";
 import { useSmoothScroll } from "../../motion/LenisProvider";
 
-// ─── Spotlight radius ────────────────────────────────────────────────────────
-const SPOTLIGHT_R = 260;
+// WebGL fluid reveal: client-only and split out so three.js never blocks the hero's first paint.
+const FluidReveal = dynamic(() => import("../home/FluidReveal").then((m) => m.FluidReveal), {
+  ssr: false,
+  loading: () => null,
+});
 
 // ─── Cursor parallax config ──────────────────────────────────────────────────
 const PARALLAX_MAX = 28;
@@ -24,108 +28,6 @@ const BASE_SCALE = 1.06; // oversize so edges never reveal gaps
 const REVEAL_SCALE = 1.09;
 
 const INITIAL = -999; // cursor guard: no parallax until the pointer first moves
-
-/**
- * Renders the second (reveal) portrait visible only inside a soft circular
- * mask that follows the cursor. A hidden canvas draws a radial gradient at
- * the cursor position; its dataURL drives the CSS mask on the reveal layer.
- * Redraws coalesce to one draw per frame - no React re-renders on movement.
- */
-function RevealLayer({
-  image,
-  cursorX,
-  cursorY,
-}: {
-  image: string;
-  cursorX: MotionValue<number>;
-  cursorY: MotionValue<number>;
-}) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const layerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const sync = () => {
-      const c = canvasRef.current;
-      if (!c) return;
-      c.width = window.innerWidth;
-      c.height = window.innerHeight;
-    };
-    sync();
-    window.addEventListener("resize", sync);
-    return () => window.removeEventListener("resize", sync);
-  }, []);
-
-  useEffect(() => {
-    let scheduled = false;
-
-    const draw = () => {
-      const canvas = canvasRef.current;
-      const layer = layerRef.current;
-      const ctx = canvas?.getContext("2d");
-      if (!canvas || !layer || !ctx) return;
-
-      const cx = cursorX.get();
-      const cy = cursorY.get();
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, SPOTLIGHT_R);
-      g.addColorStop(0, "rgba(255,255,255,1)");
-      g.addColorStop(0.4, "rgba(255,255,255,1)");
-      g.addColorStop(0.6, "rgba(255,255,255,0.75)");
-      g.addColorStop(0.75, "rgba(255,255,255,0.4)");
-      g.addColorStop(0.88, "rgba(255,255,255,0.12)");
-      g.addColorStop(1, "rgba(255,255,255,0)");
-
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.arc(cx, cy, SPOTLIGHT_R, 0, Math.PI * 2);
-      ctx.fill();
-
-      const mask = `url(${canvas.toDataURL()})`;
-      layer.style.maskImage = mask;
-      layer.style.webkitMaskImage = mask;
-      layer.style.maskSize = "100% 100%";
-      (layer.style as CSSStyleDeclaration & { webkitMaskSize: string }).webkitMaskSize =
-        "100% 100%";
-    };
-
-    const schedule = () => {
-      if (scheduled) return;
-      scheduled = true;
-      requestAnimationFrame(() => {
-        scheduled = false;
-        draw();
-      });
-    };
-
-    const unsubscribeX = cursorX.on("change", schedule);
-    const unsubscribeY = cursorY.on("change", schedule);
-    return () => {
-      unsubscribeX();
-      unsubscribeY();
-    };
-  }, [cursorX, cursorY]);
-
-  return (
-    <>
-      {/* Hidden canvas - used only to generate the mask dataURL */}
-      <canvas
-        ref={canvasRef}
-        className="pointer-events-none absolute inset-0"
-        style={{ display: "none" }}
-        aria-hidden="true"
-      />
-      {/* Reveal image, shown only through the gradient mask above */}
-      <div
-        ref={layerRef}
-        className="pointer-events-none absolute inset-0 z-30 bg-cover bg-top bg-no-repeat"
-        style={{ backgroundImage: `url(${image})` }}
-        aria-hidden="true"
-      />
-    </>
-  );
-}
 
 /** Normalized parallax offset (-1..1) for a motion value, zero before first move. */
 function useParallaxAxis(value: MotionValue<number>) {
@@ -164,12 +66,16 @@ export function Hero() {
     };
     window.addEventListener("mousemove", onMove);
 
-    const loop = () => {
+    let prev = performance.now();
+    const loop = (now: number) => {
+      // Frame-rate independent damping: same feel on 60 Hz and 144 Hz screens.
+      const k = 1 - Math.exp(-Math.min(now - prev, 50) * 0.0063);
+      prev = now;
       const dx = mouse.current.x - smooth.current.x;
       const dy = mouse.current.y - smooth.current.y;
       if (Math.abs(dx) > 0.08 || Math.abs(dy) > 0.08) {
-        smooth.current.x += dx * 0.1;
-        smooth.current.y += dy * 0.1;
+        smooth.current.x += dx * k;
+        smooth.current.y += dy * k;
         smoothX.set(smooth.current.x);
         smoothY.set(smooth.current.y);
       }
@@ -211,14 +117,10 @@ export function Hero() {
           />
         </motion.div>
 
-        {/* Layer 2 - spotlight-revealed second portrait */}
-        <motion.div
-          className="absolute inset-0 z-20"
-          style={{ x: revealX, y: revealY, scale: REVEAL_SCALE, willChange: "transform" }}
-          aria-hidden="true"
-        >
-          <RevealLayer image={heroImages.reveal} cursorX={smoothX} cursorY={smoothY} />
-        </motion.div>
+        {/* Layer 2 - second portrait revealed through a fluid cursor trail */}
+        <div className="absolute inset-0 z-20" aria-hidden="true">
+          <FluidReveal image={heroImages.reveal} scale={REVEAL_SCALE} offsetX={revealX} offsetY={revealY} />
+        </div>
 
         {/* Layer 3 - vignette for legibility */}
         <div

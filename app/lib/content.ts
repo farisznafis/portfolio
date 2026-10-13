@@ -232,14 +232,14 @@ export const en: Content = {
   hero: {
     ariaSection: "Introduction",
 
-    role:
-      "Software Engineer — Frontend, UI/UX & AI",
+    // role:
+    //   "Software Engineer — Frontend, UI/UX & AI",
 
     // statement:
     //   "I build products where interface and intelligence meet — from user flows to shipped frontend.",
 
-    metaLocation:
-      "Kumamoto, Japan",
+    // metaLocation:
+    //   "Kumamoto, Japan",
 
     // metaAvailability:
     //   "Open to opportunities in Japan",
