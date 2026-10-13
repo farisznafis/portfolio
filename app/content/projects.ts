@@ -492,6 +492,10 @@ features: {
         "MAKOMTI recruitment website cover: a desktop and mobile screen showing the hero section with a photo of a smiling person and a headline in Indonesian",
         "MAKOMTI採用サイトのカバー：デスクトップとモバイルの画面に、笑顔の人物写真とインドネシア語の見出しが表示されたヒーローセクション",
       ),
+      caption: t(
+        "The website shown here is no longer accessible.",
+        "ここに掲載しているWebサイトは現在アクセスできません。",
+      ),
     },
     figmaEmbed: {
       url: "https://www.figma.com/design/m3mmdDxMVsRAPqMjVYvkb6/-CV--Seleksi-Makomti?node-id=0-1",
@@ -880,9 +884,9 @@ approach: {
     slug: "financify",
     title: "Financify — Inflation Forecasting",
     year: "2023",
-    role: t("Machine Learning Engineer", "機械学習エンジニア"),
-    fields: ["AI / ML", "Data / Optimization"],
-    stack: ["Python", "scikit-learn", "Pandas", "TensorFlow / Keras", "Flask", "Pytest", "Docker"],
+    role: t("Machine Learning Engineer / Designer", "機械学習エンジニア / デザイナー"),
+    fields: ["AI / ML", "Data / Optimization", "UI / UX", "Visual Design"],
+    stack: ["Python", "scikit-learn", "Pandas", "TensorFlow / Keras", "Flask", "Pytest", "Docker", "Figma", "Adobe Premiere Pro"],
     summary: t(
       "Pick an Indonesian city and see next month's inflation forecast, then how rising prices change the cost of a savings goal and the time to reach it. A Bangkit capstone, later rebuilt with real data and honest evaluation.",
       "インドネシアの都市を選ぶと翌月のインフレ予測が表示され、物価上昇が貯蓄目標の金額と達成までの期間をどう変えるかが分かります。Bangkitのキャップストーンを、のちに実データと誠実な評価で作り直しました。",
@@ -906,17 +910,29 @@ approach: {
     ],
     cover: {
       type: "image",
-      src: "/projects/financify/cover.webp",
+      src: "/projects/financify/cover-financify.png",
       alt: t(
-        "Financify web app showing Yogyakarta's forecast for October 2026: 0.28% month-to-month, flat versus September, with a 24-month chart and a ±0.44 pp error band",
-        "Financifyのwebアプリ。ジョグジャカルタの2026年10月の予測は前月比0.28%で9月から横ばい。24か月のグラフと±0.44ppの誤差帯を表示",
+        "Financify logo: a stylised F made of three leaf shapes in shades of green, outlined in white on a green background",
+        "Financifyのロゴ：緑の背景に、白い輪郭の3枚の葉の形で描いたF",
       ),
       caption: t(
-        "Step 1: next month's inflation for a city, against the last 24 months.",
-        "ステップ1：都市の翌月インフレを、直近24か月と並べて表示。",
+        "The Financify logo I designed for the 2023 app.",
+        "2023年のアプリ用にデザインしたFinancifyのロゴ。",
       ),
     },
     gallery: [
+      {
+        type: "image",
+        src: "/projects/financify/cover.webp",
+        alt: t(
+          "Financify web app showing Yogyakarta's forecast for October 2026: 0.28% month-to-month, flat versus September, with a 24-month chart and a ±0.44 pp error band",
+          "Financifyのwebアプリ。ジョグジャカルタの2026年10月の予測は前月比0.28%で9月から横ばい。24か月のグラフと±0.44ppの誤差帯を表示",
+        ),
+        caption: t(
+          "Step 1: next month's inflation for a city, against the last 24 months.",
+          "ステップ1：都市の翌月インフレを、直近24か月と並べて表示。",
+        ),
+      },
       {
         type: "image",
         src: "/projects/financify/planner.webp",
@@ -1030,6 +1046,30 @@ approach: {
         caption: t(
           "The go-to-market deck from the 2023 capstone.",
           "2023年のキャップストーンのゴー・トゥ・マーケット資料。",
+        ),
+      },
+      {
+        type: "embed",
+        src: "https://www.youtube-nocookie.com/embed/6Z98TiDy4YE?rel=0",
+        alt: t(
+          "Financify final presentation video",
+          "Financifyの最終発表動画",
+        ),
+        caption: t(
+          "The final presentation from the 2023 capstone.",
+          "2023年のキャップストーンの最終発表。",
+        ),
+      },
+      {
+        type: "embed",
+        src: "https://drive.google.com/file/d/12bsS0cYtBnKGENVcYxTu0VgqmIUFC3tD/preview",
+        alt: t(
+          "Financify pitch deck",
+          "Financifyのピッチデック",
+        ),
+        caption: t(
+          "The pitch deck from the 2023 capstone.",
+          "2023年のキャップストーンのピッチデック。",
         ),
       },
       {
@@ -1195,6 +1235,10 @@ approach: {
             "Built first with the Bangkit team CH2-PS231 across machine learning, cloud and mobile.",
             "最初は機械学習・クラウド・モバイルにまたがるBangkitチームCH2-PS231で構築。",
           ),
+          t(
+            "Designed the logo, the Finbot mascot and the app UI in Figma, and edited the videos in Adobe Premiere Pro.",
+            "ロゴ、Finbotマスコット、アプリのUIをFigmaでデザインし、動画をAdobe Premiere Proで編集。",
+          ),
         ],
         // TODO_REAL_CONTENT: "Top 50 Product-based Capstone Projects" —
         // display only if verified against existing CV/portfolio data.
@@ -1224,6 +1268,10 @@ approach: {
       alt: t(
         "BLASTOUT 2023 tryout website for Balairung Klass, shown on a laptop, tablet and phone",
         "Balairung KlassのBLASTOUT 2023トライアウトサイト。ノートPC・タブレット・スマートフォンでの表示",
+      ),
+      caption: t(
+        "The website shown here is no longer accessible.",
+        "ここに掲載しているWebサイトは現在アクセスできません。",
       ),
     },
     gallery: [
@@ -1617,26 +1665,6 @@ approach: {
     links: [],
     initials: "BD",
     tone: "amber",
-  },
-{
-    id: "llm-pipeline",
-    slug: "llm-pipeline",
-    title: "LLM Customer Service Data Pipeline",
-    role: t("Data Scientist Intern", "データサイエンティストインターン"),
-    fields: ["AI / ML", "Data / Optimization"],
-    stack: ["Data Pipeline", "LLM", "Web Scraping"],
-    summary: t(
-      "LLM-related data scraping and pipeline work, built with a Singapore-based teammate during a data science internship.",
-      "データサイエンスインターン期間中、シンガポール拠点のチームメイトとともに進めたLLM関連データのスクレイピングとパイプライン構築。",
-    ),
-    featured: false,
-    projectOrder: 11,
-    hasCaseStudy: false,
-    // GoTo internship work: no company code or internal names may be shown.
-    confidentiality: "private",
-    links: [],
-    initials: "LP",
-    tone: "accent",
   },
   {
     id: "optimization-web",
