@@ -226,7 +226,7 @@ export const en: Content = {
 
   loader: {
     ariaLabel: "Loading portfolio",
-    wordmark: "Faris Znafis",
+    wordmark: "Faris Zaidan Nafis",
   },
 
   hero: {

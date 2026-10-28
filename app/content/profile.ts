@@ -21,9 +21,16 @@ export const site = {
  * Hero wordmark — split across two oversized lines.
  */
 export const heroName = {
-  line1: "FARIS",
-  line2Filled: "ZAID",
-  line2Outline: "AN NAFIS",
+  en: {
+    line1: "FARIS",
+    line2Filled: "ZAID",
+    line2Outline: "AN NAFIS",
+  },
+  ja: {
+    line1: "ファリス・",
+    line2Filled: "ザイダン・",
+    line2Outline: "ナフィス",
+  },
 } as const;
 
 /**

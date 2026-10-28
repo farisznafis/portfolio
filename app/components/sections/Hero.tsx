@@ -50,7 +50,8 @@ const fadeRise: Variants = {
 export function Hero() {
   const { done } = useIntro();
   const reduce = useReducedMotion();
-  const { content } = useLang();
+  const { content, lang } = useLang();
+  const name = heroName[lang];
   const { scrollTo } = useSmoothScroll();
 
   // Smoothed cursor position as motion values: updates never re-render React.
@@ -178,12 +179,12 @@ export function Hero() {
           <div className="container-x pb-8 sm:pb-10">
             <h1 className="font-display uppercase leading-[0.82] tracking-[-0.03em]">
               <span className="block text-hero text-outline">
-                <MaskedText text={heroName.line1} onMount play={done} delay={0.15} />
+                <MaskedText text={name.line1} onMount play={done} delay={0.15} />
               </span>
               <span className="-mt-[0.06em] block text-hero leading-[0.82] tracking-[-0.03em]">
                 <span className="text-outline">
                   <MaskedText
-                    text={heroName.line2Filled}
+                    text={name.line2Filled}
                     onMount
                     play={done}
                     delay={0.32}
@@ -192,7 +193,7 @@ export function Hero() {
 
                 <span className="text-outline">
                   <MaskedText
-                    text={heroName.line2Outline}
+                    text={name.line2Outline}
                     onMount
                     play={done}
                     delay={0.32}
