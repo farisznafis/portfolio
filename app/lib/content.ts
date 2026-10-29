@@ -59,6 +59,8 @@ export interface Content {
   manifesto: {
     ariaSection: string;
     lead: string;
+    /** Exact substring of `lead` drawn in the accent gradient (the name). */
+    accent: string;
     support: string;
   };
 
@@ -268,6 +270,9 @@ export const en: Content = {
 
     lead:
       "Hello! I'm Zaid",
+
+    accent:
+      "Zaid",
 
     support:
       "I work from requirements and user flows through UI/UX design, frontend implementation, and API integration. My background in machine learning and data helps me build products where interface and intelligence meet.",
@@ -632,6 +637,9 @@ export const ja: Content = {
 
     lead:
       "こんにちは！ ザイドです",
+
+    accent:
+      "ザイド",
 
     support:
       "要件とユーザーフローから出発し、UI/UXデザイン、フロントエンド実装、API連携までを一気通貫で担います。機械学習とデータのバックグラウンドがあるからこそ、インターフェースと知性が出会うプロダクトを作れます。",

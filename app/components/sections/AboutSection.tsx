@@ -203,7 +203,7 @@ function FilmCard({ film, index, className }: { film: JournalFilm; index: number
         {/* <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted">
           {String(index + 1).padStart(2, "0")} / {portrait ? "9:16" : "16:9"}
         </span> */}
-        <span className={clsx("font-display font-semibold leading-[1.05] tracking-tight text-ink", portrait ? "text-lg" : "text-[clamp(1.4rem,2.4vw,2.25rem)]")}>
+        <span className="font-display text-[clamp(1.4rem,2.4vw,2.25rem)] font-semibold leading-[1.05] tracking-tight text-ink">
           {title}
         </span>
         {youtubeUrl && content.about.youtubeCta ? (

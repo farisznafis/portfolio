@@ -167,6 +167,14 @@ export const visualJournal: VisualJournalConfig = {
         ja: "日本での最後のイフタール",
       },
     },
+    {
+      youtubeId: "9vs6u9fHUys",
+      orientation: "landscape",
+      title: {
+        en: "Worth It — 2 Bangkit Things You Should Know",
+        ja: "Worth It — Bangkitについて知っておきたい2つのこと",
+      },
+    },
   ],
 };
 

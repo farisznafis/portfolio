@@ -16,10 +16,13 @@ const Scene = dynamic(() => import("../home/Scene"), { ssr: false, loading: () =
 
 /**
  * Tokenize the statement for scrubbing: latin text splits on spaces, CJK
- * text splits per character (no reliable word boundaries).
+ * text splits per character (no reliable word boundaries) except `keep`,
+ * which stays one token so the accented name never breaks mid-word.
  */
-function tokenize(text: string): string[] {
-  if (/[\u3000-\u30ff\u4e00-\u9fff]/.test(text)) return [...text];
+function tokenize(text: string, keep: string): string[] {
+  if (/[\u3000-\u30ff\u4e00-\u9fff]/.test(text)) {
+    return text.split(keep).flatMap((part, i) => (i ? [keep, ...part] : [...part]));
+  }
   return text.split(" ");
 }
 
@@ -41,7 +44,7 @@ function ScrubToken({
   return (
     <motion.span
       style={{ opacity }}
-      className={accent ? "text-gradient" : undefined}
+      className={accent ? "text-gradient whitespace-nowrap" : undefined}
     >
       {children}
       {/* Latin tokens need their separating space back after splitting */}
@@ -89,10 +92,9 @@ export function Manifesto() {
   }, []);
 
   const tokens = useMemo(
-    () => tokenize(content.manifesto.lead).filter((t) => t !== ""),
-    [content.manifesto.lead],
+    () => tokenize(content.manifesto.lead, content.manifesto.accent).filter((t) => t !== ""),
+    [content.manifesto.lead, content.manifesto.accent],
   );
-  const accentFrom = Math.floor(tokens.length * 0.82);
   const spaced = /[\u3000-\u30ff\u4e00-\u9fff]/.test(content.manifesto.lead) === false;
 
   const supportOpacity = useTransform(scrollYProgress, [0.6, 0.78], [0, 1]);
@@ -146,7 +148,7 @@ export function Manifesto() {
                   key={`${token}-${index}`}
                   progress={scrollYProgress}
                   range={[start, Math.min(1, start + span * 2.2)]}
-                  accent={index >= accentFrom}
+                  accent={token === content.manifesto.accent}
                   spaced={spaced}
                 >
                   {token}

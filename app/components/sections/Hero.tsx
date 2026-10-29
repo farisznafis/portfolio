@@ -52,6 +52,8 @@ export function Hero() {
   const reduce = useReducedMotion();
   const { content, lang } = useLang();
   const name = heroName[lang];
+  // Full-width katakana is ~2x wider than Latin caps; scale down so the JA name keeps two lines.
+  const nameSize = lang === "ja" ? "text-[clamp(2.2rem,8vw,7.5rem)]" : "text-hero";
   const { scrollTo } = useSmoothScroll();
 
   // Smoothed cursor position as motion values: updates never re-render React.
@@ -178,10 +180,10 @@ export function Hero() {
         <div className="absolute inset-x-0 bottom-0 z-40">
           <div className="container-x pb-8 sm:pb-10">
             <h1 className="font-display uppercase leading-[0.82] tracking-[-0.03em]">
-              <span className="block text-hero text-outline">
+              <span className={`block ${nameSize} text-outline`}>
                 <MaskedText text={name.line1} onMount play={done} delay={0.15} />
               </span>
-              <span className="-mt-[0.06em] block text-hero leading-[0.82] tracking-[-0.03em]">
+              <span className={`-mt-[0.06em] block ${nameSize} leading-[0.82] tracking-[-0.03em]`}>
                 <span className="text-outline">
                   <MaskedText
                     text={name.line2Filled}
