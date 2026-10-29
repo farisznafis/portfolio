@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { GraduationCap, Award, ArrowUpRight } from "lucide-react";
+import { GraduationCap, Award, ArrowUpRight, Languages } from "lucide-react";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useLang } from "../../lib/i18n";
@@ -64,6 +64,24 @@ export function EducationSection() {
                 </li>
               ))}
             </ul>
+
+            {/* Languages */}
+            <p className="mt-10 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.25em] text-muted">
+              <Languages size={14} aria-hidden="true" className="text-accent" />
+              {content.education.languagesHeading}
+            </p>
+            <ul className="mt-5 divide-y divide-line border-t border-line">
+              {education.languages.map((item) => (
+                <li key={item.name} className="py-5">
+                  <p className="font-display text-xl font-semibold tracking-tight text-ink sm:text-2xl">
+                    {item.name}
+                  </p>
+                  <p className="mt-2 font-mono text-xs uppercase tracking-[0.18em] text-accent">
+                    {item.level}
+                  </p>
+                </li>
+              ))}
+            </ul>
           </motion.div>
 
           {/* Recognition */}
@@ -74,13 +92,25 @@ export function EducationSection() {
             </p>
             <ul className="mt-5 divide-y divide-line border-t border-line">
               {education.recognition.map((item) => (
-                <li
-                  key={item}
-                  className="flex items-baseline justify-between gap-6 py-5"
-                >
+                <li key={item.title} className="py-5">
                   <p className="font-display text-lg font-semibold tracking-tight text-ink sm:text-xl">
-                    {item}
+                    {item.title}
                   </p>
+                  {item.meta && (
+                    <p className="mt-2 font-mono text-xs uppercase tracking-[0.18em] text-accent">
+                      {item.meta}
+                    </p>
+                  )}
+                  {item.points.length > 0 && (
+                    <ul className="mt-4 space-y-2">
+                      {item.points.map((point) => (
+                        <li key={point} className="flex gap-4 text-sm leading-relaxed text-muted">
+                          <span aria-hidden="true" className="mt-[0.65em] h-px w-5 shrink-0 bg-accent/60" />
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>

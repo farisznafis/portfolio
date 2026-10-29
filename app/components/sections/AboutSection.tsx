@@ -127,7 +127,7 @@ function Films({ films }: { films: JournalFilm[] }) {
     <div className="mt-24 sm:mt-36">
       <div className="flex items-baseline justify-between border-b border-line pb-4 font-mono text-[11px] uppercase tracking-[0.25em]">
         <p className="text-accent">{lang === "ja" ? "映像" : "Films"}</p>
-        <p className="text-muted">{String(films.length).padStart(2, "0")}</p>
+        {/* <p className="text-muted">{String(films.length).padStart(2, "0")}</p> */}
       </div>
 
       {/* 16:9 spans 9 cols, 9:16 spans 3 - near-equal heights, so any mix of
@@ -199,10 +199,10 @@ function FilmCard({ film, index, className }: { film: JournalFilm; index: number
         ) : null}
       </div>
 
-      <figcaption className="mt-4 flex flex-col gap-2">
-        <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted">
+      <figcaption className="mt-6 flex flex-col gap-2">
+        {/* <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-muted">
           {String(index + 1).padStart(2, "0")} / {portrait ? "9:16" : "16:9"}
-        </span>
+        </span> */}
         <span className={clsx("font-display font-semibold leading-[1.05] tracking-tight text-ink", portrait ? "text-lg" : "text-[clamp(1.4rem,2.4vw,2.25rem)]")}>
           {title}
         </span>

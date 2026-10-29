@@ -3,6 +3,7 @@ import { Hero } from "./components/sections/Hero";
 import { Manifesto } from "./components/sections/Manifesto";
 import { WorkReel } from "./components/sections/WorkReel";
 import { ExperienceChapters } from "./components/sections/ExperienceChapters";
+import { LeadershipSection } from "./components/sections/LeadershipSection";
 import { Capabilities } from "./components/sections/Capabilities";
 import { EducationSection } from "./components/sections/EducationSection";
 import { AboutSection } from "./components/sections/AboutSection";
@@ -22,6 +23,7 @@ export default async function Home() {
       <WorkReel projects={projects} />
 
       <ExperienceChapters />
+      <LeadershipSection />
       <Capabilities />
       <EducationSection />
       <AboutSection />

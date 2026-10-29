@@ -5,8 +5,13 @@
  * both locales so the UI can switch language at runtime; companies, years,
  * and tech stack are language-neutral.
  */
-import type { EducationItem, ExperienceItem } from "../types/experience";
-import type { LocalizedText } from "../types/common";
+import type {
+  EducationItem,
+  ExperienceItem,
+  LanguageItem,
+  LeadershipItem,
+  RecognitionItem,
+} from "../types/experience";
 
 export const experience: ExperienceItem[] = [
   {
@@ -119,7 +124,81 @@ export const education: EducationItem[] = [
   },
 ];
 
-export const recognitions: LocalizedText[] = [
-  { en: "Bangkit Distinction Graduate — Valedictorian", ja: "Bangkit Distinction Graduate — 最優秀者" },
-  { en: "3rd Place — Data Royale 2023", ja: "Data Royale 2023 — 3位" },
+export const recognitions: RecognitionItem[] = [
+  {
+    title: { en: "Bangkit Distinction Graduate — Valedictorian", ja: "Bangkit Distinction Graduate — 最優秀者" },
+    meta: {
+      en: "Bangkit Academy 2023 Batch 2 · Machine Learning Path · Remote · August 2023 - January 2024",
+      ja: "Bangkit Academy 2023 Batch 2・機械学習コース・リモート・2023年8月〜2024年1月",
+    },
+    points: [
+      {
+        en: "Graduated as valedictorian with distinction, with an average score of 97.75.",
+        ja: "平均スコア97.75で、最優秀者（Distinction）として修了。",
+      },
+      {
+        en: "Completed 4 specialisations and earned 24 certificates.",
+        ja: "4つの専門講座を修了し、24件の認定証を取得。",
+      },
+      {
+        en: "Capstone project Financify (inflation forecasting) was selected in the Top 50 projects.",
+        ja: "キャップストーンプロジェクト「Financify」（インフレ予測）がTop 50プロジェクトに選出。",
+      },
+    ],
+  },
+  { title: { en: "3rd Place — Data Royale 2023", ja: "Data Royale 2023 — 3位" } },
+];
+
+export const languages: LanguageItem[] = [
+  { name: { en: "Indonesian", ja: "インドネシア語" }, level: { en: "Native", ja: "ネイティブ" } },
+  {
+    name: { en: "English", ja: "英語" },
+    level: { en: "Intermediate", ja: "中級" },
+  },
+  { name: { en: "Japanese", ja: "日本語" }, level: { en: "JLPT N3 · BJT 324", ja: "JLPT N3・BJT 324点" } },
+];
+
+export const leadership: LeadershipItem[] = [
+  {
+    id: "himakom-medinfo",
+    organisation: "HIMAKOM UGM",
+    location: { en: "Yogyakarta", ja: "ジョグジャカルタ" },
+    period: "August 2022 - December 2023",
+    role: { en: "Vice Head of Media & Information", ja: "メディア・情報部 副部長" },
+    unit: {
+      en: "Computer Science Student Association · External Relations Division",
+      ja: "コンピュータサイエンス学生会・渉外局",
+    },
+    points: [
+      {
+        en: "Led a team of 6 to plan, schedule and design content for the organisation's social media, mainly Instagram.",
+        ja: "6名のチームを率い、Instagramを中心とした公式SNSのコンテンツ企画・投稿スケジュール管理・デザインを担当。",
+      },
+      {
+        en: "Grew the account to 2,816 followers by regularly posting activities, updates and events.",
+        ja: "活動報告やお知らせ、イベント情報を継続的に発信し、フォロワー数を2,816名まで拡大。",
+      },
+    ],
+  },
+  {
+    id: "makomti-recruitment-2022",
+    organisation: "MAKOMTI Member Recruitment 2022",
+    location: { en: "Yogyakarta", ja: "ジョグジャカルタ" },
+    period: "June 2022 - September 2022",
+    role: {
+      en: "Coordinator of Design Division & Documentation Staff",
+      ja: "デザイン部門コーディネーター 兼 記録担当",
+    },
+    points: [
+      {
+        en: "Led a 3-person design team: a 21-page recruitment website for desktop and mobile, event banners, 25 committee co-cards and social media posters.",
+        ja: "3名のデザインチームを率い、デスクトップ・モバイル対応の全21ページの採用サイト、イベントバナー、運営委員用コーカード25点、SNS用ポスターを制作。",
+      },
+      {
+        en: "Coordinated with other divisions to keep timelines and assets aligned; consolidated all event photos into one shared archive.",
+        ja: "他部門と連携してスケジュールと制作物の整合を図り、イベント写真を一つの共有アーカイブに集約。",
+      },
+    ],
+    href: "/work/makomti-recruitment",
+  },
 ];

@@ -29,6 +29,7 @@ export interface Content {
       work: string;
       projects: string;
       experience: string;
+      leadership: string;
       capabilities: string;
       about: string;
       contact: string;
@@ -124,10 +125,17 @@ export interface Content {
     techAria: string;
   };
 
+  leadership: {
+    ariaSection: string;
+    heading: string;
+    caseStudyCta: string;
+  };
+
   education: {
     ariaSection: string;
     heading: string;
     recognitionHeading: string;
+    languagesHeading: string;
     certificatesCta: string;
   };
 
@@ -218,6 +226,7 @@ export const en: Content = {
       work: "Work",
       projects: "Projects",
       experience: "Experience",
+      leadership: "Leadership",
       capabilities: "Capabilities",
       about: "About",
       contact: "Contact",
@@ -368,6 +377,17 @@ export const en: Content = {
       "Technologies used",
   },
 
+  leadership: {
+    ariaSection:
+      "Leadership and organisations",
+
+    heading:
+      "Leadership & Organisations",
+
+    caseStudyCta:
+      "View case study",
+  },
+
   education: {
     ariaSection:
       "Education and Program",
@@ -377,6 +397,9 @@ export const en: Content = {
 
     recognitionHeading:
       "Program",
+
+    languagesHeading:
+      "Languages",
 
     certificatesCta:
       "All certificates",
@@ -555,6 +578,9 @@ export const ja: Content = {
       experience:
         "経歴",
 
+      leadership:
+        "組織活動",
+
       capabilities:
         "スキル",
 
@@ -571,7 +597,7 @@ export const ja: Content = {
       "ポートフォリオを読み込み中",
 
     wordmark:
-      "Faris Znafis",
+      "Faris Zaidan Nafis",
   },
 
   hero: {
@@ -715,6 +741,18 @@ export const ja: Content = {
       "使用技術",
   },
 
+  leadership: {
+    ariaSection:
+      "リーダーシップ・組織活動",
+
+    // \u200b marks the only line-break point (heading uses break-keep).
+    heading:
+      "リーダーシップ・\u200b組織活動",
+
+    caseStudyCta:
+      "ケーススタディを見る",
+  },
+
   education: {
     ariaSection:
       "学歴と実績",
@@ -724,6 +762,9 @@ export const ja: Content = {
 
     recognitionHeading:
       "受賞・認定",
+
+    languagesHeading:
+      "語学",
 
     certificatesCta:
       "すべての認定証",

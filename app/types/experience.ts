@@ -29,3 +29,25 @@ export type CapabilityGroup = {
   title: LocalizedText;
   skills: LocalizedText[];
 };
+export type LeadershipItem = {
+  id: string;
+  organisation: string;
+  location: LocalizedText;
+  period: string;
+  role: LocalizedText;
+  unit?: LocalizedText;
+  points: LocalizedText[];
+  /** Internal route to a related case study. */
+  href?: string;
+};
+
+export type RecognitionItem = {
+  title: LocalizedText;
+  meta?: LocalizedText;
+  points?: LocalizedText[];
+};
+
+export type LanguageItem = {
+  name: LocalizedText;
+  level: LocalizedText;
+};

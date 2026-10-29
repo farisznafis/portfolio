@@ -121,7 +121,7 @@ export function IntroProvider({ children }: { children: ReactNode }) {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.15, duration: 0.6 }}
             >
-              Faris Znafis
+              Faris Zaidan Nafis
             </motion.p>
 
             {/* Counter */}

@@ -19,6 +19,7 @@ const SECTIONS = [
   "work",
   "projects",
   "experience",
+  "leadership",
   "capabilities",
   "contact",
 ] as const;
@@ -120,7 +121,7 @@ export function Navbar() {
             </Link>
 
             {/* Desktop nav */}
-            <ul className="hidden items-center gap-1 md:flex">
+            <ul className="hidden items-center gap-1 lg:flex">
               {SECTIONS.map((id) => {
                 const isActive = isHome && activeSection === id;
                 return (
@@ -150,7 +151,7 @@ export function Navbar() {
 
             {/* Right side */}
             <div className="flex items-center gap-2">
-              <Magnetic className="hidden md:block">
+              <Magnetic className="hidden lg:block">
                 <a
                   href={site.github}
                   target="_blank"
@@ -201,7 +202,7 @@ export function Navbar() {
                 aria-expanded={open}
                 aria-controls="mobile-nav"
                 aria-label={open ? content.nav.ariaClose : content.nav.ariaMenu}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white/5 text-ink md:hidden"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white/5 text-ink lg:hidden"
               >
                 {open ? <X size={18} /> : <Menu size={18} />}
               </button>
@@ -222,7 +223,7 @@ export function Navbar() {
               animate={{ clipPath: "inset(0 0 0% 0)" }}
               exit={{ clipPath: "inset(0 0 100% 0)" }}
               transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
-              className="fixed inset-0 z-[70] flex flex-col justify-between bg-night px-6 pb-10 pt-24 md:hidden"
+              className="fixed inset-0 z-[70] flex flex-col justify-between bg-night px-6 pb-10 pt-24 lg:hidden"
             >
               <motion.ul
                 className="space-y-2"
