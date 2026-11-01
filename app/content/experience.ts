@@ -155,7 +155,7 @@ export const languages: LanguageItem[] = [
     name: { en: "English", ja: "英語" },
     level: { en: "Intermediate", ja: "中級" },
   },
-  { name: { en: "Japanese", ja: "日本語" }, level: { en: "JLPT N3 · BJT 324", ja: "JLPT N3・BJT 324点" } },
+  { name: { en: "Japanese", ja: "日本語" }, level: { en: "JLPT N3 90/180 · BJT 324", ja: "JLPT N3 90/180 ・ BJT 324点" } },
 ];
 
 export const leadership: LeadershipItem[] = [
