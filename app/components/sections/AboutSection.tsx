@@ -8,6 +8,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Play } from "lucide-react";
 import { visualJournal, type JournalFilm } from "../../content/profile";
 import { BOOK_STILL } from "../../lib/content/book";
+import { mediaUrl } from "../../lib/content/gallery";
+import type { GalleryPhoto } from "../../types/gallery";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useLang } from "../../lib/i18n";
 import { DUR, EASE } from "../../lib/motion";
@@ -15,26 +17,26 @@ import { DUR, EASE } from "../../lib/motion";
 /**
  * "Outside the code" - a darkroom table.
  *
- * Prints from `visualJournal.photos` are scattered over the oversized heading
+ * Prints are the gallery photos marked `featured`, scattered over the oversized heading
  * and can be dragged around (fine pointers only, so touch scrolling is never
  * hijacked). Films below are click-to-load YouTube facades: no iframe cost
  * until the visitor asks for it.
  */
 
-// shortcut: three fixed print slots with fixed aspect ratios (portrait, landscape, landscape);
-// extra photos are ignored and other orientations get cropped. Add slots if the journal grows.
+// shortcut: three fixed print slots, tuned for one portrait then two landscapes; each print keeps its
+// photo's own proportions, but further featured photos are ignored. Add slots to show more.
 const PRINTS = [
-  { pos: "left-[2%] top-[3%] w-[46%] md:left-[3%] md:top-[6%] md:w-[21%]", aspect: "aspect-[3/4]", rotate: -5 },
-  { pos: "right-[2%] top-[24%] w-[58%] md:right-auto md:left-[35%] md:top-[47%] md:w-[30%]", aspect: "aspect-[4/3]", rotate: 3 },
-  { pos: "left-[6%] top-[60%] w-[66%] md:left-auto md:right-[3%] md:top-[3%] md:w-[28%]", aspect: "aspect-[4/3]", rotate: -2 },
+  { pos: "left-[2%] top-[3%] w-[46%] md:left-[3%] md:top-[6%] md:w-[21%]", rotate: -5 },
+  { pos: "right-[2%] top-[24%] w-[58%] md:right-auto md:left-[35%] md:top-[47%] md:w-[30%]", rotate: 3 },
+  { pos: "left-[6%] top-[60%] w-[66%] md:left-auto md:right-[3%] md:top-[3%] md:w-[28%]", rotate: -2 },
 ] as const;
 
-export function AboutSection() {
+export function AboutSection({ prints }: { prints: GalleryPhoto[] }) {
   const { content, lang } = useLang();
   const reduce = useReducedMotion();
   const canDrag = useMediaQuery("(pointer: fine) and (min-width: 768px)");
   const tableRef = useRef<HTMLDivElement>(null);
-  const photos = (visualJournal.photos ?? []).slice(0, PRINTS.length);
+  const photos = prints.slice(0, PRINTS.length);
   // Last-touched print renders on top.
   const [stack, setStack] = useState(() => photos.map((_, i) => i));
   const raise = (i: number) => setStack((s) => [...s.filter((x) => x !== i), i]);
@@ -60,7 +62,7 @@ export function AboutSection() {
               const print = PRINTS[i];
               return (
                 <motion.figure
-                  key={photo.src}
+                  key={photo.id}
                   drag={canDrag}
                   dragConstraints={tableRef}
                   dragElastic={0.12}
@@ -79,18 +81,20 @@ export function AboutSection() {
                     print.pos,
                   )}
                 >
-                  <div className={clsx("relative overflow-hidden bg-elevated", print.aspect)}>
+                  <div className="relative overflow-hidden bg-elevated" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
                     <Image
-                      src={photo.src}
+                      src={mediaUrl(photo, 1024)}
                       alt={photo.alt[lang]}
                       fill
                       draggable={false}
                       sizes="(min-width: 768px) 30vw, 60vw"
+                      placeholder="blur"
+                      blurDataURL={photo.blurDataURL}
                       className="pointer-events-none object-cover"
                     />
                   </div>
                   <figcaption className="flex items-center justify-between gap-3 py-2 font-mono text-[9px] uppercase tracking-[0.18em] text-night sm:py-3 sm:text-[10px]">
-                    <span className="truncate">{(photo.caption ?? photo.alt)[lang]}</span>
+                    <span className="truncate">{(photo.title ?? photo.alt)[lang]}</span>
                     <span className="shrink-0 opacity-50">{String(i + 1).padStart(2, "0")}</span>
                   </figcaption>
                 </motion.figure>
@@ -98,6 +102,19 @@ export function AboutSection() {
             })}
           </div>
         </div>
+
+        {photos.length > 0 ? (
+          <Link
+            href="/gallery"
+            data-cursor="Open"
+            // Fetch the hall's code while the pointer is still on its way to the click.
+            onPointerEnter={() => void import("../gallery/Hall")}
+            className="group mt-10 inline-flex min-h-11 items-center gap-2 font-mono text-[11px] uppercase tracking-[0.25em] text-muted transition-colors hover:text-ink"
+          >
+            {content.gallery.enter}
+            <ArrowUpRight size={14} aria-hidden="true" className="text-accent transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </Link>
+        ) : null}
 
         {content.about.paragraphs?.length ? (
           <div className="mt-20 grid gap-8 sm:mt-28 md:grid-cols-12">

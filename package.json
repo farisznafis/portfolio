@@ -9,7 +9,10 @@
     "lint": "eslint app next.config.ts postcss.config.mjs eslint.config.mjs",
     "typecheck": "tsc --noEmit",
     "seed:projects": "tsx scripts/seed-projects.ts",
-    "check:supabase": "tsx scripts/check-supabase.ts"
+    "check:supabase": "tsx scripts/check-supabase.ts",
+    "gallery:import": "tsx scripts/gallery.ts import",
+    "gallery:seed": "tsx scripts/gallery.ts seed",
+    "gallery:check": "tsx scripts/gallery.ts check"
   },
   "dependencies": {
     "@react-three/fiber": "^9.0.0",
@@ -34,7 +37,9 @@
     "dotenv": "^17.4.2",
     "eslint": "^9.17.0",
     "eslint-config-next": "^15.1.0",
+    "exifr": "^7.1.3",
     "postcss": "^8.4.49",
+    "sharp": "^0.35.5",
     "supabase": "^2.116.0",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.23.13",

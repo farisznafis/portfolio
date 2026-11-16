@@ -1,0 +1,79 @@
+{
+  "series": [
+    {
+      "id": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "slug": "kumamoto",
+      "title": {
+        "en": "Kumamoto",
+        "ja": "熊本"
+      },
+      "sortOrder": 0,
+      "published": true
+    }
+  ],
+  "photos": [
+    {
+      "id": "b04b1785-171b-4ed7-8651-35fca05f43aa",
+      "slug": "a-moment-photographed-in-japan",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/a-moment-photographed-in-japan/56201706",
+      "width": 1800,
+      "height": 2400,
+      "blurDataURL": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAAAQAgCdASoMABAAA4BaJZwAAmjIcWW/pJQgAP70kZlRfx7WqoyDZPhZeiqahpKH42s6EHopMUqjF394uAA=",
+      "dominantColor": "#080808",
+      "alt": {
+        "en": "A moment photographed in Japan",
+        "ja": "日本で撮影した一瞬"
+      },
+      "title": {
+        "en": "A moment photographed in Japan",
+        "ja": "日本で撮影した一瞬"
+      },
+      "featured": true,
+      "sortOrder": 0,
+      "published": true
+    },
+    {
+      "id": "9c01232b-d459-438c-a31a-c085e4a08568",
+      "slug": "kumamoto-castle",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/kumamoto-castle/cab84c58",
+      "width": 2400,
+      "height": 1800,
+      "blurDataURL": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAAAQAgCdASoQAAwAA4BaJbACdAEOpixTbQAAAP7jM2apoxj7RScPgtI96V2VCFjvu4AR98lD8XqKs2bfI6GcP1PRc/AAAA==",
+      "dominantColor": "#284878",
+      "alt": {
+        "en": "Kumamoto Castle",
+        "ja": "熊本城"
+      },
+      "title": {
+        "en": "Kumamoto Castle",
+        "ja": "熊本城"
+      },
+      "featured": true,
+      "sortOrder": 1,
+      "published": true
+    },
+    {
+      "id": "d8c40bf7-a82b-4117-8eec-186193b31ca5",
+      "slug": "view-from-the-top-of-hanaokayama",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/view-from-the-top-of-hanaokayama/0e0c5a1f",
+      "width": 2400,
+      "height": 1800,
+      "blurDataURL": "data:image/webp;base64,UklGRjwAAABXRUJQVlA4IDAAAADQAQCdASoQAAwAA4BaJZwAAptqCqHFgAD+5ZCptVM61QQdhWqoNo1SrlWwM7AeAAA=",
+      "dominantColor": "#080808",
+      "alt": {
+        "en": "View from the top of Hanaokayama",
+        "ja": "花岡山の頂上からの眺め"
+      },
+      "title": {
+        "en": "View from the top of Hanaokayama",
+        "ja": "花岡山の頂上からの眺め"
+      },
+      "featured": true,
+      "sortOrder": 2,
+      "published": true
+    }
+  ]
+}

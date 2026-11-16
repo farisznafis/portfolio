@@ -10,10 +10,12 @@ import { AboutSection } from "./components/sections/AboutSection";
 import { LabStrip } from "./components/sections/LabStrip";
 import { ContactFinale } from "./components/sections/ContactFinale";
 
+import { getGallery } from "./lib/data/gallery";
 import { getStoredProjects } from "./lib/data/projects";
 
 export default async function Home() {
   const projects = await getStoredProjects();
+  const gallery = await getGallery();
 
   return (
     <PageTransition>
@@ -26,7 +28,7 @@ export default async function Home() {
       <LeadershipSection />
       <Capabilities />
       <EducationSection />
-      <AboutSection />
+      <AboutSection prints={gallery.photos.filter((photo) => photo.featured)} />
       <LabStrip />
       <ContactFinale />
     </PageTransition>

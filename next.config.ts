@@ -7,23 +7,41 @@ const supabaseHostname = supabaseUrl
   ? new URL(supabaseUrl).hostname
   : undefined;
 
+// Gallery files are served from public/media unless this names the bucket (see app/lib/content/gallery.ts).
+const galleryMedia = process.env.NEXT_PUBLIC_GALLERY_MEDIA_URL
+  ? new URL(process.env.NEXT_PUBLIC_GALLERY_MEDIA_URL)
+  : undefined;
+
+const remotePatterns = [
+  ...(supabaseHostname
+    ? [
+        {
+          protocol: "https" as const,
+          hostname: supabaseHostname,
+          pathname:
+            "/storage/v1/object/public/portfolio-media/**",
+        },
+      ]
+    : []),
+  ...(galleryMedia && galleryMedia.hostname !== supabaseHostname
+    ? [
+        {
+          protocol: "https" as const,
+          hostname: galleryMedia.hostname,
+          pathname: `${galleryMedia.pathname}/**`,
+        },
+      ]
+    : []),
+];
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
-  ...(supabaseHostname
-    ? {
-        images: {
-          remotePatterns: [
-            {
-              protocol: "https" as const,
-              hostname: supabaseHostname,
-              pathname:
-                "/storage/v1/object/public/portfolio-media/**",
-            },
-          ],
-        },
-      }
-    : {}),
+  images: {
+    // 90 is for the gallery lightbox, where the photograph is the point.
+    qualities: [75, 90],
+    remotePatterns,
+  },
 
   async redirects() {
     return [

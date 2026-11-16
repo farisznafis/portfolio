@@ -63,25 +63,15 @@ export const socials = [
  * Visual journal
  * ─────────────────────────────────────────────────────────────────────────────
  *
- * Personal photography / videography section.
- *
- * Everything except `photos` can be omitted.
- * `photos` may also be an empty array.
- *
- * Recommended:
- * - 1–3 photos
- * - any number of films, landscape or portrait, in display order
+ * Films for the "Outside the code" section, in display order, landscape or
+ * portrait. Photos live in the gallery: `npm run gallery:import`, then mark
+ * up to three as `featured` in app/content/gallery.generated.json to put
+ * them on the darkroom table.
  */
 
 type LocalizedMediaText = {
   en: string;
   ja: string;
-};
-
-export type VisualJournalPhoto = {
-  src: string;
-  alt: LocalizedMediaText;
-  caption?: LocalizedMediaText;
 };
 
 /**
@@ -101,49 +91,10 @@ export type JournalFilm = {
 };
 
 export type VisualJournalConfig = {
-  photos?: VisualJournalPhoto[];
   films?: JournalFilm[];
 };
 
 export const visualJournal: VisualJournalConfig = {
-  /**
-   * Put the files inside:
-   *
-   * public/images/journal/
-   *
-   * You can use only 1 or 2 images too.
-   * The layout adapts automatically.
-   */
-  photos: [
-    {
-      src: "/images/journal/IMG_20250215_132543_289.jpg",
-      alt: {
-        en: "A moment photographed in Japan",
-        ja: "日本で撮影した一瞬",
-      },
-      // caption: {
-      //   en: "Kumamoto, Japan",
-      //   ja: "日本・熊本",
-      // },
-    },
-
-    {
-      src: "/images/journal/IMG_20250222_162510_780.jpg",
-      alt: {
-        en: "Kumamoto Castle",
-        ja: "熊本城",
-      },
-    },
-
-    {
-      src: "/images/journal/IMG_20250209_180504_696.jpg",
-      alt: {
-        en: "View from the top of Hanaokayama",
-        ja: "花岡山の頂上からの眺め",
-      },
-    },
-  ],
-
   /**
    * YouTube ID = the part after `watch?v=` or `/shorts/`.
    *

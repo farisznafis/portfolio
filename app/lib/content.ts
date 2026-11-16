@@ -218,6 +218,31 @@ export interface Content {
     teaser: { line: string };
   };
 
+  /**
+   * /gallery — the exhibition hall. Photo and series text comes from
+   * app/content/gallery.generated.json; only interface copy lives here.
+   * {n} / {total} / {count} are interpolated by the renderer.
+   */
+  gallery: {
+    ariaSection: string;
+    title: string;
+    hint: string;
+    indexHint: string;
+    enter: string;
+    controls: {
+      plan: string;
+      hall: string;
+      index: string;
+      soundOn: string;
+      soundOff: string;
+    };
+    plan: { title: string; close: string; here: string; closed: string; prints: string; walk: string };
+    index: { series: string; place: string; year: string; all: string; count: string; empty: string };
+    lightbox: { aria: string; counter: string; prev: string; next: string; close: string };
+    wingList: string;
+    fallbackNote: string;
+  };
+
   contact: {
     ariaSection: string;
 
@@ -558,6 +583,46 @@ export const en: Content = {
     fallbackNote: "This device shows the book as a still. The story is written out below.",
     stillAlt: "A fine-press pop-up book lying half open on dark felt, with a paper Kumamoto Castle rising from the last spread",
     teaser: { line: "The path from Indonesia to Kumamoto, as a pop-up book." },
+  },
+
+  gallery: {
+    ariaSection: "Photo gallery",
+    title: "The gallery after hours",
+    hint: "Scroll to walk the hall. Click a print to step closer.",
+    indexHint: "Every photo on one contact sheet.",
+    enter: "Enter the gallery",
+    controls: {
+      plan: "Floor plan",
+      hall: "Hall",
+      index: "Index",
+      soundOn: "Enable sound",
+      soundOff: "Mute sound",
+    },
+    plan: {
+      title: "Floor plan",
+      close: "Close floor plan",
+      here: "You are here",
+      closed: "Closed room",
+      prints: "{count} prints",
+      walk: "Walk to {name}",
+    },
+    index: {
+      series: "Series",
+      place: "Place",
+      year: "Year",
+      all: "All",
+      count: "{count} photos",
+      empty: "No photos match these filters.",
+    },
+    lightbox: {
+      aria: "Photo viewer",
+      counter: "{n} of {total}",
+      prev: "Previous photo",
+      next: "Next photo",
+      close: "Close",
+    },
+    wingList: "Photos in this wing",
+    fallbackNote: "This device opens the gallery as an index. The hall is still one click away.",
   },
 
   contact: {
@@ -965,6 +1030,46 @@ export const ja: Content = {
     fallbackNote: "この端末では静止画で表示しています。物語は下に文章で掲載しています。",
     stillAlt: "暗いフェルトの上で半分ひらいた活版印刷の飛び出す絵本。最後の見開きから紙の熊本城が立ち上がっている",
     teaser: { line: "インドネシアから熊本までの道のりを、一冊の飛び出す絵本に。" },
+  },
+
+  gallery: {
+    ariaSection: "フォトギャラリー",
+    title: "閉館後のギャラリー",
+    hint: "スクロールで展示室を歩けます。作品をクリックすると近づきます。",
+    indexHint: "すべての写真を一枚のコンタクトシートに。",
+    enter: "ギャラリーに入る",
+    controls: {
+      plan: "フロアマップ",
+      hall: "展示室",
+      index: "一覧",
+      soundOn: "サウンドを有効にする",
+      soundOff: "サウンドをミュート",
+    },
+    plan: {
+      title: "フロアマップ",
+      close: "フロアマップを閉じる",
+      here: "現在地",
+      closed: "閉室",
+      prints: "{count}点",
+      walk: "{name}へ歩く",
+    },
+    index: {
+      series: "シリーズ",
+      place: "場所",
+      year: "年",
+      all: "すべて",
+      count: "{count}枚",
+      empty: "条件に合う写真はありません。",
+    },
+    lightbox: {
+      aria: "写真ビューア",
+      counter: "{n} / {total}",
+      prev: "前の写真",
+      next: "次の写真",
+      close: "閉じる",
+    },
+    wingList: "この展示室の写真",
+    fallbackNote: "この端末では一覧で表示しています。展示室もワンクリックで開けます。",
   },
 
   contact: {

@@ -13,6 +13,8 @@ app/
 ├── page.tsx                Home composition - the full act-based journey
 ├── projects/page.tsx       All-projects index (filterable by field)
 ├── book/page.tsx           The pop-up book, filling the window (three.js loads here only)
+├── gallery/                The exhibition hall: layout.tsx holds the experience,
+│                           page.tsx and [series]/[photo]/page.tsx carry metadata
 ├── globals.css             Design tokens, fluid type scale, utilities, z-index scale
 ├── work/[slug]/page.tsx    Case-study route (SSG, generateStaticParams)
 │
@@ -76,6 +78,8 @@ app/
     │   ├── materials.ts        Soft shadows, foil environment, felt, plan grid
     │   ├── timeline.ts         Attract mode as a function of time; `?t=`, `?view=`
     │   └── sound.ts            WebAudio card slide, page thump, wheel tick
+    ├── gallery/            /gallery - a 3D exhibition hall built from
+    │                       content/gallery.generated.json. See its README.md
     └── ui/
         ├── MaskedText.tsx  Word-mask headline reveal (onMount / inView / play gate)
         ├── RolloverText.tsx Per-char dual-text hover rollover (CSS-driven)
@@ -155,6 +159,9 @@ path under `/public/images/` once a real asset exists - never stock photos.
   Inspect a moment with `/book?view=cover|spread-1..5|half-1..5|engineer`
   and `?t=<seconds>`. The teaser still (`public/images/book/half-5.jpg`) is
   a capture of `/book?view=half-5&t=26`.
+- **Add photos to the gallery**: `npm run gallery:import -- <folder> --series <slug>`,
+  then write alt text and set `published: true` in
+  `app/content/gallery.generated.json`. Details in `components/gallery/README.md`.
 - **Add a home section**: create `components/sections/<Name>.tsx`, compose it
   in `page.tsx` between acts, add its strings to both dictionaries, give it
   a unique layout family (no repeats), and register its id in Navbar
