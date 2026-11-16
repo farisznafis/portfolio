@@ -12,6 +12,7 @@ app/
 ├── layout.tsx              Root shell: fonts, metadata, providers, grain layer
 ├── page.tsx                Home composition - the full act-based journey
 ├── projects/page.tsx       All-projects index (filterable by field)
+├── book/page.tsx           The pop-up book, filling the window (three.js loads here only)
 ├── globals.css             Design tokens, fluid type scale, utilities, z-index scale
 ├── work/[slug]/page.tsx    Case-study route (SSG, generateStaticParams)
 │
@@ -62,6 +63,19 @@ app/
     ├── home/
     │   └── Scene.tsx       GLSL particle wave (R3F). progressRef-driven;
     │                       `active` prop pauses the render loop offscreen
+    ├── book/               /book - a fine-press pop-up book in five spreads
+    │   ├── BookExperience.tsx  Route shell: title, hint, hidden HTML story,
+    │   │                       still-image fallback; lazy-loads PopUpBook
+    │   ├── PopUpBook.tsx       R3F canvas, attract mode, pointer, engineer's
+    │   │                       view, sound toggle. Rules of the medium on top
+    │   ├── model.ts            Binding, leaves and mechanisms (V-fold, parallel
+    │   │                       fold, floating layer, slider, wheel, pull tabs),
+    │   │                       all solved from the page angle
+    │   ├── press.ts            Letterpress baker: inks, foil, impression,
+    │   │                       text from the site fonts into textures
+    │   ├── materials.ts        Soft shadows, foil environment, felt, plan grid
+    │   ├── timeline.ts         Attract mode as a function of time; `?t=`, `?view=`
+    │   └── sound.ts            WebAudio card slide, page thump, wheel tick
     └── ui/
         ├── MaskedText.tsx  Word-mask headline reveal (onMount / inView / play gate)
         ├── RolloverText.tsx Per-char dual-text hover rollover (CSS-driven)
@@ -136,6 +150,11 @@ path under `/public/images/` once a real asset exists - never stock photos.
   + `caseStudyOrder`. The /projects index picks it up automatically;
   case-study routes (SSG) and the next-project loop follow `caseStudyOrder`.
 - **Feature a project on Home**: add its key to `featuredProjectOrder`.
+- **Change what the book says**: facts come from `app/content/*` through
+  `lib/content/book.ts`; framing copy is the `book` key in both dictionaries.
+  Inspect a moment with `/book?view=cover|spread-1..5|half-1..5|engineer`
+  and `?t=<seconds>`. The teaser still (`public/images/book/half-5.jpg`) is
+  a capture of `/book?view=half-5&t=26`.
 - **Add a home section**: create `components/sections/<Name>.tsx`, compose it
   in `page.tsx` between acts, add its strings to both dictionaries, give it
   a unique layout family (no repeats), and register its id in Navbar

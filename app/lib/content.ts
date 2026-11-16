@@ -31,6 +31,7 @@ export interface Content {
       experience: string;
       leadership: string;
       capabilities: string;
+      book: string;
       about: string;
       contact: string;
     };
@@ -180,6 +181,43 @@ export interface Content {
     heading: string;
   };
 
+  /**
+   * /book — the pop-up book. Facts (names, dates, numbers) come from
+   * app/content/* through app/lib/content/book.ts; only framing copy lives here.
+   * {program} / {school} / {n} / {count} are interpolated by the renderer.
+   */
+  book: {
+    ariaSection: string;
+    title: string;
+    hint: string;
+    cover: { title: string; sub: string; edition: string };
+    yogyakarta: { caption: string };
+    bangkit: { capstoneLabel: string; scoreLabel: string };
+    products: { title: string };
+    crossing: { title: string; from: string; to: string };
+    kumamoto: { title: string; cardLine: string };
+    pull: string;
+    controls: {
+      prev: string;
+      next: string;
+      engineerOn: string;
+      engineerOff: string;
+      soundOn: string;
+      soundOff: string;
+    };
+    engineer: {
+      cover: string;
+      spread: string;
+      parts: string;
+      fold: string;
+      glue: string;
+      cut: string;
+    };
+    fallbackNote: string;
+    stillAlt: string;
+    teaser: { line: string };
+  };
+
   contact: {
     ariaSection: string;
 
@@ -230,6 +268,7 @@ export const en: Content = {
       experience: "Experience",
       leadership: "Leadership",
       capabilities: "Capabilities",
+      book: "Book",
       about: "About",
       contact: "Contact",
     },
@@ -485,6 +524,42 @@ export const en: Content = {
       "Currently experimenting",
   },
 
+  book: {
+    ariaSection: "The pop-up book",
+    title: "The pop-up book",
+    hint: "Drag a page corner to turn it. Press E for the engineer's view.",
+    cover: {
+      title: "From Indonesia to Kumamoto",
+      sub: "A pop-up book in five spreads",
+      edition: "Night Signal edition",
+    },
+    yogyakarta: { caption: "Where the path starts: {program} at {school}." },
+    bangkit: { capstoneLabel: "Capstone", scoreLabel: "Average score" },
+    products: { title: "From models to products" },
+    crossing: { title: "Crossing to Kumamoto", from: "Indonesia", to: "Kumamoto" },
+    kumamoto: { title: "Kumamoto, now", cardLine: "Let's build something." },
+    pull: "Pull",
+    controls: {
+      prev: "Previous page",
+      next: "Next page",
+      engineerOn: "Engineer's view",
+      engineerOff: "Close engineer's view",
+      soundOn: "Enable sound",
+      soundOff: "Mute sound",
+    },
+    engineer: {
+      cover: "Cover",
+      spread: "Spread {n}",
+      parts: "{count} parts",
+      fold: "Fold line",
+      glue: "Glue tab",
+      cut: "Cut line",
+    },
+    fallbackNote: "This device shows the book as a still. The story is written out below.",
+    stillAlt: "A fine-press pop-up book lying half open on dark felt, with a paper Kumamoto Castle rising from the last spread",
+    teaser: { line: "The path from Indonesia to Kumamoto, as a pop-up book." },
+  },
+
   contact: {
     ariaSection:
       "Contact",
@@ -588,6 +663,9 @@ export const ja: Content = {
 
       capabilities:
         "スキル",
+
+      book:
+        "絵本",
 
       about:
         "概要",
@@ -851,6 +929,42 @@ export const ja: Content = {
 
     heading:
       "いま実験していること",
+  },
+
+  book: {
+    ariaSection: "飛び出す絵本",
+    title: "飛び出す絵本",
+    hint: "ページの角をドラッグしてめくれます。Eキーで設計図ビュー。",
+    cover: {
+      title: "インドネシアから熊本へ",
+      sub: "五つの見開きでたどる飛び出す絵本",
+      edition: "Night Signal 版",
+    },
+    yogyakarta: { caption: "ここが出発点。{school}で{program}を専攻。" },
+    bangkit: { capstoneLabel: "キャップストーン", scoreLabel: "平均スコア" },
+    products: { title: "モデルから、プロダクトへ" },
+    crossing: { title: "熊本へ渡る", from: "インドネシア", to: "熊本" },
+    kumamoto: { title: "熊本、いま", cardLine: "一緒に、つくりましょう。" },
+    pull: "引く",
+    controls: {
+      prev: "前のページ",
+      next: "次のページ",
+      engineerOn: "設計図ビュー",
+      engineerOff: "設計図ビューを閉じる",
+      soundOn: "サウンドを有効にする",
+      soundOff: "サウンドをミュート",
+    },
+    engineer: {
+      cover: "表紙",
+      spread: "見開き {n}",
+      parts: "{count}パーツ",
+      fold: "折り線",
+      glue: "のりしろ",
+      cut: "カット線",
+    },
+    fallbackNote: "この端末では静止画で表示しています。物語は下に文章で掲載しています。",
+    stillAlt: "暗いフェルトの上で半分ひらいた活版印刷の飛び出す絵本。最後の見開きから紙の熊本城が立ち上がっている",
+    teaser: { line: "インドネシアから熊本までの道のりを、一冊の飛び出す絵本に。" },
   },
 
   contact: {

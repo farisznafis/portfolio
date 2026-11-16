@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import clsx from "clsx";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Play } from "lucide-react";
 import { visualJournal, type JournalFilm } from "../../content/profile";
+import { BOOK_STILL } from "../../lib/content/book";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { useLang } from "../../lib/i18n";
 import { DUR, EASE } from "../../lib/motion";
@@ -113,6 +115,30 @@ export function AboutSection() {
         ) : null}
 
         <Films films={visualJournal.films ?? []} />
+
+        {/* Teaser for /book: a still only, so the homepage never loads three.js for it. */}
+        <Link
+          href="/book"
+          data-cursor="Open"
+          className="group mt-24 grid items-center gap-8 border-t border-line pt-10 sm:mt-36 md:grid-cols-12"
+        >
+          <span className="relative block aspect-[16/10] overflow-hidden bg-elevated md:col-span-7">
+            <Image
+              src={BOOK_STILL}
+              alt={content.book.stillAlt}
+              fill
+              sizes="(min-width: 768px) 58vw, 100vw"
+              className="object-cover transition-transform duration-[1.2s] ease-[var(--ease-signature)] group-hover:scale-[1.03]"
+            />
+          </span>
+          <span className="flex items-start gap-3 font-display text-[clamp(1.4rem,2.4vw,2.25rem)] font-semibold leading-[1.05] tracking-tight text-ink md:col-span-5">
+            {content.book.teaser.line}
+            <ArrowUpRight
+              aria-hidden="true"
+              className="mt-1 size-6 shrink-0 text-accent transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            />
+          </span>
+        </Link>
       </div>
     </section>
   );

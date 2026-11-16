@@ -1,12 +1,13 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { ArrowUpRight, Github, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { site, socials } from "../content/profile";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 import type { Lang } from "../types/common";
 import { useLang } from "../lib/i18n";
 import { DUR, EASE, SPRING, STAGGER } from "../lib/motion";
@@ -21,10 +22,14 @@ const SECTIONS = [
   "experience",
   "leadership",
   "capabilities",
+  "book",
   "contact",
 ] as const;
 
 type SectionId = (typeof SECTIONS)[number];
+
+/** Nav entries that are routes of their own, not sections of the home page. */
+const ROUTES: Partial<Record<SectionId, string>> = { projects: "/projects", book: "/book" };
 
 const LANGS: { value: Lang; label: string }[] = [
   { value: "en", label: "EN" },
@@ -53,7 +58,8 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState<SectionId | null>(null);
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const reduce = useReducedMotion();
+  // Read after hydration: the server cannot know, and a mismatch here fails hydration.
+  const reduce = useMediaQuery("(prefers-reduced-motion: reduce)");
   const { lang, setLang, content } = useLang();
   const { scrollTo } = useSmoothScroll();
 
@@ -64,7 +70,7 @@ export function Navbar() {
       setActiveSection(null);
       return;
     }
-    const elements = SECTIONS.map((id) => document.getElementById(id));
+    const elements = SECTIONS.filter((id) => !ROUTES[id]).map((id) => document.getElementById(id));
     if (elements.some((el) => !el)) return;
 
     const observer = new IntersectionObserver(
@@ -92,14 +98,13 @@ export function Navbar() {
 
   const goTo = (id: SectionId) => (event: React.MouseEvent) => {
     setOpen(false);
-    // "projects" is a real route, not a home section - always navigate.
-    if (id === "projects" || !isHome) return;
+    // Routes of their own always navigate.
+    if (ROUTES[id] || !isHome) return;
     event.preventDefault();
     scrollTo(`#${id}`);
   };
 
-  const linkHref = (id: SectionId) =>
-    id === "projects" ? "/projects" : `/#${id}`;
+  const linkHref = (id: SectionId) => ROUTES[id] ?? `/#${id}`;
 
   return (
     <>

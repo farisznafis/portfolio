@@ -10,6 +10,11 @@ import {
 /**
  * Contextual cursor companion for fine-pointer devices.
  *
+ * Any element with `data-cursor="Label"` gets its label (View, Open, Drag,
+ * Play, Write; on /book also Turn over page corners and Pull over tabs and
+ * the wheel, where the canvas wrapper re-dispatches `pointerover` whenever
+ * its label changes).
+ *
  * The component renders only after hydration and only when:
  * - the device has a fine pointer
  * - reduced motion is not enabled
