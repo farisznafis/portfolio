@@ -100,7 +100,6 @@ export interface Content {
     figma: string;
 
     techAria: string;
-    confidentialNote: string;
   };
 
   projects: {
@@ -117,8 +116,6 @@ export interface Content {
     demoCta: string;
     figmaCta: string;
     linkCta: string;
-
-    confidentialNote: string;
   };
 
   experience: {
@@ -388,11 +385,7 @@ export const en: Content = {
       "Figma",
 
     techAria:
-      "Technology stack",
-
-    confidentialNote:
-      "Professional work — details kept general.",
-  },
+      "Technology stack",  },
 
   projects: {
     ariaSection:
@@ -426,11 +419,7 @@ export const en: Content = {
       "Figma",
 
     linkCta:
-      "Link",
-
-    confidentialNote:
-      "Professional work — details kept general.",
-  },
+      "Link",  },
 
   experience: {
     ariaSection:
@@ -834,11 +823,7 @@ export const ja: Content = {
       "Figma",
 
     techAria:
-      "技術スタック",
-
-    confidentialNote:
-      "業務プロジェクトのため、詳細は概要レベルで記載。",
-  },
+      "技術スタック",  },
 
   projects: {
     ariaSection:
@@ -872,11 +857,7 @@ export const ja: Content = {
       "Figma",
 
     linkCta:
-      "リンク",
-
-    confidentialNote:
-      "業務プロジェクトのため、詳細は概要レベルで記載。",
-  },
+      "リンク",  },
 
   experience: {
     ariaSection:

@@ -4,12 +4,11 @@ import { labItems } from "../../content/profile";
 import { useLang } from "../../lib/i18n";
 
 /**
- * The lab ticker - the page's single marquee. Experiment names are proper
- * nouns shared across languages. Duplicates are aria-hidden from screen
- * readers; the animation itself collapses under reduced motion.
+ * The lab ticker - the page's single marquee. Duplicates are aria-hidden from
+ * screen readers; the animation itself collapses under reduced motion.
  */
 export function LabStrip() {
-  const { content } = useLang();
+  const { content, lang } = useLang();
 
   return (
     <section id="lab" aria-label={content.lab.ariaSection} className="border-t border-line">
@@ -22,11 +21,11 @@ export function LabStrip() {
         <div className="marquee-track animate-marquee flex w-max items-center gap-12">
           {[...labItems, ...labItems].map((item, index) => (
             <span
-              key={`${item}-${index}`}
+              key={`${item.en}-${index}`}
               aria-hidden={index >= labItems.length}
               className="flex items-center gap-12 whitespace-nowrap font-display text-2xl font-semibold tracking-tight text-ink/60 transition-colors duration-300 hover:text-accent-bright sm:text-4xl"
             >
-              {item}
+              {item[lang]}
               <span className="text-accent" aria-hidden="true">
                 ✦
               </span>

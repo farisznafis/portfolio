@@ -133,11 +133,11 @@ export const visualJournal: VisualJournalConfig = {
  * Current experiments.
  */
 export const labItems = [
-  "AI-assisted UI Prototyping",
-  "Web Motion & Interaction",
-  "Design Systems",
-  "LLM-powered Web Apps",
-  "Computer Vision Interfaces",
-  "Generative Visual Experiments",
-  "Three.js / WebGL Experiments",
-] as const;
+  { en: "Amazon Web Services (AWS)", ja: "Amazon Web Services（AWS）" },
+  { en: "AI Agents", ja: "AIエージェント" },
+  { en: "Three.js / WebGL Experiments", ja: "Three.js / WebGLの実験" },
+  { en: "LLM-powered Web Apps", ja: "LLMを活用したWebアプリ" },
+  { en: "Computer Vision Interfaces", ja: "コンピュータビジョンのUI" },
+  { en: "Playing games", ja: "ゲーム" },
+  { en: "and many more!", ja: "ほかにもいろいろ！" },
+];

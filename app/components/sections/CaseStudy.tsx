@@ -132,8 +132,6 @@ export function CaseStudy({
     );
 
   const hasLinks =
-    project.confidentiality !==
-      "public" ||
     project.links.length > 0;
 
   const headingClass =
@@ -335,17 +333,6 @@ export function CaseStudy({
                     : ""
                 }flex flex-wrap items-center gap-x-6 gap-y-2`}
               >
-                {project.confidentiality !==
-                "public" ? (
-                  <p className="text-base leading-relaxed text-muted">
-                    {
-                      content
-                        .work
-                        .confidentialNote
-                    }
-                  </p>
-                ) : null}
-
                 {project.links.map(
                   (
                     link,

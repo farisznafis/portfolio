@@ -43,41 +43,36 @@ export const projects: StoredProject[] = [
       "Recharts",
     ],
     summary: t(
-      "B2B SaaS for managing J-Credit carbon projects, built in a 5-member team: role-based workflows for Admin, Master, and User, a 4-step onboarding flow, monitoring data and emissions dashboards.",
-      "5人のチームで開発した、J-クレジットのカーボンプロジェクトを管理するB2B向けSaaS。Admin・Master・Userのロール別ワークフロー、4ステップのオンボーディング、モニタリングデータと排出量のダッシュボードを担当しました。",
+      "B2B SaaS for managing J-Credit carbon projects. In a 5-member team, I was the sole UI/UX designer and frontend engineer: role-based workflows for Admin, Master, and User, a 4-step onboarding flow, and monitoring and emissions dashboards.",
+      "J-クレジットのカーボンプロジェクトを管理するB2B向けSaaS。5人のチームで、UI/UXデザインとフロントエンド開発を一人で担当し、Admin・Master・Userのロール別ワークフロー、4ステップのオンボーディング、モニタリングデータと排出量のダッシュボードを設計・実装しました。",
     ),
     featured: true,
     featuredOrder: 1,
     projectOrder: 1,
     hasCaseStudy: true,
-    // Professional/company work: the public demo runs on mock data only, no real company data.
+    // Professional/company work: no public demo link; the demo is shown live in interviews only.
     confidentiality: "limited",
-    links: [
-      {
-        type: "demo",
-        label: t("Live demo", "ライブデモ"),
-        url: "https://carbon.farisznafis.my.id",
-      },
-    ],
+    links: [],
     cover: {
       type: "image",
-      src: "/projects/carbon-monitoring/admin-dashboard.png",
+      src: "/projects/carbon-monitoring/site-dashboard.png",
       alt: t(
-        "Admin home: alert for a pending cancel request, counts for projects, companies, applications and requests, a project list with reduction bars, and notifications",
-        "管理者ホーム：未処理の取消依頼のアラート、プロジェクト・企業・申請・依頼の件数、削減量バー付きのプロジェクト一覧、お知らせ",
+        "Site dashboard: projects the site has joined, with emission-reduction progress against the target",
+        "拠点ダッシュボード：拠点が入会しているプロジェクトと、目標に対する排出削減の進捗",
       ),
     },
+    // Admin screens are an internal tool, so they stay out of the public gallery.
     gallery: [
       {
         type: "image",
-        src: "/projects/carbon-monitoring/admin-project.png",
+        src: "/projects/carbon-monitoring/site-project.png",
         alt: t(
-          "Admin project detail: emissions trend chart against the baseline, project summary, and project documents",
-          "管理者のプロジェクト詳細：ベースラインと比較した排出量の推移グラフ、プロジェクト概要、書類",
+          "Site project detail: latest monitoring values for operating hours, generation, self-consumption and accuracy",
+          "拠点のプロジェクト詳細：稼働時間・発電量・自家消費量・測定精度の最新モニタリング値",
         ),
         caption: t(
-          "Admin project detail: emissions against the baseline, membership status and documents in one view.",
-          "管理者のプロジェクト詳細：ベースラインとの排出量比較、入会届の状況、書類を一画面に。",
+          "Project detail for a site: latest monitoring data and emissions analysis.",
+          "拠点のプロジェクト詳細：最新のモニタリングデータと排出量分析。",
         ),
       },
       {
@@ -103,35 +98,23 @@ export const projects: StoredProject[] = [
       },
       {
         type: "image",
-        src: "/projects/carbon-monitoring/site-dashboard.png",
+        src: "/projects/carbon-monitoring/lofi.png",
         alt: t(
-          "Site dashboard: projects the site has joined, with emission-reduction progress against the target",
-          "拠点ダッシュボード：拠点が入会しているプロジェクトと、目標に対する排出削減の進捗",
+          "Lofi wireframe: a basic layout of the site dashboard with placeholder content",
+          "ローファイのワイヤーフレーム：基本的な拠点ダッシュボードのレイアウトとプレースホルダー内容",
         ),
         caption: t(
-          "Site dashboard: reduction progress for each joined project.",
-          "拠点ダッシュボード：入会中のプロジェクトごとの削減進捗。",
+          "Low-fidelity wireframe and web flow of the website.",
+          "ウェブサイトのローファイ・ワイヤーフレームとウェブフロー。",
         ),
-      },
-      {
-        type: "image",
-        src: "/projects/carbon-monitoring/site-project.png",
-        alt: t(
-          "Site project detail: latest monitoring values for operating hours, generation, self-consumption and accuracy",
-          "拠点のプロジェクト詳細：稼働時間・発電量・自家消費量・測定精度の最新モニタリング値",
-        ),
-        caption: t(
-          "Project detail for a site: latest monitoring data and emissions analysis.",
-          "拠点のプロジェクト詳細：最新のモニタリングデータと排出量分析。",
-        ),
-      },
+      }
     ],
     initials: "CM",
     tone: "accent",
     caseStudy: {
       overview: t(
-        "A B2B SaaS that helps companies run J-Credit carbon projects: register sites and equipment, join projects, submit monitoring data, and track emission reductions. Built in a 5-member team; I worked across UI/UX and frontend engineering, covering the role-based workflows for Admin, Master, and User, the 4-step onboarding flow, and the REST API integrations that power them.",
-        "企業がJ-クレジットのカーボンプロジェクトを運用するためのB2B向けSaaS。拠点と設備の登録、プロジェクトへの入会、モニタリングデータの提出、排出削減量の確認ができます。5人のチームで開発し、Admin・Master・Userのロール別ワークフロー、4ステップのオンボーディング、それらを支えるREST API連携を、UI/UXとフロントエンドの両面で担当しました。",
+        "A B2B SaaS that helps companies run J-Credit carbon projects: register sites and equipment, join projects, submit monitoring data, and track emission reductions. Built in a 5-member team where I was the only designer and frontend engineer: I designed and built every screen, from the role-based workflows for Admin, Master, and User and the 4-step onboarding flow to the REST API integrations that power them.",
+        "企業がJ-クレジットのカーボンプロジェクトを運用するためのB2B向けSaaS。拠点と設備の登録、プロジェクトへの入会、モニタリングデータの提出、排出削減量の確認ができます。5人のチームで、UI/UXデザインとフロントエンドを担当したのは私一人です。Admin・Master・Userのロール別ワークフロー、4ステップのオンボーディング、それらを支えるREST API連携まで、すべての画面を設計・実装しました。",
       ),
       atAGlance: t("Project at a glance", "プロジェクト概要"),
       challenge: {
@@ -242,17 +225,17 @@ approach: {
         },
         {
           id: "demo",
-          kicker: t("Live demo", "ライブデモ"),
-          heading: t("Try it with mock data", "モックデータで試せます"),
+          kicker: t("Demo", "デモ"),
+          heading: t("Available on request", "面談時にご覧いただけます"),
           paragraphs: [
             t(
-              "The public demo runs the real frontend against a mock API in the browser, so no company data is involved. Log in at /login as master01 or tokyo01, or at /admin/login as admin. Any company ID and password work.",
-              "公開デモは本物のフロントエンドを、ブラウザ内のモックAPIで動かしているため、実際の企業データは含まれません。/loginでmaster01またはtokyo01、/admin/loginでadminとしてログインできます。企業IDとパスワードは何でも構いません。",
+              "This is company work, so there is no public link. I can walk through a working demo on mock data during an interview, covering all three roles and the full onboarding flow.",
+              "業務プロジェクトのため、公開リンクは掲載していません。面談の際に、モックデータで動くデモを画面共有でご覧いただけます。3つのロールとオンボーディングの全工程をご案内します。",
             ),
           ],
           note: t(
-            "Changes made in the demo are kept in memory and reset when the page reloads.",
-            "デモでの変更はメモリ上にだけ保持され、ページを再読み込みするとリセットされます。",
+            "The screenshots on this page use mock data only. No real company data is shown.",
+            "このページのスクリーンショットはすべてモックデータです。実際の企業データは含まれていません。",
           ),
         },
       ],

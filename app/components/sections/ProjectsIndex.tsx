@@ -200,13 +200,9 @@ function ProjectRow({
           </Link>
         </h2>
 
-        {project.role || project.confidentiality !== "public" ? (
+        {project.role ? (
           <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
             {project.role}
-            {project.role && project.confidentiality !== "public" ? " — " : null}
-            {project.confidentiality !== "public" ? (
-              <span className="text-muted/70">{content.projects.confidentialNote}</span>
-            ) : null}
           </p>
         ) : null}
 
