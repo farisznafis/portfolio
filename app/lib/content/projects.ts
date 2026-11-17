@@ -85,53 +85,19 @@ export type CaseStudySectionView = {
 export type CaseStudyView = {
   overview: string;
 
-  atAGlance: string;
+  problem: string;
 
-  challenge: {
-    heading: string;
+  howItWorks: string[];
 
-    lead: string;
+  decisions: {
+    title: string;
 
-    body: string;
-  };
-
-  approach: {
-    kicker: string;
-
-    heading: string;
-
-    steps: {
-      tag: string;
-
-      title: string;
-
-      description: string;
-    }[];
-  };
-
-  features: {
-    heading: string;
-
-    items: {
-      title: string;
-
-      description: string;
-    }[];
-  };
+    description: string;
+  }[];
 
   sections: CaseStudySectionView[];
 
-  galleryLabel: string;
-
-  outcomes: {
-    kicker: string;
-
-    heading: string;
-
-    items: string[];
-  };
-
-  nextLabel: string;
+  results: string[];
 };
 
 /**
@@ -269,93 +235,34 @@ function caseStudyToView(
         lang,
       ) ?? "",
 
-    atAGlance:
+    problem:
       localized(
-        study.atAGlance,
+        study.problem,
         lang,
       ) ?? "",
 
-    challenge: {
-      heading:
-        localized(
-          study.challenge.heading,
-          lang,
-        ) ?? "",
+    howItWorks:
+      (study.howItWorks ?? []).map(
+        (step) =>
+          localized(step, lang) ?? "",
+      ),
 
-      lead:
-        localized(
-          study.challenge.lead,
-          lang,
-        ) ?? "",
+    decisions:
+      study.decisions.map(
+        (item) => ({
+          title:
+            localized(
+              item.title,
+              lang,
+            ) ?? "",
 
-      body:
-        localized(
-          study.challenge.body,
-          lang,
-        ) ?? "",
-    },
-
-    approach: {
-      kicker:
-        localized(
-          study.approach.kicker,
-          lang,
-        ) ?? "",
-
-      heading:
-        localized(
-          study.approach.heading,
-          lang,
-        ) ?? "",
-
-      steps:
-        study.approach.steps.map(
-          (step) => ({
-            tag:
-              localized(
-                step.tag,
-                lang,
-              ) ?? "",
-
-            title:
-              localized(
-                step.title,
-                lang,
-              ) ?? "",
-
-            description:
-              localized(
-                step.description,
-                lang,
-              ) ?? "",
-          }),
-        ),
-    },
-
-    features: {
-      heading:
-        localized(
-          study.features.heading,
-          lang,
-        ) ?? "",
-
-      items:
-        study.features.items.map(
-          (item) => ({
-            title:
-              localized(
-                item.title,
-                lang,
-              ) ?? "",
-
-            description:
-              localized(
-                item.description,
-                lang,
-              ) ?? "",
-          }),
-        ),
-    },
+          description:
+            localized(
+              item.description,
+              lang,
+            ) ?? "",
+        }),
+      ),
 
     sections:
       (
@@ -438,40 +345,14 @@ function caseStudyToView(
         }),
       ),
 
-    galleryLabel:
-      localized(
-        study.galleryLabel,
-        lang,
-      ) ?? "",
-
-    outcomes: {
-      kicker:
-        localized(
-          study.outcomes.kicker,
-          lang,
-        ) ?? "",
-
-      heading:
-        localized(
-          study.outcomes.heading,
-          lang,
-        ) ?? "",
-
-      items:
-        study.outcomes.items.map(
-          (item) =>
-            localized(
-              item,
-              lang,
-            ) ?? "",
-        ),
-    },
-
-    nextLabel:
-      localized(
-        study.nextLabel,
-        lang,
-      ) ?? "",
+    results:
+      study.results.map(
+        (item) =>
+          localized(
+            item,
+            lang,
+          ) ?? "",
+      ),
   };
 }
 

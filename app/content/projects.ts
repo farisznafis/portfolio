@@ -113,87 +113,43 @@ export const projects: StoredProject[] = [
     tone: "accent",
     caseStudy: {
       overview: t(
-        "A B2B SaaS that helps companies run J-Credit carbon projects: register sites and equipment, join projects, submit monitoring data, and track emission reductions. Built in a 5-member team where I was the only designer and frontend engineer: I designed and built every screen, from the role-based workflows for Admin, Master, and User and the 4-step onboarding flow to the REST API integrations that power them.",
-        "企業がJ-クレジットのカーボンプロジェクトを運用するためのB2B向けSaaS。拠点と設備の登録、プロジェクトへの入会、モニタリングデータの提出、排出削減量の確認ができます。5人のチームで、UI/UXデザインとフロントエンドを担当したのは私一人です。Admin・Master・Userのロール別ワークフロー、4ステップのオンボーディング、それらを支えるREST API連携まで、すべての画面を設計・実装しました。",
+        "A B2B SaaS for running J-Credit carbon projects: companies register sites and equipment, join projects, submit monitoring data and track emission reductions. In a 5-member team, I was the only designer and frontend engineer and built every screen.",
+        "J-クレジットのカーボンプロジェクトを運用するB2B向けSaaS。企業は拠点と設備の登録、プロジェクトへの入会、モニタリングデータの提出、排出削減量の確認を行えます。5人のチームで、デザインとフロントエンドを担当したのは私一人で、すべての画面を設計・実装しました。",
       ),
-      atAGlance: t("Project at a glance", "プロジェクト概要"),
-      challenge: {
-        heading: t("One product, three kinds of user", "一つのプロダクト、三種類のユーザー"),
-        lead: t(
-          "Admins, Masters, and Users each see the same product differently — different dashboards, different permissions, different next steps. The interface had to keep all three coherent without becoming three separate apps.",
-          "Admin・Master・Userは、同じプロダクトをそれぞれ違う目線で使います。ダッシュボードも権限も次のアクションも異なる三つの役割を、別々のアプリに分けることなく一つの体験として保つ必要がありました。",
-        ),
-        body: t(
-          "The deeper difficulty sat in the business forms. Companies onboard through a 4-step flow — company and personal information, methodology and equipment, confirmation, completion — where every field feeds downstream calculations. Weak validation here would poison the data the whole product depends on.",
-          "より難しいのは業務フォームでした。企業は4ステップのオンボーディング — 会社・個人情報、手法と機材情報、確認、完了 — を通じて登録され、入力された項目は下流の計算すべてを支えます。ここでバリデーションが甘ければ、プロダクト全体のデータが汚れてしまいます。",
-        ),
-      },
-approach: {
-        kicker: t("Approach", "アプローチ"),
-        heading: t(
-          "Roles, a guided onboarding, and forms that refuse bad data",
-          "ロール設計、ガイド付きオンボーディング、不正データを拒むフォーム",
-        ),
-        steps: [
-          {
-            tag: t("Workflows", "ワークフロー"),
-            title: t("Role-based routing and protected views", "ロール別ルーティングと保護されたビュー"),
-            description: t(
-              "Each role lands in its own workspace. Protected routes and role-aware navigation keep the Admin, Master, and User flows separate while sharing one design system.",
-              "各ロールは専用のワークスペースに着地します。保護されたルートとロールを意識したナビゲーションで、Admin・Master・Userのフローを分離しつつ、一つのデザインシステムを共有します。",
-            ),
-          },
-          {
-            tag: t("Onboarding", "オンボーディング"),
-            title: t("A 4-step path from signup to first use", "登録から初回利用までの4ステップ"),
-            description: t(
-              "Company and personal information, methodology and equipment, confirmation, completion. Each step explains what it needs and why, so a complex registration never feels like a wall of forms.",
-              "会社・個人情報、手法と機材情報、確認、完了。各ステップが何を・なぜ必要とするかを説明し、複雑な登録をフォームの壁に感じさせません。",
-            ),
-          },
-          {
-            tag: t("Engineering", "エンジニアリング"),
-            title: t("Validation and state that survive complexity", "複雑さに耐えるバリデーションと状態管理"),
-            description: t(
-              "React Hook Form paired with Zod schemas validates business rules before anything reaches the API, while Zustand keeps cross-step state predictable.",
-              "React Hook FormとZodスキーマの組み合わせで、APIに届く前に業務ルールを検証。Zustandでステップをまたぐ状態を予測可能に保ちます。",
-            ),
-          },
-        ],
-      },
-      features: {
-        heading: t("What shipped", "実装したもの"),
-        items: [
-          {
-            title: t("Role-based dashboards", "ロール別ダッシュボード"),
-            description: t(
-              "Admin, Master, and User each get workflows shaped to their responsibilities, behind protected routes.",
-              "Admin・Master・Userそれぞれの責務に合わせたワークフローを、保護されたルートの背後に提供します。",
-            ),
-          },
-          {
-            title: t("4-step onboarding", "4ステップのオンボーディング"),
-            description: t(
-              "Company & personal information, methodology & equipment, confirmation, completion — a guided path instead of one intimidating form.",
-              "会社・個人情報、手法と機材情報、確認、完了。一枚の巨大なフォームではなく、ガイドされた経路として設計。",
-            ),
-          },
-          {
-            title: t("Validated business forms", "検証済みの業務フォーム"),
-            description: t(
-              "Complex fields are checked against Zod schemas at the edge of the UI, so bad data never reaches the API.",
-              "複雑な入力はUIの入り口でZodスキーマにより検証され、不正なデータはAPIに届きません。",
-            ),
-          },
-          {
-            title: t("REST API integration", "REST API連携"),
-            description: t(
-              "Dashboards and workflows are wired to the API layer with typed request handling.",
-              "ダッシュボードとワークフローを、型付きのリクエスト処理でAPI層に接続しました。",
-            ),
-          },
-        ],
-      },
+      problem: t(
+        "Three roles (Admin, Master, User) use one product with different permissions and tasks, and every onboarding field feeds the emission calculations, so bad input breaks the data downstream.",
+        "Admin・Master・Userの3ロールが、権限も作業も異なる状態で一つのプロダクトを使います。また、オンボーディングの入力項目はすべて排出量の計算に使われるため、不正な入力は下流のデータを壊します。",
+      ),
+      decisions: [
+        {
+          title: t("React Router + protected routes", "React Router + 保護されたルート"),
+          description: t(
+            "Each role lands in its own workspace inside one app and one design system, instead of three separate apps.",
+            "1つのアプリと1つのデザインシステムの中で、ロールごとに専用のワークスペースへ振り分けます。3つの別アプリにはしません。",
+          ),
+        },
+        {
+          title: t("React Hook Form + Zod", "React Hook Form + Zod"),
+          description: t(
+            "Business rules are checked in the form, so bad data never reaches the API.",
+            "業務ルールをフォーム上で検証し、不正なデータをAPIに送りません。",
+          ),
+        },
+        {
+          title: t("Zustand", "Zustand"),
+          description: t(
+            "Holds state across the 4 onboarding steps: company, methodology and equipment, confirmation, completion.",
+            "オンボーディング4ステップ（法人情報、方法論・設備、確認、完了）をまたぐ状態を保持します。",
+          ),
+        },
+        {
+          title: t("Recharts", "Recharts"),
+          description: t(
+            "Emissions against the baseline and reduction progress on the dashboards.",
+            "ダッシュボードで、ベースラインと比較した排出量と削減の進捗を表示します。",
+          ),
+        },
+      ],
       sections: [
         {
           id: "roles",
@@ -203,8 +159,8 @@ approach: {
             {
               title: t("Admin (operator)", "Admin（運営者）"),
               description: t(
-                "Registers projects and methodologies, reviews company applications and project memberships, approves or rejects monitoring data, and manages operators and their permissions.",
-                "プロジェクトと方法論の登録、企業申請と入会届の審査、モニタリングデータの承認・却下、運営者と権限の管理。",
+                "Registers projects and methodologies, reviews applications and memberships, approves or rejects monitoring data, manages operators.",
+                "プロジェクトと方法論の登録、申請と入会届の審査、モニタリングデータの承認・却下、運営者の管理。",
               ),
             },
             {
@@ -229,37 +185,22 @@ approach: {
           heading: t("Available on request", "面談時にご覧いただけます"),
           paragraphs: [
             t(
-              "This is company work, so there is no public link. I can walk through a working demo on mock data during an interview, covering all three roles and the full onboarding flow.",
-              "業務プロジェクトのため、公開リンクは掲載していません。面談の際に、モックデータで動くデモを画面共有でご覧いただけます。3つのロールとオンボーディングの全工程をご案内します。",
+              "This is company work, so there is no public link. I can walk through a working demo on mock data in an interview, covering all three roles and the full onboarding.",
+              "業務プロジェクトのため、公開リンクは掲載していません。面談の際に、モックデータで動くデモを画面共有でご案内します（3つのロールとオンボーディングの全工程）。",
             ),
           ],
           note: t(
-            "The screenshots on this page use mock data only. No real company data is shown.",
-            "このページのスクリーンショットはすべてモックデータです。実際の企業データは含まれていません。",
+            "All screenshots use mock data. No real company data is shown.",
+            "スクリーンショットはすべてモックデータです。実際の企業データは含まれていません。",
           ),
         },
       ],
-      galleryLabel: t("Gallery", "ギャラリー"),
-      outcomes: {
-        kicker: t("Outcomes", "成果"),
-        heading: t("What changed", "変わったこと"),
-        items: [
-          t(
-            "Role-based workflows shipped for Admin, Master, and User.",
-            "Admin・Master・User向けのロール別ワークフローをリリース。",
-          ),
-          t(
-            "The 4-step onboarding flow takes a company from registration to first use.",
-            "4ステップのオンボーディングが、企業を登録から初回利用まで導きます。",
-          ),
-          t(
-            "Complex methodology and equipment forms validate before submission.",
-            "複雑な手法・機材フォームは送信前に検証されます。",
-          ),
-          t("Delivered as a 5-member engineering team.", "5人のエンジニアリングチームとして納品しました。"),
-        ],
-      },
-      nextLabel: t("Next project", "次のプロジェクト"),
+      results: [
+        t(
+          "Shipped workspaces for 3 roles and the 4-step onboarding with a 5-member team.",
+          "3ロールのワークスペースと4ステップのオンボーディングを、5人のチームでリリースしました。",
+        ),
+      ],
     },
   },
 {
@@ -344,104 +285,49 @@ approach: {
     tone: "amber",
     caseStudy: {
       overview: t(
-        "An interactive AI conversation bot built for Kumamoto EXPO 2025 in a 3-person team. I designed and implemented the frontend — face-detection-driven reactions and microphone-aware interactions — and the bot was used by 80+ visitors at the event.",
-        "熊本EXPO 2025向けに3人のチームで開発した対話型AI会話ボット。顔検出に反応するインタラクションとマイクの状態を反映したUIを設計・実装し、来場者80名以上に利用されました。",
+        "An interactive AI conversation bot for Kumamoto EXPO 2025, built in a 3-person team. I designed and built the frontend: the booth interface, face-detection reactions and the microphone flow.",
+        "熊本EXPO 2025向けに3人のチームで開発した対話型AI会話ボット。ブース画面、顔検出に反応するインタラクション、マイクのフローなど、フロントエンドを設計・実装しました。",
       ),
-      atAGlance: t("Project at a glance", "プロジェクト概要"),
-      challenge: {
-        heading: t("A bot that has to work in a noisy hall", "賑やかな会場で動くボット"),
-        lead: t(
-          "Expo visitors walk up cold: no manual, no patience, one chance to understand what this thing does. The interface had to invite a conversation and show its state at a glance — listening, thinking, speaking.",
-          "EXPOの来場者は何の予備知識もなく、待つ気力もなく、一度きりの機会で近づいてきます。インターフェースは会話への招待であり、状態 — 聴いている・考えている・話している — が一目で分かる必要がありました。",
+      problem: t(
+        "Expo visitors walk up with no instructions, so the bot has to invite a conversation and show its state (listening, thinking, speaking) at a glance, all running in the browser on event hardware.",
+        "EXPOの来場者は説明なしで近づいてくるため、ボットは会話を促し、状態（聴いている・考えている・話している）を一目で示す必要があります。しかも、すべて会場のハードウェア上のブラウザで動かす必要がありました。",
+      ),
+      howItWorks: [
+        t("While nobody is there, the screen rotates standby greetings.", "誰もいない間は、待機中のあいさつを順番に表示します。"),
+        t("The camera detects a visitor's face in the browser, and the bot asks them to speak.", "ブラウザ内でカメラが来場者の顔を検出すると、ボットが話しかけるよう促します。"),
+        t("The bot records a few seconds of speech automatically, no button needed.", "ボタンを押さなくても、数秒間の発話を自動で録音します。"),
+        t("The recording and the chosen language go to the team's conversation API while the screen shows \"thinking\".", "録音と選択した言語をチームの会話APIに送り、その間は画面に「考え中」と表示します。"),
+        t("The reply appears line by line, then the bot returns to standby.", "返答を一行ずつ表示し、終わると待機状態に戻ります。"),
+      ],
+      decisions: [
+        {
+          title: t("face-api.js + TensorFlow.js", "face-api.js + TensorFlow.js"),
+          description: t(
+            "Face detection runs in the browser on the event hardware, so the bot reacts to the visitor in front of it.",
+            "顔検出を会場のハードウェア上のブラウザで動かし、ボットが目の前の来場者に反応できるようにしました。",
+          ),
+        },
+        {
+          title: t("react-mic", "react-mic"),
+          description: t(
+            "Drives the recording states with visible status (permission, listening, processing), so a visitor never gets stuck.",
+            "録音状態（権限の要求・聴き取り・処理）を画面に明示し、来場者が操作に迷わないようにしました。",
+          ),
+        },
+        {
+          title: t("Figma (booth UI)", "Figma（ブース画面）"),
+          description: t(
+            "Designed for walk-up use: large state indicators and a dialogue layout readable from a distance.",
+            "立ち寄り利用を前提に、大きな状態表示と離れた場所からも読める対話レイアウトをデザインしました。",
+          ),
+        },
+      ],
+      results: [
+        t(
+          "Used by 80+ visitors at Kumamoto EXPO 2025.",
+          "熊本EXPO 2025で来場者80名以上に利用されました。",
         ),
-        body: t(
-          "Everything had to run in the browser on event hardware. Face detection had to feel responsive rather than eerie, and the microphone flow had to handle permission and recording states without ever stranding a visitor.",
-          "すべては会場のハードウェア上のブラウザで動く必要がありました。顔検出は不気味ではなく反応良く感じられること、マイクのフローは権限や録音状態を扱いながら、来場者を迷子にしないことが求められました。",
-        ),
-      },
-      approach: {
-        kicker: t("Approach", "アプローチ"),
-        heading: t("Design the conversation, then engineer the senses", "会話をデザインし、そのあとに感覚を実装する"),
-        steps: [
-          {
-            tag: t("Interface", "インターフェース"),
-            title: t("A conversation UI built for a booth", "ブースのために設計した会話UI"),
-            description: t(
-              "I designed the interaction flow for walk-up visitors: large states, obvious affordances, and a dialogue layout that reads from a distance.",
-              "立ち寄った来場者を想定したインタラクションフローをデザインしました。大きな状態表示、分かりやすい操作、離れた場所からも読める対話レイアウトです。",
-            ),
-          },
-          {
-            tag: t("Perception", "認識"),
-            title: t("Face detection as feedback, not surveillance", "監視ではなく、フィードバックとしての顔検出"),
-            description: t(
-              "face-api.js and TensorFlow.js run in the browser so the bot can react to the visitor in front of it — attention drives the conversation's rhythm.",
-              "face-api.jsとTensorFlow.jsをブラウザ内で動かし、ボットが目の前の来場者の存在に反応できるように。視線が会話のリズムを駆動します。",
-            ),
-          },
-          {
-            tag: t("Voice", "音声"),
-            title: t("A microphone flow with no dead ends", "行き止まりのないマイクフロー"),
-            description: t(
-              "react-mic drives the recording states with explicit status feedback: requesting permission, listening, processing — every state visible.",
-              "react-micで録音状態を駆動し、権限の要求・聴き取り・処理のすべての状態を明示的に表示します。",
-            ),
-          },
-        ],
-      },
-features: {
-        heading: t("What shipped", "実装したもの"),
-        items: [
-          {
-            title: t("Face-aware interactions", "顔を意識したインタラクション"),
-            description: t(
-              "Browser-based face detection lets the bot respond to the visitor standing in front of it.",
-              "ブラウザ内の顔検出により、ボットが目の前の来場者に反応します。",
-            ),
-          },
-          {
-            title: t("Microphone-aware flow", "マイクを意識したフロー"),
-            description: t(
-              "Recording and permission states are explicit, so visitors always know what the bot is doing.",
-              "録音と権限の状態が明示され、来場者は常にボットの状態を把握できます。",
-            ),
-          },
-          {
-            title: t("Expo-ready interface", "EXPOで使えるインターフェース"),
-            description: t(
-              "Designed for walk-up use: legible at distance, forgiving of first-time users.",
-              "立ち寄り利用を想定した設計。距離からでも読め、初見のユーザーにも寛容です。",
-            ),
-          },
-          {
-            title: t("3-person delivery", "3人での納品"),
-            description: t(
-              "Designed and implemented the frontend within a 3-person team.",
-              "3人のチーム内でフロントエンドの設計と実装を担当しました。",
-            ),
-          },
-        ],
-      },
-      galleryLabel: t("Gallery", "ギャラリー"),
-      outcomes: {
-        kicker: t("Outcomes", "成果"),
-        heading: t("What changed", "変わったこと"),
-        items: [
-          t(
-            "Used by 80+ visitors at Kumamoto EXPO 2025.",
-            "熊本EXPO 2025で来場者80名以上に利用されました。",
-          ),
-          t(
-            "Face detection and microphone handling run entirely in the browser.",
-            "顔検出とマイク処理はすべてブラウザ内で完結します。",
-          ),
-          t(
-            "The frontend — UI/UX design and implementation — was my contribution within the 3-person team.",
-            "フロントエンド — UI/UXデザインと実装 — は3人チームの中で私の担当でした。",
-          ),
-        ],
-      },
-      nextLabel: t("Next project", "次のプロジェクト"),
+      ],
     },
   },
   {
@@ -522,104 +408,42 @@ features: {
     tone: "accent",
     caseStudy: {
       overview: t(
-        "A recruitment website of roughly 21 pages, designed for desktop and mobile in a 3-person team, with supporting visual assets extending it into a recruitment campaign.",
-        "約21ページで構成される採用サイトを、3人のチームでデスクトップとモバイル向けにデザイン。サイトのビジュアルを引き継ぐ採用キャンペーン素材も制作しました。",
+        "A recruitment website of about 21 pages, designed for desktop and mobile in a 3-person team, plus visuals for the recruitment campaign.",
+        "約21ページの採用サイトを、3人のチームでデスクトップとモバイル向けにデザイン。採用キャンペーンのビジュアルも制作しました。",
       ),
-      atAGlance: t("Project at a glance", "プロジェクト概要"),
-      challenge: {
-        heading: t("Twenty-one pages, one voice", "21ページ、一つの声"),
-        lead: t(
-          "A recruitment site has to carry company story, roles, process, and FAQ without losing a consistent voice — and every page has to work on a phone, where most candidates will first meet it.",
-          "採用サイトは会社のストーリー・職種・プロセス・FAQを、一貫した声を失わずに運ばなければなりません。しかも候補者が最初に触れるのは、ほとんどの場合スマートフォンの画面です。",
+      problem: t(
+        "About 21 connected pages (company story, roles, process, FAQ) had to read as one product, and most candidates would see them first on a phone.",
+        "会社のストーリー・職種・プロセス・FAQなど、約21ページを一つのプロダクトとして見せる必要があり、候補者の多くは最初にスマートフォンで閲覧します。",
+      ),
+      decisions: [
+        {
+          title: t("Page templates in Figma", "Figmaのページテンプレート"),
+          description: t(
+            "Hero, content, listing and detail layouts, so ~21 pages come from a few templates instead of 21 one-off designs.",
+            "ヒーロー・コンテンツ・一覧・詳細のレイアウトを定義し、約21ページを21個の個別デザインではなく少数のテンプレートから構成しました。",
+          ),
+        },
+        {
+          title: t("Desktop and mobile together", "デスクトップとモバイルを同時に"),
+          description: t(
+            "Every layout was designed at both breakpoints from the start, not ported to mobile later.",
+            "すべてのレイアウトを最初から両方のブレークポイントで設計し、後からモバイルに移植していません。",
+          ),
+        },
+        {
+          title: t("Campaign visuals", "キャンペーンビジュアル"),
+          description: t(
+            "Reused the site's visual style, so the site and the campaign posts read as one campaign.",
+            "サイトのビジュアルスタイルを流用し、サイトとキャンペーン投稿を一つのキャンペーンとして統一しました。",
+          ),
+        },
+      ],
+      results: [
+        t(
+          "Delivered the ~21-page design for desktop and mobile, plus campaign visuals, with a 3-person team.",
+          "約21ページのデスクトップ・モバイルデザインとキャンペーンビジュアルを、3人のチームで納品しました。",
         ),
-        body: t(
-          "The scale was the challenge: roughly 21 interconnected pages that had to feel like one product. Layout decisions had to repeat cheaply, and the visual language had to stretch from the site itself into campaign materials.",
-          "難しさは規模にありました。約21ページが相互に接続され、一つのプロダクトとして感じられる必要があります。レイアウトの判断は安価に繰り返せ、ビジュアル言語はサイトからキャンペーン素材まで伸びる必要がありました。",
-        ),
-      },
-approach: {
-        kicker: t("Approach", "アプローチ"),
-        heading: t("A page system first, campaign assets second", "まずページシステム、そのあとにキャンペーン素材"),
-        steps: [
-          {
-            tag: t("System", "システム"),
-            title: t("Templates before pages", "ページの前にテンプレート"),
-            description: t(
-              "Defined repeating page patterns — hero, content, listing, detail — so ~21 pages compose from a small set of layouts instead of 21 bespoke designs.",
-              "ヒーロー・コンテンツ・一覧・詳細といった繰り返しのページパターンを定義し、約21ページを少数のレイアウトの組み合わせとして構成。21個の個別デザインにはしません。",
-            ),
-          },
-          {
-            tag: t("Responsive", "レスポンシブ"),
-            title: t("Desktop and mobile as equals", "デスクトップとモバイルは対等"),
-            description: t(
-              "Every layout was designed for both breakpoints from the start, keeping hierarchy and readability intact on small screens.",
-              "すべてのレイアウトを最初から両ブレークポイントで設計し、小さな画面でも階層と可読性を保ちます。",
-            ),
-          },
-          {
-            tag: t("Campaign", "キャンペーン"),
-            title: t("Visuals that outlive the viewport", "ビューポートの外まで生きるビジュアル"),
-            description: t(
-              "Supporting recruitment visuals extended the site's identity into campaign materials, keeping one visual voice across touchpoints.",
-              "採用ビジュアルがサイトのアイデンティティをキャンペーン素材へ引き継ぎ、接点を越えて一つのビジュアルの声を保ちます。",
-            ),
-          },
-        ],
-      },
-      features: {
-        heading: t("What shipped", "実装したもの"),
-        items: [
-          {
-            title: t("~21-page architecture", "約21ページの情報設計"),
-            description: t(
-              "A complete recruitment journey — story, roles, process — organized as a coherent page system.",
-              "ストーリー・職種・プロセスを一貫したページシステムとして編成した、完全な採用ジャーニー。",
-            ),
-          },
-          {
-            title: t("Desktop & mobile design", "デスクトップ & モバイルデザイン"),
-            description: t(
-              "Both breakpoints designed together, not ported after the fact.",
-              "両ブレークポイントを同時に設計。後付けの移植ではありません。",
-            ),
-          },
-          {
-            title: t("Campaign visual assets", "キャンペーンビジュアル素材"),
-            description: t(
-              "Recruitment visuals that carry the same identity beyond the website.",
-              "ウェブサイトと同じアイデンティティを運ぶ採用ビジュアル。",
-            ),
-          },
-          {
-            title: t("3-person team", "3人のチーム"),
-            description: t(
-              "Designed within a 3-person team, with shared ownership of the system.",
-              "3人のチーム内でデザインを担当し、システムの所有権を共有しました。",
-            ),
-          },
-        ],
-      },
-      galleryLabel: t("Gallery", "ギャラリー"),
-      outcomes: {
-        kicker: t("Outcomes", "成果"),
-        heading: t("What changed", "変わったこと"),
-        items: [
-          t(
-            "A complete recruitment flow across roughly 21 pages.",
-            "約21ページにわたる完全な採用フロー。",
-          ),
-          t(
-            "Consistent desktop and mobile layouts across the site.",
-            "サイト全体で一貫したデスクトップ・モバイルレイアウト。",
-          ),
-          t(
-            "Visual assets extended the recruitment site into campaign materials.",
-            "ビジュアル素材が採用サイトをキャンペーン素材へ拡張しました。",
-          ),
-        ],
-      },
-      nextLabel: t("Next project", "次のプロジェクト"),
+      ],
     },
   },
   {
@@ -708,97 +532,62 @@ approach: {
     tone: "amber",
     caseStudy: {
       overview: t(
-        "Upload a speech recording and the app trims silence, extracts 15 acoustic features per frame, and runs a small stacked LSTM that picks one of six emotions: neutral, happy, sad, angry, fear or disgust. It started as a notebook experiment and was later rebuilt into a tested, deployable app.",
-        "音声をアップロードすると、アプリが無音を除去し、フレームごとに15個の音響特徴を抽出して、小さなスタックLSTMが6つの感情（neutral・happy・sad・angry・fear・disgust）から一つを選びます。ノートブックでの実験から始まり、のちにテスト付きのデプロイ可能なアプリへ作り直しました。",
+        "Upload a speech recording and a small stacked LSTM classifies it into one of six emotions: neutral, happy, sad, angry, fear or disgust. It started as a notebook experiment and was rebuilt into a tested, deployed Streamlit app.",
+        "音声をアップロードすると、小さなスタックLSTMが6つの感情（neutral・happy・sad・angry・fear・disgust）のいずれかに分類します。ノートブックでの実験から始まり、テスト付きのStreamlitアプリとして作り直して公開しました。",
       ),
-      atAGlance: t("Project at a glance", "プロジェクト概要"),
-      challenge: {
-        heading: t("Reading feeling from a waveform", "波形から感情を読む"),
-        lead: t(
-          "Emotion is in how something is said, not what. The model only sees signal features, and six classes that even people mix up.",
-          "感情は「何を」ではなく「どう」話すかに表れます。モデルが見るのは信号の特徴だけで、6つのクラスは人間でも取り違えます。",
-        ),
-        body: t(
-          "The original work lived in notebooks. Turning it into an app meant keeping the exact preprocessing the trained model expects, while separating inference from the notebook so it could be tested and deployed on its own.",
-          "元の成果物はノートブックの中にありました。アプリにするには、学習済みモデルが前提とする前処理をそのまま保ちつつ、推論をノートブックから切り離して単独でテスト・デプロイできるようにする必要がありました。",
-        ),
-      },
-      approach: {
-        kicker: t("Approach", "アプローチ"),
-        heading: t("From audio file to emotion", "音声ファイルから感情へ"),
-        steps: [
-          {
-            tag: t("Audio", "音声"),
-            title: t("Trim and fix the length", "トリミングと長さの固定"),
-            description: t(
-              "Decode the upload, trim silence at both ends, then pad or cut to exactly 180,000 samples.",
-              "アップロードをデコードし、前後の無音を除去してから、ちょうど180,000サンプルにパディングまたは切り詰めます。",
-            ),
-          },
-          {
-            tag: t("Features", "特徴量"),
-            title: t("15 values per frame", "フレームごとに15個の値"),
-            description: t(
-              "Zero-crossing rate, RMS energy and 13 MFCCs for each of 352 frames: a 352 × 15 input.",
-              "352フレームそれぞれについて、ゼロ交差率・RMSエネルギー・13個のMFCC。入力は352 × 15。",
-            ),
-          },
-          {
-            tag: t("Model", "モデル"),
-            title: t("Two LSTM layers, 53,894 parameters", "2層のLSTM、パラメーター数53,894"),
-            description: t(
-              "LSTM(64) → LSTM(64) → softmax over six emotions. Trained on RAVDESS, CREMA-D, TESS and SAVEE.",
-              "LSTM(64) → LSTM(64) → 6感情のsoftmax。RAVDESS・CREMA-D・TESS・SAVEEで学習。",
-            ),
-          },
-          {
-            tag: t("App", "アプリ"),
-            title: t("Streamlit, tested in CI", "Streamlit、CIでテスト"),
-            description: t(
-              "Inference lives in its own modules, separate from the notebook, and GitHub Actions lints, tests, loads the model and runs a test prediction on every push.",
-              "推論はノートブックから独立したモジュールにあり、GitHub Actionsがプッシュごとにlint・テスト・モデル読み込み・テスト推論を実行します。",
-            ),
-          },
-        ],
-      },
-      features: {
-        heading: t("What shipped", "実装したもの"),
-        items: [
-          {
-            title: t("Seven audio formats", "7種類の音声形式"),
-            description: t(
-              "WAV, MP3, M4A, FLAC, OGG, AAC and AMR, decoded with FFmpeg.",
-              "WAV・MP3・M4A・FLAC・OGG・AAC・AMRに対応し、FFmpegでデコード。",
-            ),
-          },
-          {
-            title: t("Confidence for every emotion", "すべての感情の信頼度"),
-            description: t(
-              "The top emotion and its confidence, plus a chart and table for all six.",
-              "最も可能性の高い感情とその信頼度に加え、6つすべてをグラフと表で表示。",
-            ),
-          },
-          {
-            title: t("Model contract checks", "モデルの入出力チェック"),
-            description: t(
-              "The app checks the model's input (352 × 15) and output (6 classes) and the label order before predicting.",
-              "推論の前に、モデルの入力（352 × 15）と出力（6クラス）、ラベルの順序を確認します。",
-            ),
-          },
-          {
-            title: t("Tests and CI", "テストとCI"),
-            description: t(
-              "Pytest covers upload validation, preprocessing, feature shapes, labels and model loading; Ruff and GitHub Actions run on every push.",
-              "Pytestでアップロード検証・前処理・特徴量の形・ラベル・モデル読み込みをテストし、プッシュごとにRuffとGitHub Actionsが走ります。",
-            ),
-          },
-        ],
-      },
+      problem: t(
+        "The original work lived in notebooks. Turning it into an app meant keeping the exact preprocessing the trained model expects, while splitting inference out so it can be tested and deployed on its own.",
+        "元の成果物はノートブックの中にありました。アプリにするには、学習済みモデルが前提とする前処理をそのまま保ちつつ、推論を切り出して単独でテスト・デプロイできるようにする必要がありました。",
+      ),
+      howItWorks: [
+        t("Upload a voice recording.", "音声をアップロードします。"),
+        t("Silence is trimmed and the clip is cut to a fixed length.", "無音を除去し、長さを揃えます。"),
+        t("Each short frame becomes numbers that describe the voice's energy and tone.", "短いフレームごとに、声のエネルギーと音色を表す数値に変換します。"),
+        t("An LSTM reads the frames in order and scores six emotions.", "LSTMがフレームを順に読み、6つの感情をスコア化します。"),
+        t("The app shows the top emotion and the confidence for each.", "最も可能性の高い感情と、それぞれの信頼度を表示します。"),
+      ],
+      decisions: [
+        {
+          title: t("Pydub + FFmpeg", "Pydub + FFmpeg"),
+          description: t(
+            "Decodes 7 formats (WAV, MP3, M4A, FLAC, OGG, AAC, AMR), trims silence and fixes the length at 180,000 samples, as the model expects.",
+            "7形式（WAV・MP3・M4A・FLAC・OGG・AAC・AMR）をデコードし、無音を除去して、モデルが前提とする180,000サンプルに長さを揃えます。",
+          ),
+        },
+        {
+          title: t("Librosa", "Librosa"),
+          description: t(
+            "ZCR, RMS energy and 13 MFCCs for each of 352 frames: a 352 × 15 input that captures how something is said, not what.",
+            "352フレームそれぞれのZCR・RMSエネルギー・13個のMFCC。「何を」ではなく「どう」話したかを捉える352 × 15の入力です。",
+          ),
+        },
+        {
+          title: t("TensorFlow / Keras LSTM", "TensorFlow / Keras LSTM"),
+          description: t(
+            "LSTM(64) → LSTM(64) → softmax over 6 emotions, 53,894 parameters, trained on RAVDESS, CREMA-D, TESS and SAVEE.",
+            "LSTM(64) → LSTM(64) → 6感情のsoftmax。パラメーター数53,894、RAVDESS・CREMA-D・TESS・SAVEEで学習。",
+          ),
+        },
+        {
+          title: t("Model contract checks", "モデルの入出力チェック"),
+          description: t(
+            "Before predicting, the app checks input shape (352 × 15), output (6 classes) and label order, so a wrong checkpoint fails loudly.",
+            "推論の前に入力（352 × 15）・出力（6クラス）・ラベルの順序を確認し、誤ったチェックポイントを確実に検出します。",
+          ),
+        },
+        {
+          title: t("Pytest + Ruff + GitHub Actions", "Pytest + Ruff + GitHub Actions"),
+          description: t(
+            "Every push lints, tests upload validation, preprocessing, feature shapes and labels, loads the model and runs a test prediction.",
+            "プッシュごとにlint、アップロード検証・前処理・特徴量の形・ラベルのテスト、モデル読み込み、テスト推論を実行します。",
+          ),
+        },
+      ],
       sections: [
         {
           id: "evaluation",
           kicker: t("Evaluation", "評価"),
-          heading: t("What the numbers do and don't say", "数字が示すこと、示さないこと"),
+          heading: t("0.94 is a historical score, not the live model's", "0.94は過去の値で、公開中のモデルの値ではない"),
           facts: [
             {
               label: t("Validation accuracy (notebook)", "検証精度（ノートブック）"),
@@ -819,14 +608,10 @@ approach: {
           ],
           paragraphs: [
             t(
-              "When rebuilding the project I re-checked the old notebook and found problems: two class names in the old report were swapped, the early-stopping callback watched a metric that didn't exist, and the deployed model is a different checkpoint from the one the notebook evaluated.",
-              "プロジェクトを作り直す際に古いノートブックを見直し、問題を見つけました。古いレポートでは2つのクラス名が入れ替わっており、早期終了のコールバックは存在しない指標を監視していて、デプロイされたモデルはノートブックが評価したものとは別のチェックポイントでした。",
+              "Re-checking the old notebook, I found two class names swapped in the report, an early-stopping callback watching a metric that didn't exist, and a deployed checkpoint different from the one evaluated.",
+              "古いノートブックを見直したところ、レポートで2つのクラス名が入れ替わっていたこと、早期終了のコールバックが存在しない指標を監視していたこと、評価したものとは別のチェックポイントがデプロイされていたことが分かりました。",
             ),
           ],
-          note: t(
-            "So the 0.94 is a historical result, not a measured score for the live model.",
-            "そのため0.94は過去の実験結果であり、公開中のモデルを測った値ではありません。",
-          ),
         },
         {
           id: "limitations",
@@ -834,32 +619,22 @@ approach: {
           heading: t("An experiment, not an emotion detector", "感情検出器ではなく、実験"),
           paragraphs: [
             t(
-              "The training data is acted speech, and the experiment used only female speakers. Language, microphone and background noise all change the result, and the confidence scores are not calibrated probabilities. It should not be used for medical, hiring or other high-stakes decisions.",
-              "学習データは演技による音声で、実験では女性話者のみを使いました。言語・マイク・背景ノイズで結果は変わり、信頼度スコアは校正された確率ではありません。医療・採用などの重要な判断には使うべきではありません。",
+              "Trained on acted speech from female speakers only. Language, microphone and noise all change the result, and confidence scores are not calibrated. Not for medical, hiring or other high-stakes decisions.",
+              "学習データは女性話者のみの演技音声です。言語・マイク・ノイズで結果は変わり、信頼度スコアは校正されていません。医療・採用などの重要な判断には使えません。",
             ),
           ],
         },
       ],
-      galleryLabel: t("Gallery", "ギャラリー"),
-      outcomes: {
-        kicker: t("Outcomes", "成果"),
-        heading: t("What changed", "変わったこと"),
-        items: [
-          t(
-            "A live web app that classifies speech into six emotions.",
-            "音声を6つの感情に分類する、公開中のwebアプリ。",
-          ),
-          t(
-            "Inference separated from the notebook, with tests and CI on every push.",
-            "推論をノートブックから分離し、プッシュごとにテストとCIを実行。",
-          ),
-          t(
-            "An honest write-up of what the old evaluation can and cannot claim.",
-            "過去の評価で言えること・言えないことを正直にまとめました。",
-          ),
-        ],
-      },
-      nextLabel: t("Next project", "次のプロジェクト"),
+      results: [
+        t(
+          "Live web app that classifies speech into six emotions.",
+          "音声を6つの感情に分類する、公開中のwebアプリ。",
+        ),
+        t(
+          "Inference separated from the notebook, with tests and CI on every push.",
+          "推論をノートブックから分離し、プッシュごとにテストとCIを実行。",
+        ),
+      ],
     },
   },
   {
@@ -1069,92 +844,64 @@ approach: {
     tone: "accent",
     caseStudy: {
       overview: t(
-        "Financify helps someone saving towards a goal see how rising prices in their city affect it. Step 1 forecasts next month's inflation for one of 82 Indonesian cities. Step 2 estimates what the goal will cost after inflation and how long it takes to save for it. It began as a 2023 Bangkit capstone (an LSTM behind a Flask API for an Android app) and was later rebuilt end to end.",
-        "Financifyは、目標に向けて貯蓄する人が、自分の都市の物価上昇がそれにどう影響するかを知るためのアプリです。ステップ1でインドネシア82都市の翌月インフレを予測し、ステップ2でインフレ後の目標金額と貯蓄にかかる期間を試算します。2023年のBangkitキャップストーン（Androidアプリ向けのFlask APIの裏にLSTM）として始まり、のちに全体を作り直しました。",
+        "Pick one of 82 Indonesian cities to see next month's inflation forecast, then what a savings goal will cost after inflation and how long it takes to reach. It began as a 2023 Bangkit capstone (an LSTM behind a Flask API for an Android app) and was later rebuilt end to end.",
+        "インドネシア82都市から一つを選ぶと翌月のインフレ予測が表示され、インフレ後の貯蓄目標の金額と達成までの期間が分かります。2023年のBangkitキャップストーン（Androidアプリ向けのFlask APIの裏にLSTM）として始まり、のちに全体を作り直しました。",
       ),
-      atAGlance: t("Project at a glance", "プロジェクト概要"),
-      challenge: {
-        heading: t("Forecasting an economy, city by city", "都市ごとに読む経済"),
-        lead: t(
-          "Inflation moves differently in every Indonesian city, and one month of it is noisy. The forecast had to beat simple guesses on data it had never seen, and say plainly how wrong it can be.",
-          "インフレは都市ごとに異なる動きをし、1か月単位では変動が大きい。予測は未知のデータで単純な推測を上回り、どれだけ外れうるかを率直に示す必要がありました。",
-        ),
-        body: t(
-          "The 2023 capstone used a hand-compiled dataset and was never compared against a baseline. Rebuilding it meant real data sources, a strict time-based split, and choosing every feature on validation only.",
-          "2023年のキャップストーンは手作業でまとめたデータセットを使い、ベースラインとの比較もしていませんでした。作り直すにあたり、実際のデータソース、厳密な時系列分割、そして検証データだけでの特徴量選択が必要でした。",
-        ),
-      },
-      approach: {
-        kicker: t("Approach", "アプローチ"),
-        heading: t("From price data to a savings plan", "価格データから貯蓄計画へ"),
-        steps: [
-          {
-            tag: t("Data", "データ"),
-            title: t("Official inflation plus market prices", "公式インフレと市場価格"),
-            description: t(
-              "Month-to-month inflation for 82 cities from BPS (2008 onward) and daily traditional-market prices for 10 foods from Bank Indonesia's PIHPS, with checks for duplicates, gaps and placeholder zeros.",
-              "BPSの82都市の前月比インフレ（2008年以降）と、Bank IndonesiaのPIHPSによる10品目の伝統市場の日次価格。重複・欠損・プレースホルダーの0をチェックしています。",
-            ),
-          },
-          {
-            tag: t("Features", "特徴量"),
-            title: t("Lags, calendar and a food nowcast", "ラグ、カレンダー、食品のナウキャスト"),
-            description: t(
-              "Twelve months of lags, seasonality, Ramadan and Eid flags, food price changes, and a nowcast from the first 5 trading days of the target month.",
-              "12か月分のラグ、季節性、ラマダンとイードのフラグ、食品価格の変化、そして対象月の最初の5営業日からのナウキャスト。",
-            ),
-          },
-          {
-            tag: t("Model", "モデル"),
-            title: t("Chosen on validation, scored on test once", "検証で選び、テストは一度だけ"),
-            description: t(
-              "Naive, seasonal naive, Ridge and gradient boosting compared over four rolling yearly folds (2021–2024). Feature groups are kept only if they lower validation error.",
-              "ナイーブ、季節ナイーブ、Ridge、勾配ブースティングを4つの年次ローリング分割（2021〜2024年）で比較。検証誤差を下げる特徴量グループだけを残します。",
-            ),
-          },
-          {
-            tag: t("App", "アプリ"),
-            title: t("A static page with every forecast inside", "全予測を内蔵した静的ページ"),
-            description: t(
-              "Every city's forecast is embedded in one bilingual page and the planner runs in the browser, so it needs no server. Flask serves the same page plus a JSON API.",
-              "全都市の予測を一つのバイリンガルページに埋め込み、プランナーはブラウザで動くためサーバーは不要。Flaskは同じページとJSON APIも提供します。",
-            ),
-          },
-        ],
-      },
-      features: {
-        heading: t("What shipped", "実装したもの"),
-        items: [
-          {
-            title: t("82-city forecast", "82都市の予測"),
-            description: t(
-              "Next month's inflation, up or down versus last month, a 24-month chart and the model's typical error.",
-              "翌月のインフレ、前月比の上昇・下降、24か月のグラフ、モデルの典型的な誤差。",
-            ),
-          },
-          {
-            title: t("Savings planner", "貯蓄プランナー"),
-            description: t(
-              "Goal categories from the 2023 app; shows the goal's cost when reached and how many months inflation adds.",
-              "2023年のアプリの目標カテゴリを使い、達成時の目標金額とインフレで何か月延びるかを表示。",
-            ),
-          },
-          {
-            title: t("Bilingual, no server", "バイリンガル、サーバー不要"),
-            description: t(
-              "Indonesian and English, one self-contained page; a link like ?city=yogyakarta opens straight to a city.",
-              "インドネシア語と英語、単一の自己完結ページ。?city=yogyakartaのようなリンクで都市を直接開けます。",
-            ),
-          },
-          {
-            title: t("Tests", "テスト"),
-            description: t(
-              "Pytest covers data cleaning, leak-free features and splits, the API, and that the JavaScript and Python planners agree.",
-              "Pytestでデータ清掃、リークのない特徴量と分割、API、そしてJavaScriptとPythonのプランナーが一致することをテスト。",
-            ),
-          },
-        ],
-      },
+      problem: t(
+        "Inflation differs by city and is noisy month to month. The 2023 version used a hand-compiled dataset and was never compared with a baseline, so the rebuild had to beat simple guesses on unseen months and show how wrong it can be.",
+        "インフレは都市ごとに異なり、月単位では変動が大きい。2023年版は手作業でまとめたデータを使い、ベースラインとの比較もしていなかったため、作り直しでは未知の月で単純な推測を上回り、誤差の大きさも示す必要がありました。",
+      ),
+      howItWorks: [
+        t("Official inflation and food market prices are collected for each city.", "都市ごとに公式のインフレ率と食品の市場価格を集めます。"),
+        t("Recent months, the calendar and early-month food prices become features.", "直近の数か月、カレンダー、月初の食品価格を特徴量にします。"),
+        t("A model forecasts next month's inflation for every city.", "モデルが各都市の翌月のインフレを予測します。"),
+        t("The planner applies inflation to your savings goal.", "プランナーが貯蓄目標にインフレを反映します。"),
+        t("You see what the goal will cost and how long it takes to reach.", "目標の将来の金額と、達成までの期間を表示します。"),
+      ],
+      decisions: [
+        {
+          title: t("BPS + Bank Indonesia PIHPS data", "BPS + Bank Indonesia PIHPSのデータ"),
+          description: t(
+            "Official month-to-month inflation for 82 cities (2008 onward) and daily prices for 10 foods, checked for duplicates, gaps and placeholder zeros.",
+            "82都市の公式な前月比インフレ（2008年以降）と10品目の日次価格。重複・欠損・プレースホルダーの0をチェックしています。",
+          ),
+        },
+        {
+          title: t("Lags, calendar and a food nowcast", "ラグ、カレンダー、食品のナウキャスト"),
+          description: t(
+            "12 months of lags, seasonality, Ramadan and Eid flags, and food price changes from the first 5 trading days of the target month.",
+            "12か月分のラグ、季節性、ラマダンとイードのフラグ、対象月の最初の5営業日の食品価格の変化。",
+          ),
+        },
+        {
+          title: t("scikit-learn (Ridge, gradient boosting)", "scikit-learn（Ridge、勾配ブースティング）"),
+          description: t(
+            "Compared with naive and seasonal-naive baselines over 4 rolling yearly folds; a feature group stays only if it lowers validation error.",
+            "ナイーブと季節ナイーブのベースラインと、4つの年次ローリング分割で比較。検証誤差を下げる特徴量グループだけを残します。",
+          ),
+        },
+        {
+          title: t("Static page + Flask", "静的ページ + Flask"),
+          description: t(
+            "Every forecast is embedded in one bilingual page and the planner runs in the browser, so it needs no server. Flask serves the same page plus a JSON API.",
+            "全都市の予測を一つのバイリンガルページに埋め込み、プランナーはブラウザで動くためサーバーは不要。Flaskは同じページとJSON APIも提供します。",
+          ),
+        },
+        {
+          title: t("Pytest", "Pytest"),
+          description: t(
+            "Tests data cleaning, leak-free features and splits, the API, and that the JavaScript and Python planners agree.",
+            "データ清掃、リークのない特徴量と分割、API、そしてJavaScriptとPythonのプランナーが一致することをテストします。",
+          ),
+        },
+        {
+          title: t("Figma + Premiere Pro", "Figma + Premiere Pro"),
+          description: t(
+            "Designed the logo, the Finbot mascot and the 2023 app UI, and edited the capstone videos.",
+            "ロゴ、Finbotマスコット、2023年のアプリUIをデザインし、キャップストーンの動画を編集しました。",
+          ),
+        },
+      ],
       sections: [
         {
           id: "evaluation",
@@ -1192,41 +939,27 @@ approach: {
         {
           id: "limitations",
           kicker: t("Limitations", "制約"),
-          heading: t("A direction, not a promise", "約束ではなく、方向性"),
+          heading: t("A planning estimate, not financial advice", "計画のための試算であり、金融アドバイスではない"),
           paragraphs: [
             t(
-              "The model sees only each city's inflation history, the calendar and food prices: no fuel or electricity prices, exchange or policy rates. The planner assumes constant income, expenses and inflation and no investment return. It is a planning estimate, not financial advice.",
-              "モデルが見るのは各都市のインフレ履歴、カレンダー、食品価格だけで、燃料・電気料金、為替、政策金利は含みません。プランナーは収入・支出・インフレが一定で投資収益がないと仮定しています。計画のための試算であり、金融アドバイスではありません。",
+              "The model sees only each city's inflation history, the calendar and food prices: no fuel or electricity prices, exchange or policy rates. The planner assumes constant income, expenses and inflation, and no investment return.",
+              "モデルが見るのは各都市のインフレ履歴、カレンダー、食品価格だけで、燃料・電気料金、為替、政策金利は含みません。プランナーは収入・支出・インフレが一定で、投資収益がないと仮定しています。",
             ),
           ],
         },
       ],
-      galleryLabel: t("Gallery", "ギャラリー"),
-      outcomes: {
-        kicker: t("Outcomes", "成果"),
-        heading: t("What changed", "変わったこと"),
-        items: [
-          t(
-            "A live, bilingual web app covering 82 Indonesian cities.",
-            "インドネシア82都市をカバーする、公開中のバイリンガルwebアプリ。",
-          ),
-          t(
-            "A forecast that beats the naive baseline by 37% on held-out months.",
-            "未使用の月で、ナイーブなベースラインより誤差を37%削減した予測。",
-          ),
-          t(
-            "Built first with the Bangkit team CH2-PS231 across machine learning, cloud and mobile.",
-            "最初は機械学習・クラウド・モバイルにまたがるBangkitチームCH2-PS231で構築。",
-          ),
-          t(
-            "Designed the logo, the Finbot mascot and the app UI in Figma, and edited the videos in Adobe Premiere Pro.",
-            "ロゴ、Finbotマスコット、アプリのUIをFigmaでデザインし、動画をAdobe Premiere Proで編集。",
-          ),
-        ],
+      results: [
+        t(
+          "37% lower error than the naive baseline on held-out months.",
+          "未使用の月で、ナイーブなベースラインより誤差を37%削減。",
+        ),
+        t(
+          "Live bilingual web app covering 82 Indonesian cities.",
+          "インドネシア82都市をカバーする、公開中のバイリンガルwebアプリ。",
+        ),
         // TODO_REAL_CONTENT: "Top 50 Product-based Capstone Projects" —
         // display only if verified against existing CV/portfolio data.
-      },
-      nextLabel: t("Next project", "次のプロジェクト"),
+      ],
     },
   },
 {
@@ -1333,131 +1066,77 @@ approach: {
     tone: "amber",
     caseStudy: {
       overview: t(
-        "Type a post and the app says whether it shows signs of suicide risk. It is a LightGBM model trained on 232,074 Reddit posts, made by our team The Untouchaballs for Data Royale 2023, where we won 3rd place in the senior division. It is a competition project, not a clinical tool.",
-        "投稿を入力すると、自殺リスクの兆候があるかをアプリが判定します。232,074件のReddit投稿で学習したLightGBMモデルで、チームThe UntouchaballsとしてData Royale 2023に出場し、シニア部門で3位に入賞しました。コンテスト用のプロジェクトであり、臨床用のツールではありません。",
+        "Type a post and the app says whether it shows signs of suicide risk. A LightGBM model trained on 232,074 Reddit posts, built by our team The Untouchaballs for Data Royale 2023. It is a competition project, not a clinical tool.",
+        "投稿を入力すると、自殺リスクの兆候があるかをアプリが判定します。232,074件のReddit投稿で学習したLightGBMモデルで、チームThe UntouchaballsとしてData Royale 2023向けに作りました。コンテスト用のプロジェクトであり、臨床用のツールではありません。",
       ),
-      atAGlance: t("Project at a glance", "プロジェクト概要"),
-      challenge: {
-        heading: t("Spotting risk in short, informal text", "短くくだけた文章からリスクを見つける"),
-        lead: t(
-          "Posts are short, messy and full of slang, and a missed risk post costs more than a false alarm.",
-          "投稿は短く、表記が乱れ、スラングも多い。そしてリスクのある投稿の見逃しは、誤検知よりも重大です。",
-        ),
-        body: t(
-          "We used the Kaggle Suicide and Depression Detection dataset: 232,074 posts, half labelled suicide and half non-suicide, with no missing or duplicate rows.",
-          "KaggleのSuicide and Depression Detectionデータセットを使いました。232,074件の投稿で、半分がsuicide、半分がnon-suicideのラベル付き。欠損や重複はありません。",
-        ),
-      },
-      approach: {
-        kicker: t("Approach", "アプローチ"),
-        heading: t("From raw posts to a web app", "生の投稿からwebアプリへ"),
-        steps: [
-          {
-            tag: t("Clean", "前処理"),
-            title: t("Text preprocessing with NLTK", "NLTKによるテキスト前処理"),
-            description: t(
-              "Lowercase, remove punctuation and stopwords, tokenize and lemmatize.",
-              "小文字化、句読点とストップワードの除去、トークン化、見出し語化。",
-            ),
-          },
-          {
-            tag: t("Features", "特徴量"),
-            title: t("Character-level TF-IDF", "文字単位のTF-IDF"),
-            description: t(
-              "1–3 character n-grams, 5,000 features, which copes well with typos and slang.",
-              "1〜3文字のn-gramで5,000特徴量。誤字やスラングにも強い表現です。",
-            ),
-          },
-          {
-            tag: t("Train", "学習"),
-            title: t("Three models compared", "3つのモデルを比較"),
-            description: t(
-              "Random Forest, LightGBM and Naive Bayes on an 80/20 stratified split.",
-              "80/20の層化分割で、Random Forest・LightGBM・Naive Bayesを学習。",
-            ),
-          },
-          {
-            tag: t("Deploy", "デプロイ"),
-            title: t("Streamlit demo", "Streamlitデモ"),
-            description: t(
-              "The best model, LightGBM, runs in a Streamlit app on Streamlit Community Cloud.",
-              "最も良かったLightGBMを、Streamlit Community Cloud上のStreamlitアプリで動かしています。",
-            ),
-          },
-        ],
-      },
-      features: {
-        heading: t("What shipped", "実装したもの"),
-        items: [
-          {
-            title: t("Live classifier", "ライブ分類器"),
-            description: t(
-              "Paste any English text and get suicide / non-suicide back.",
-              "英語の文章を貼り付けると、suicide / non-suicideを返します。",
-            ),
-          },
-          {
-            title: t("Reproducible notebooks", "再現可能なノートブック"),
-            description: t(
-              "Preprocessing, training and EDA notebooks, run in order.",
-              "前処理・学習・EDAのノートブックを順番に実行するだけ。",
-            ),
-          },
-          {
-            title: t("Competition report and deck", "レポートと発表資料"),
-            description: t(
-              "A written report and a Figma presentation for the final.",
-              "決勝用のレポートとFigmaのプレゼンテーション。",
-            ),
-          },
-        ],
-      },
+      problem: t(
+        "Posts are short, messy and full of slang, and missing a risk post costs more than a false alarm.",
+        "投稿は短く、表記が乱れ、スラングも多い。そしてリスクのある投稿の見逃しは、誤検知よりも重大です。",
+      ),
+      howItWorks: [
+        t("Type or paste a post.", "投稿を入力または貼り付けます。"),
+        t("The text is cleaned: lowercased, stopwords removed, words reduced to their base form.", "テキストを整えます（小文字化、ストップワード除去、見出し語化）。"),
+        t("It becomes character-pattern features (TF-IDF).", "文字パターンの特徴量（TF-IDF）に変換します。"),
+        t("LightGBM classifies it as risk or no risk.", "LightGBMがリスクあり・なしを判定します。"),
+      ],
+      decisions: [
+        {
+          title: t("NLTK", "NLTK"),
+          description: t(
+            "Lowercase, remove punctuation and stopwords, tokenize and lemmatize before featurising.",
+            "特徴量化の前に、小文字化、句読点とストップワードの除去、トークン化、見出し語化を行います。",
+          ),
+        },
+        {
+          title: t("Character-level TF-IDF", "文字単位のTF-IDF"),
+          description: t(
+            "1–3 character n-grams, 5,000 features, chosen because it copes with typos and slang.",
+            "1〜3文字のn-gramで5,000特徴量。誤字やスラングに強いため採用しました。",
+          ),
+        },
+        {
+          title: t("LightGBM (vs Random Forest, Naive Bayes)", "LightGBM（Random Forest、Naive Bayesと比較）"),
+          description: t(
+            "The most accurate of the three on an 80/20 stratified split, and small enough to deploy: 3.8 MB against 226 MB for Random Forest.",
+            "80/20の層化分割で3つの中で最も精度が高く、デプロイできるほど軽量でした（Random Forestの226 MBに対して3.8 MB）。",
+          ),
+        },
+        {
+          title: t("Streamlit Community Cloud", "Streamlit Community Cloud"),
+          description: t(
+            "Free hosting for a demo anyone can try in the browser.",
+            "誰でもブラウザで試せるデモを無料でホストできます。",
+          ),
+        },
+      ],
       sections: [
         {
           id: "evaluation",
           kicker: t("Evaluation", "評価"),
-          heading: t("Model comparison", "モデルの比較"),
-          paragraphs: [
-            t("Scores on the 46,415-post test set.", "46,415件のテストセットでのスコア。"),
-          ],
+          heading: t("Model comparison, 46,415 test posts", "モデルの比較（テスト投稿46,415件）"),
           facts: [
             { label: t("LightGBM", "LightGBM"), value: t("95% accuracy · 0.95 F1", "精度95% · F1 0.95") },
             { label: t("Random Forest", "Random Forest"), value: t("90% accuracy · 0.90 F1", "精度90% · F1 0.90") },
             { label: t("Naive Bayes", "Naive Bayes"), value: t("84% accuracy · 0.83 F1", "精度84% · F1 0.83") },
           ],
-          note: t(
-            "LightGBM was both the most accurate and small enough to deploy (3.8 MB, against 226 MB for Random Forest).",
-            "LightGBMは最も精度が高く、デプロイできるほど軽量でした（Random Forestの226 MBに対して3.8 MB）。",
-          ),
-        },
-        {
-          id: "eda",
-          kicker: t("EDA", "探索的分析"),
-          heading: t("What risk posts sound like", "リスクのある投稿の特徴"),
           paragraphs: [
             t(
-              "The most frequent bigrams in suicide-risk posts were “feel like”, “don't know”, “don't want”, “want die”, “I'm tired” and “I'm scared”.",
-              "リスクのある投稿で最も多いバイグラムは「feel like」「don't know」「don't want」「want die」「I'm tired」「I'm scared」でした。",
+              "Data: Kaggle Suicide and Depression Detection, 232,074 posts, half suicide and half non-suicide, no missing or duplicate rows. The most frequent bigrams in risk posts were “feel like”, “don't want”, “want die”, “I'm tired” and “I'm scared”.",
+              "データはKaggleのSuicide and Depression Detection。232,074件で、半分がsuicide、半分がnon-suicide、欠損や重複はありません。リスクのある投稿で最も多いバイグラムは「feel like」「don't want」「want die」「I'm tired」「I'm scared」でした。",
             ),
           ],
         },
       ],
-      galleryLabel: t("Gallery", "ギャラリー"),
-      outcomes: {
-        kicker: t("Outcomes", "成果"),
-        heading: t("Result", "結果"),
-        items: [
-          t(
-            "3rd place, Senior Division, Data Royale 2023 (Kotak Riset & DSAI OmahTI, Universitas Gadjah Mada).",
-            "Data Royale 2023 シニア部門3位（Kotak Riset & DSAI OmahTI、ガジャマダ大学）。",
-          ),
-          t(
-            "A 95%-accurate classifier anyone can try in the browser.",
-            "誰でもブラウザで試せる、精度95%の分類器。",
-          ),
-        ],
-      },
-      nextLabel: t("Next project", "次のプロジェクト"),
+      results: [
+        t(
+          "3rd place, Senior Division, Data Royale 2023 (Kotak Riset & DSAI OmahTI, Universitas Gadjah Mada).",
+          "Data Royale 2023 シニア部門3位（Kotak Riset & DSAI OmahTI、ガジャマダ大学）。",
+        ),
+        t(
+          "95% accuracy on 46,415 held-out posts.",
+          "テスト投稿46,415件で精度95%。",
+        ),
+      ],
     },
   },
   {
@@ -1504,111 +1183,59 @@ approach: {
     tone: "accent",
     caseStudy: {
       overview: t(
-        "Upload a face photo, take one with your camera, or pick a dataset example, and the app redraws it as a comic portrait. It also works the other way, from comic to photo. Under the hood is a CycleGAN trained on 10,000 photos and 10,000 comic faces.",
-        "顔写真をアップロードするか、カメラで撮るか、データセットの例を選ぶと、アプリがコミック風のポートレートに描き直します。コミックから写真への逆方向にも対応しています。中身は、10,000枚の写真と10,000枚のコミック顔で学習したCycleGANです。",
+        "Upload a face photo, take one with the camera, or pick a dataset example, and the app redraws it as a comic portrait, or turns a comic face back into a photo. A CycleGAN trained on 10,000 photos and 10,000 comic faces.",
+        "顔写真をアップロード、カメラで撮影、またはデータセットの例を選ぶと、アプリがコミック風のポートレートに描き直します。コミックから写真への逆変換にも対応。10,000枚の写真と10,000枚のコミック顔で学習したCycleGANです。",
       ),
-      atAGlance: t("Project at a glance", "プロジェクト概要"),
-      challenge: {
-        heading: t("Translating between two image styles", "2つの画風のあいだを変換する"),
-        lead: t(
-          "The model has to change the style of a face without losing who it is.",
-          "顔が誰なのかを失わずに、画風だけを変える必要があります。",
-        ),
-        body: t(
-          "CycleGAN learns this with two generators that translate in opposite directions. Converting a photo to a comic and back should return the original photo, which keeps the face recognisable.",
-          "CycleGANは逆方向に変換する2つの生成器でこれを学習します。写真をコミックに変換して元に戻すと元の写真になるよう学習するため、顔の特徴が保たれます。",
-        ),
-      },
-      approach: {
-        kicker: t("Approach", "アプローチ"),
-        heading: t("From notebook to web app", "ノートブックからwebアプリへ"),
-        steps: [
-          {
-            tag: t("Data", "データ"),
-            title: t("Face2Comics v2 dataset", "Face2Comics v2データセット"),
-            description: t(
-              "10,000 face photos and 10,000 comic versions, resized and randomly cropped to 128 px.",
-              "10,000枚の顔写真と10,000枚のコミック版を、リサイズして128 pxにランダムクロップ。",
-            ),
-          },
-          {
-            tag: t("Model", "モデル"),
-            title: t("ResNet generators + PatchGAN discriminators", "ResNet生成器 + PatchGAN識別器"),
-            description: t(
-              "Trained with adversarial, cycle-consistency and identity losses for 50 epochs.",
-              "敵対的損失・サイクル一貫性損失・恒等損失で50エポック学習。",
-            ),
-          },
-          {
-            tag: t("Refactor", "リファクタリング"),
-            title: t("Kaggle notebook to a Python package", "KaggleノートブックからPythonパッケージへ"),
-            description: t(
-              "Moved to TensorFlow 2.18+ / Keras 3, fixed swapped domains and loss bugs, and added a training CLI and tests.",
-              "TensorFlow 2.18+ / Keras 3に移行し、ドメインの取り違えや損失のバグを修正。学習用CLIとテストを追加。",
-            ),
-          },
-          {
-            tag: t("Deploy", "デプロイ"),
-            title: t("Streamlit, on two hosts", "Streamlitを2つの環境で"),
-            description: t(
-              "The same Streamlit app runs on Streamlit Community Cloud and on my own VPS.",
-              "同じStreamlitアプリをStreamlit Community Cloudと自分のVPSの両方で動かしています。",
-            ),
-          },
-        ],
-      },
-      features: {
-        heading: t("What shipped", "実装したもの"),
-        items: [
-          {
-            title: t("Two directions", "双方向の変換"),
-            description: t("Photo → Comic and Comic → Photo.", "写真 → コミック、コミック → 写真。"),
-          },
-          {
-            title: t("Three ways to input", "3つの入力方法"),
-            description: t(
-              "Upload an image, use the camera, or pick a random dataset example.",
-              "画像のアップロード、カメラ撮影、データセットからランダムに選択。",
-            ),
-          },
-          {
-            title: t("Download as PNG", "PNGでダウンロード"),
-            description: t(
-              "Choose the output size and save the result.",
-              "出力サイズを選んで結果を保存できます。",
-            ),
-          },
-        ],
-      },
-      sections: [
+      problem: t(
+        "The model has to change a face's style without losing who it is.",
+        "顔が誰なのかを失わずに、画風だけを変える必要があります。",
+      ),
+      howItWorks: [
+        t("Upload, snap or pick a face photo.", "顔写真をアップロード・撮影・選択します。"),
+        t("It is cropped to a square and resized for the model.", "正方形に切り抜き、モデル用にリサイズします。"),
+        t("A generator redraws it in the other style: photo to comic, or comic to photo.", "生成器がもう一方の画風（写真 → コミック、またはその逆）で描き直します。"),
+        t("Download the result as a PNG.", "結果をPNGでダウンロードします。"),
+      ],
+      decisions: [
         {
-          id: "deployment",
-          kicker: t("Deployment", "デプロイ"),
-          heading: t("Two live versions", "2つの公開版"),
-          paragraphs: [
-            t(
-              "comic.farisznafis.my.id is the same Streamlit app, hosted on my own VPS instead of Streamlit Community Cloud.",
-              "comic.farisznafis.my.idは同じStreamlitアプリを、Streamlit Community Cloudではなく自分のVPSでホストしたものです。",
-            ),
-          ],
+          title: t("CycleGAN", "CycleGAN"),
+          description: t(
+            "Two generators translate in opposite directions; photo → comic → photo must return the original, which keeps the face recognisable.",
+            "逆方向に変換する2つの生成器を使い、写真 → コミック → 写真で元に戻るよう学習するため、顔の特徴が保たれます。",
+          ),
+        },
+        {
+          title: t("ResNet generators + PatchGAN discriminators", "ResNet生成器 + PatchGAN識別器"),
+          description: t(
+            "Adversarial, cycle-consistency and identity losses, 50 epochs on Face2Comics v2 at 128 px.",
+            "敵対的損失・サイクル一貫性損失・恒等損失で、Face2Comics v2を128 pxで50エポック学習。",
+          ),
+        },
+        {
+          title: t("TensorFlow 2.18+ / Keras 3 package", "TensorFlow 2.18+ / Keras 3のパッケージ"),
+          description: t(
+            "Refactored the Kaggle notebook into a package: fixed swapped domains and loss bugs, added a training CLI and tests.",
+            "Kaggleノートブックをパッケージに再構成。ドメインの取り違えや損失のバグを修正し、学習用CLIとテストを追加しました。",
+          ),
+        },
+        {
+          title: t("Streamlit on Community Cloud + own VPS", "Streamlit（Community Cloud + 自前のVPS）"),
+          description: t(
+            "The same app on two hosts; comic.farisznafis.my.id is the VPS version.",
+            "同じアプリを2つの環境で公開。comic.farisznafis.my.idはVPS版です。",
+          ),
         },
       ],
-      galleryLabel: t("Gallery", "ギャラリー"),
-      outcomes: {
-        kicker: t("Outcomes", "成果"),
-        heading: t("Result", "結果"),
-        items: [
-          t(
-            "A working photo ↔ comic translator anyone can try in the browser.",
-            "誰でもブラウザで試せる、写真 ↔ コミックの変換ツール。",
-          ),
-          t(
-            "A clean, tested codebase that can be retrained with one command.",
-            "1つのコマンドで再学習できる、テスト付きの整理されたコードベース。",
-          ),
-        ],
-      },
-      nextLabel: t("Next project", "次のプロジェクト"),
+      results: [
+        t(
+          "Live photo ↔ comic translator with upload, camera and PNG download.",
+          "アップロード・カメラ・PNGダウンロードに対応した、公開中の写真 ↔ コミック変換ツール。",
+        ),
+        t(
+          "Tested codebase that retrains with one command.",
+          "1つのコマンドで再学習できる、テスト付きのコードベース。",
+        ),
+      ],
     },
   },
   {
@@ -1701,154 +1328,66 @@ approach: {
     tone: "amber",
     caseStudy: {
       overview: t(
-        "Every organisation makes the same kind of decision again and again: who does which job, where to put limited resources, how to spend a fixed budget. Optimization turns such a decision into a precise set of rules and goals, and a solver then searches every possible combination for the best one. During our internship we built four of these models, from a burrito-truck game to a tool that assigns sprint tasks to 109 people, and put them in a web app where anyone can change the inputs and watch the answer change.",
-        "どの組織も同じ種類の判断を繰り返しています。誰がどの仕事をするか、限られた資源をどこに置くか、決まった予算をどう使うか。最適化は、こうした判断を厳密なルールと目標に置き換え、ソルバーがあらゆる組み合わせの中から最良のものを探します。インターンでは、ブリトー屋台のゲームから109人にスプリントのタスクを割り当てるツールまで、4つのモデルを構築し、誰でも入力を変えて答えの変化を確かめられるWebアプリにまとめました。",
+        "Four optimization models built during my data science internship in a 5-member team. The main one assigns 300 sprint tasks to 109 people; three smaller ones cover course selection, stock selection and facility location. All four run from one CLI, in Docker, and in a web demo that re-solves them live.",
+        "データサイエンスのインターンで、5人のチームで構築した4つの最適化モデル。メインは300件のスプリントタスクを109人に割り当てるモデルで、ほかに科目選択・銘柄選択・施設配置の3つがあります。4つとも1つのCLI、Docker、そしてその場で再計算するWebデモから実行できます。",
       ),
-      atAGlance: t("Project at a glance", "プロジェクト概要"),
-      challenge: {
-        heading: t("Too many combinations to try by hand", "手作業では試しきれない組み合わせ"),
-        lead: t(
-          "Assigning 300 tasks to 109 people already has more possible plans than anyone could ever check, and every plan has to respect skills, workload limits and project boundaries at the same time.",
-          "300件のタスクを109人に割り当てるだけでも、人が確認できる数をはるかに超える割り当て案があります。しかも各案は、スキル、作業量の上限、プロジェクトの境界を同時に守らなければなりません。",
-        ),
-        body: t(
-          "The goals also pull against each other: keeping everyone busy, matching skills well and spreading work evenly cannot all be maximised at once. The work was to state each problem exactly, decide how to trade the goals off, and make the results easy to run and inspect.",
-          "さらに目標同士がぶつかります。全員に仕事を持たせること、スキルをよく合わせること、作業を均等に配ることを同時に最大化することはできません。各問題を厳密に定式化し、目標間のバランスを決め、結果を簡単に実行・確認できる形にすることが課題でした。",
-        ),
-      },
-      approach: {
-        kicker: t("Approach", "アプローチ"),
-        heading: t("From a business question to a solved model", "業務上の問いから解かれたモデルへ"),
-        steps: [
-          {
-            tag: t("Formulate", "定式化"),
-            title: t("Write the decision as variables, rules and goals", "判断を変数・ルール・目標として書く"),
-            description: t(
-              "Each yes/no choice becomes a binary variable, each business rule a constraint, and each goal an objective function.",
-              "それぞれのyes/noの選択を0-1変数に、業務ルールを制約に、目標を目的関数に置き換えます。",
-            ),
-          },
-          {
-            tag: t("Score", "スコア"),
-            title: t("Measure how well a person fits a task", "人とタスクの適合度を測る"),
-            description: t(
-              "For task assignment, a skill-matching score compares each talent's competency levels with what each task requires.",
-              "タスク割り当てでは、各人材の能力レベルと各タスクの要求レベルを比べるスキル適合スコアを計算します。",
-            ),
-          },
-          {
-            tag: t("Solve", "求解"),
-            title: t("Let Gurobi and OR-Tools search", "GurobiとOR-Toolsで探索する"),
-            description: t(
-              "Mixed-integer solvers find the provably best plan, or the best one found within a time limit for the largest dataset.",
-              "混合整数ソルバーが最適であることが保証された解を見つけます。最大のデータセットでは制限時間内の最良解を使います。",
-            ),
-          },
-          {
-            tag: t("Ship", "公開"),
-            title: t("One CLI, one container, one web demo", "1つのCLI、1つのコンテナ、1つのWebデモ"),
-            description: t(
-              "All four models run from the same `optim` command, in Docker, and from a Gradio demo that re-solves them live.",
-              "4つのモデルはすべて同じ`optim`コマンド、Docker、そしてライブで再計算するGradioデモから実行できます。",
-            ),
-          },
-        ],
-      },
-      features: {
-        heading: t("What shipped", "実装したもの"),
-        items: [
-          {
-            title: t("Scrum task-assignment model", "スクラム向けタスク割り当てモデル"),
-            description: t(
-              "Assigns 300 tasks across 5 projects to 109 talents, balancing three goals with goal programming.",
-              "5つのプロジェクトにまたがる300件のタスクを109人に割り当て、目標計画法で3つの目標のバランスを取ります。",
-            ),
-          },
-          {
-            title: t("Three warm-up challenges", "3つのウォームアップ課題"),
-            description: t(
-              "Course selection, stock portfolio selection and Gurobi's Burrito Optimization Game.",
-              "科目選択、株式ポートフォリオ選択、そしてGurobiのBurrito Optimization Game。",
-            ),
-          },
-          {
-            title: t("Interactive web demo", "インタラクティブなWebデモ"),
-            description: t(
-              "A Gradio app on Hugging Face Spaces with one tab per model; every Solve runs the real model.",
-              "Hugging Face Spaces上のGradioアプリ。モデルごとにタブがあり、「Solve」を押すたびに実際のモデルが動きます。",
-            ),
-          },
-          {
-            title: t("Reproducible packaging", "再現可能なパッケージング"),
-            description: t(
-              "An installable Python package and CLI, a Docker image, tests and CI that redeploys the demo on every push.",
-              "インストール可能なPythonパッケージとCLI、Dockerイメージ、テスト、そしてpushごとにデモを再デプロイするCI。",
-            ),
-          },
-        ],
-      },
-      sections: [
+      problem: t(
+        "Assigning 300 tasks to 109 people has far more possible plans than anyone can check, each plan must respect skills, workload limits and project boundaries, and the goals (nobody idle, good skill fit, even workload) pull against each other.",
+        "300件のタスクを109人に割り当てる案は人が確認できる数をはるかに超え、各案はスキル・作業量の上限・プロジェクトの境界を守る必要があります。さらに、待機者ゼロ・スキル適合・作業量の均等という目標同士がぶつかります。",
+      ),
+      howItWorks: [
+        t("Load the talents, tasks and the skill levels each task needs.", "人材、タスク、各タスクに必要なスキルレベルを読み込みます。"),
+        t("Score how well each person fits each task.", "各人と各タスクの適合度をスコア化します。"),
+        t("Write the decision as rules (one person per task, a workload limit) and goals.", "判断をルール（1タスクに1人、作業量の上限）と目標として書き表します。"),
+        t("The solver searches the valid plans and returns the best one.", "ソルバーが条件を満たす計画を探索し、最良のものを返します。"),
+        t("The web demo shows the plan; change an input and it solves again on the spot.", "Webデモで計画を表示し、入力を変えるとその場で解き直します。"),
+      ],
+      decisions: [
         {
-          id: "plain-words",
-          kicker: t("In plain words", "かんたんに言うと"),
-          heading: t("What is an optimization model?", "最適化モデルとは？"),
-          paragraphs: [
-            t(
-              "Think of planning a road trip with a fixed budget: you want to see as many places as possible, but you cannot drive more than eight hours a day and the money has to last. You naturally juggle a goal (see more) against rules (time, money). An optimization model writes exactly that down in maths, so a computer can do the juggling for thousands of choices at once.",
-              "決まった予算で旅行を計画する場面を想像してください。できるだけ多くの場所を見たいけれど、1日に運転できるのは8時間まで、お金も足りなければなりません。私たちは自然と、目標（たくさん見る）とルール（時間とお金）を天秤にかけています。最適化モデルはそれを数式で書き表し、何千もの選択の調整をコンピューターに任せます。",
-            ),
-            t(
-              "A solver then does not guess or learn from examples, as machine learning does. It searches the space of valid plans systematically and can prove that the plan it returns is the best possible one under the rules given.",
-              "ソルバーは機械学習のように例から学んだり推測したりするのではありません。有効な計画の空間を体系的に探索し、与えられたルールのもとで返した計画が最良であることを証明できます。",
-            ),
-          ],
-          items: [
-            {
-              title: t("Who does which task?", "誰がどのタスクを担当する？"),
-              description: t(
-                "Like a team lead planning a sprint: give work to people whose skills fit, keep nobody idle, and keep nobody overloaded.",
-                "スプリントを計画するチームリーダーのように、スキルの合う人に仕事を渡し、手持ち無沙汰な人も、抱えすぎる人も出さないようにします。",
-              ),
-            },
-            {
-              title: t("Where do the food trucks park?", "屋台をどこに停める？"),
-              description: t(
-                "Each truck costs money, but customers only walk so far. Pick the spots that earn the most after costs.",
-                "トラックを出すたびにお金がかかり、お客さんは遠くまでは歩きません。費用を差し引いて最も稼げる場所を選びます。",
-              ),
-            },
-            {
-              title: t("How do I split my savings?", "貯金をどう分ける？"),
-              description: t(
-                "Spread USD 10,000 over seven stocks for the highest expected return without taking on too much risk.",
-                "1万ドルを7銘柄に分け、リスクを取りすぎずに期待リターンを最大にします。",
-              ),
-            },
-            {
-              title: t("Which courses should I take?", "どの科目を取る？"),
-              description: t(
-                "Finish a degree's 180 credits at the lowest possible cost, with enough computer-science credits.",
-                "情報科学の単位を十分に含めつつ、180単位の学位を最も安く修了します。",
-              ),
-            },
-          ],
-          note: t(
-            "You can try every one of these in the live demo: change a number, press Solve, and the model recalculates on the spot.",
-            "ライブデモですべて試せます。数値を変えて「Solve」を押すと、その場でモデルが再計算されます。",
+          title: t("Gurobi (mixed-integer programming)", "Gurobi（混合整数計画）"),
+          description: t(
+            "Returns a provably optimal plan, or the best found within a time limit on the full dataset.",
+            "最適であることが保証された解を返し、フルデータセットでは制限時間内の最良解を使います。",
           ),
         },
         {
+          title: t("Goal programming", "目標計画法"),
+          description: t(
+            "Each goal is solved alone first, then one plan is found that stays closest to all three best values, weighted by priority.",
+            "まず各目標を単独で解き、その後3つの最良値すべてにできるだけ近い1つの計画を、優先度の重み付きで求めます。",
+          ),
+        },
+        {
+          title: t("OR-Tools CP-SAT", "OR-Tools CP-SAT"),
+          description: t(
+            "Solves the binary warm-up problems: course selection and the burrito game.",
+            "0-1のウォームアップ課題（科目選択、ブリトーゲーム）を解きます。",
+          ),
+        },
+        {
+          title: t("Python package + `optim` CLI + Docker", "Pythonパッケージ + `optim` CLI + Docker"),
+          description: t(
+            "Refactored from Colab notebooks so every model runs the same way locally or in a container; limits, solver settings and weights live in one YAML config.",
+            "Colabノートブックから再構成し、ローカルでもコンテナでも同じように動くようにしました。上限・ソルバー設定・重みは1つのYAML設定にまとめています。",
+          ),
+        },
+        {
+          title: t("Gradio on Hugging Face Spaces", "Gradio（Hugging Face Spaces）"),
+          description: t(
+            "Calls the same package, so results are solved live, not cached; CI runs tests and redeploys on every push to main.",
+            "CLIと同じパッケージを呼ぶため、結果はキャッシュではなくその場で解かれます。CIはmainへのpushごとにテストと再デプロイを実行します。",
+          ),
+        },
+      ],
+      sections: [
+        {
           id: "task-assignment",
-          kicker: t("Main project", "メインプロジェクト"),
+          kicker: t("Main model", "メインモデル"),
           heading: t("Assigning Scrum tasks with goal programming", "目標計画法によるスクラムタスクの割り当て"),
           paragraphs: [
             t(
-              "The main project assigns sprint tasks from several client projects to a pool of data talents. First, every talent gets a skill-matching score for every task. The default method, Competency Assessment, weights each competency by how much the task needs it and averages the gap between the talent's level and the required level into a Mean Skill Gap. A Weighted Euclidean Distance score is available as an alternative.",
-              "メインプロジェクトでは、複数のクライアントプロジェクトのスプリントタスクをデータ人材のプールに割り当てます。まず、すべての人材とタスクの組み合わせにスキル適合スコアを付けます。標準のCompetency Assessmentは、タスクがどれだけその能力を必要とするかで各能力を重み付けし、人材のレベルと要求レベルの差を平均してMean Skill Gapを求めます。代替として重み付きユークリッド距離も選べます。",
-            ),
-            t(
-              "The model then assigns each task to exactly one person, keeps each person on at most one project and within a story-point limit, and pursues three goals: fewest idle talents, highest total skill score, and the lowest maximum workload. Each goal is solved on its own first; goal programming then finds one assignment that stays as close as possible to all three best values, weighted by priority.",
-              "次にモデルは、各タスクをちょうど1人に割り当て、各人を最大1つのプロジェクトとストーリーポイント上限内に収めながら、3つの目標を追います。待機人材の最小化、スキルスコア合計の最大化、最大作業量の最小化です。まず各目標を単独で解き、その後、目標計画法で3つの最良値すべてにできるだけ近い割り当てを優先度の重み付きで求めます。",
+              "Every talent gets a skill-matching score for every task. The default, Competency Assessment, weights each competency by how much the task needs it and averages the level gap into a Mean Skill Gap; Weighted Euclidean Distance is an alternative. The model then gives each task to exactly one person, keeps each person on at most one project and within a story-point limit, and minimises idle talents, maximises total skill score and minimises the maximum workload.",
+              "すべての人材とタスクの組み合わせにスキル適合スコアを付けます。標準のCompetency Assessmentは、タスクが必要とする度合いで各能力を重み付けし、レベル差を平均してMean Skill Gapを求めます（代替として重み付きユークリッド距離）。その上で、各タスクをちょうど1人に割り当て、各人を最大1プロジェクトかつストーリーポイント上限内に収めながら、待機人材の最小化・スキルスコア合計の最大化・最大作業量の最小化を行います。",
             ),
           ],
           facts: [
@@ -1859,10 +1398,6 @@ approach: {
             {
               label: t("Model type", "モデルの種類"),
               value: t("Mixed-integer program (MIP)", "混合整数計画（MIP）"),
-            },
-            {
-              label: t("Solver", "ソルバー"),
-              value: t("Gurobi", "Gurobi"),
             },
             {
               label: t("Objectives", "目的"),
@@ -1877,75 +1412,50 @@ approach: {
               value: t("10 story points per talent (configurable)", "1人あたり10ストーリーポイント（変更可）"),
             },
           ],
+          note: t(
+            "The public demo uses Gurobi's free size-limited license: task assignment is capped at 2,000 variables (the 5 × 10 mini dataset or small uploads) and 30 seconds per solve. The full 109 × 300 dataset needs a full license.",
+            "公開デモはGurobiの無料のサイズ制限付きライセンスで動くため、タスク割り当ては2,000変数（5 × 10のミニデータセットや小さなアップロード）と1回30秒までです。109 × 300のフルデータセットにはフルライセンスが必要です。",
+          ),
         },
         {
           id: "challenges",
-          kicker: t("Warm-up challenges", "ウォームアップ課題"),
+          kicker: t("Warm-up models", "ウォームアップ課題"),
           heading: t("Three smaller models, three techniques", "3つの小さなモデル、3つの手法"),
           items: [
             {
               title: t("Course selection · binary IP", "科目選択・0-1整数計画"),
               description: t(
-                "Choose courses for exactly 180 credits with at least 120 from computer science, at minimum cost. A weighted multi-objective variant also penalises exam courses. Both reach a cost of 12,356. Solved with OR-Tools CP-SAT.",
-                "情報科学から120単位以上を含め、ちょうど180単位を最小費用で選びます。試験科目にペナルティを課す重み付き多目的版もあり、どちらも費用12,356に到達します。OR-Tools CP-SATで求解。",
+                "Exactly 180 credits, at least 120 from computer science, at minimum cost; a weighted variant also penalises exam courses. Both reach a cost of 12,356. OR-Tools CP-SAT.",
+                "情報科学120単位以上を含め、ちょうど180単位を最小費用で選択。試験科目にペナルティを課す重み付き版もあり、どちらも費用12,356に到達。OR-Tools CP-SAT。",
               ),
             },
             {
               title: t("Stock selection · MIQCP", "銘柄選択・MIQCP"),
               description: t(
-                "Maximise the annualised return of a seven-stock portfolio with at least three stocks, a minimum share per selected stock and a quadratic risk cap of 15%. Solved with Gurobi.",
-                "3銘柄以上、選んだ銘柄ごとの最低比率、二次形式のリスク上限15%のもとで、7銘柄ポートフォリオの年率リターンを最大化します。Gurobiで求解。",
+                "Maximise annualised return on USD 10,000 across seven stocks, with at least three stocks, a minimum share each and a 15% quadratic risk cap. Gurobi.",
+                "1万ドルを7銘柄に配分し、3銘柄以上・銘柄ごとの最低比率・二次形式のリスク上限15%のもとで年率リターンを最大化。Gurobi。",
               ),
             },
             {
               title: t("Burrito game · facility location", "ブリトーゲーム・施設配置"),
               description: t(
-                "Gurobi's Burrito Optimization Game: decide where to park trucks so that revenue from nearby buildings outweighs the daily truck cost. Solved with OR-Tools CP-SAT.",
-                "GurobiのBurrito Optimization Game。近くの建物からの売上がトラックの日額費用を上回るよう、トラックの配置を決めます。OR-Tools CP-SATで求解。",
+                "Gurobi's Burrito Optimization Game: place trucks so revenue from nearby buildings beats the daily truck cost. Three trucks serve all 14 buildings for a profit of 970. OR-Tools CP-SAT.",
+                "GurobiのBurrito Optimization Game。近くの建物からの売上がトラックの日額費用を上回るよう配置。3台で14棟すべてをカバーし、利益は970。OR-Tools CP-SAT。",
               ),
             },
           ],
         },
-        {
-          id: "engineering",
-          kicker: t("Engineering", "エンジニアリング"),
-          heading: t("From notebooks to a runnable product", "ノートブックから動くプロダクトへ"),
-          paragraphs: [
-            t(
-              "The models started as Colab notebooks. They were refactored into one installable Python package with an `optim` command-line tool, so every model runs the same way locally, in Docker, or on any container job runner. A YAML config holds the workload limit, solver parameters, time limit and goal-programming weights.",
-              "モデルはColabノートブックから始まりました。それらを`optim`コマンドを持つ1つのインストール可能なPythonパッケージに再構成し、ローカル、Docker、任意のコンテナジョブ実行環境で同じように動くようにしました。作業量の上限、ソルバーのパラメーター、制限時間、目標計画法の重みはYAML設定にまとめています。",
-            ),
-            t(
-              "The Gradio demo calls the same package, so its results are solved live rather than cached. CI runs the tests on the mini dataset and redeploys the demo to Hugging Face Spaces on every push to main.",
-              "GradioデモはCLIと同じパッケージを呼び出すため、結果はキャッシュではなくその場で解かれます。CIはミニデータセットでテストを実行し、mainへのpushごとにHugging Face Spacesへデモを再デプロイします。",
-            ),
-          ],
-          note: t(
-            "The public demo runs on Gurobi's free size-limited license, so task assignment is capped at 2,000 variables (the 5 × 10 mini dataset or small uploads) and 30 seconds per solve. The full 109 × 300 dataset needs a full license.",
-            "公開デモはGurobiの無料のサイズ制限付きライセンスで動いているため、タスク割り当ては2,000変数（5 × 10のミニデータセットや小さなアップロード）と1回30秒までに制限されています。109 × 300のフルデータセットにはフルライセンスが必要です。",
-          ),
-        },
       ],
-      galleryLabel: t("Live demo", "ライブデモ"),
-      outcomes: {
-        kicker: t("Outcomes", "成果"),
-        heading: t("What changed", "変わったこと"),
-        items: [
-          t(
-            "Four optimization problems modelled and solved to optimality on their sample data.",
-            "4つの最適化問題をモデル化し、サンプルデータで最適解まで求解。",
-          ),
-          t(
-            "Task assignment balances idle time, skill fit and workload in a single plan instead of three competing ones.",
-            "タスク割り当てでは、待機・スキル適合・作業量を、競合する3つの案ではなく1つの計画でバランス。",
-          ),
-          t(
-            "Anyone can run the models without installing anything, through the public web demo.",
-            "公開Webデモにより、誰でも何もインストールせずにモデルを実行可能。",
-          ),
-        ],
-      },
-      nextLabel: t("Next project", "次のプロジェクト"),
+      results: [
+        t(
+          "All four models solved to optimality on their sample data.",
+          "4つのモデルすべてを、サンプルデータで最適解まで求解。",
+        ),
+        t(
+          "One task plan that balances idle time, skill fit and workload, instead of three competing plans.",
+          "待機・スキル適合・作業量を、競合する3つの案ではなく1つの計画でバランス。",
+        ),
+      ],
     },
   },
   {
@@ -2135,86 +1645,54 @@ approach: {
     tone: "amber",
     caseStudy: {
       overview: t(
-        "Upload a photo, or pick one of 50 samples, and the app highlights the regions that contain fire, shows how much of the image is on fire, and lets you download the mask. The model runs on CPU in a 23 MB ONNX file.",
-        "写真をアップロードするか50枚のサンプルから選ぶと、アプリが炎の領域をハイライトし、画像のうち炎が占める割合を表示します。マスクはダウンロードできます。モデルは23 MBのONNXファイルで、CPUで動きます。",
+        "Upload a photo, or pick one of 50 samples, and the app highlights the fire, shows how much of the image is on fire, and lets you download the mask. A U-Net running on CPU from a 23 MB ONNX file.",
+        "写真をアップロードするか50枚のサンプルから選ぶと、アプリが炎の領域をハイライトし、炎が占める割合を表示します。マスクはダウンロード可能。23 MBのONNXファイルからCPUで動くU-Netです。",
       ),
-      atAGlance: t("Project at a glance", "プロジェクト概要"),
-      challenge: {
-        heading: t("Fire is not just a bright blob", "炎は「明るい塊」ではない"),
-        lead: t(
-          "The first model flagged sunsets, lamps and bright skies as fire.",
-          "最初のモデルは夕焼け、照明、明るい空まで炎と判定していました。",
-        ),
-        body: t(
-          "v1 was trained on grayscale video frames with no fire-free examples, so it learned that anything bright is fire. On unseen photos it raised a false alarm on 81% of fire-free images.",
-          "v1は炎のない例を含まないグレースケールの動画フレームで学習したため、明るいものはすべて炎だと覚えてしまいました。未知の写真では、炎のない画像の81%で誤検出していました。",
-        ),
-      },
-      approach: {
-        kicker: t("Approach", "アプローチ"),
-        heading: t("What changed in v2", "v2で変えたこと"),
-        steps: [
-          {
-            tag: t("Data", "データ"),
-            title: t("Real photos and hard negatives", "実写真と紛らわしい負例"),
-            description: t(
-              "2,683 video frames, 226 BoWFire photos including sunsets and lamps, and 320 fire-free photos.",
-              "2,683枚の動画フレーム、夕焼けや照明を含むBoWFireの写真226枚、炎のない写真320枚。",
-            ),
-          },
-          {
-            tag: t("Model", "モデル"),
-            title: t("U-Net with a pretrained encoder", "事前学習済みエンコーダー付きU-Net"),
-            description: t(
-              "RGB input and an ImageNet-pretrained EfficientNet-B0 encoder, 6.3M parameters.",
-              "RGB入力と、ImageNetで事前学習したEfficientNet-B0エンコーダー。パラメーター数は630万。",
-            ),
-          },
-          {
-            tag: t("Validate", "検証"),
-            title: t("Hold out whole videos", "動画単位でホールドアウト"),
-            description: t(
-              "Validation keeps entire videos out of training, so near-duplicate frames cannot leak.",
-              "動画ごと学習から外して検証するため、ほぼ同じフレームが漏れることはありません。",
-            ),
-          },
-          {
-            tag: t("Deploy", "デプロイ"),
-            title: t("ONNX + Streamlit, on two hosts", "ONNX + Streamlitを2つの環境で"),
-            description: t(
-              "Exported to ONNX so the app needs no deep-learning framework. The same app runs on Streamlit Community Cloud and on my own VPS.",
-              "ONNXに書き出したため、アプリにディープラーニングのフレームワークは不要です。同じアプリをStreamlit Community Cloudと自分のVPSで動かしています。",
-            ),
-          },
-        ],
-      },
-      features: {
-        heading: t("What shipped", "実装したもの"),
-        items: [
-          {
-            title: t("Upload or sample", "アップロードまたはサンプル"),
-            description: t(
-              "Use your own JPG, PNG or WEBP, or one of 50 bundled photos.",
-              "手持ちのJPG・PNG・WEBP、または同梱の50枚の写真を使えます。",
-            ),
-          },
-          {
-            title: t("Adjustable threshold", "しきい値の調整"),
-            description: t(
-              "Original, mask and overlay side by side, with fire coverage in percent.",
-              "元画像・マスク・オーバーレイを並べて表示し、炎の割合も表示。",
-            ),
-          },
-          {
-            title: t("Download the mask", "マスクのダウンロード"),
-            description: t("Save the predicted mask as a PNG.", "予測マスクをPNGで保存できます。"),
-          },
-        ],
-      },
+      problem: t(
+        "The first model (v1) was trained on grayscale video frames with no fire-free examples, so it learned that anything bright is fire and flagged sunsets, lamps and bright skies.",
+        "最初のモデル（v1）は炎のない例を含まないグレースケールの動画フレームで学習したため、明るいものはすべて炎だと覚え、夕焼け・照明・明るい空まで炎と判定していました。",
+      ),
+      howItWorks: [
+        t("Upload or pick a photo.", "写真をアップロードまたは選択します。"),
+        t("The image is resized and normalised.", "画像をリサイズし、正規化します。"),
+        t("The U-Net gives every pixel a fire probability.", "U-Netが各ピクセルに炎の確率を付けます。"),
+        t("Pixels above the threshold become the fire mask.", "しきい値を超えたピクセルが炎のマスクになります。"),
+        t("The app shows the overlay and how much of the image is on fire.", "オーバーレイと、画像のうち炎が占める割合を表示します。"),
+      ],
+      decisions: [
+        {
+          title: t("Hard negatives in the data", "紛らわしい負例をデータに追加"),
+          description: t(
+            "2,683 video frames plus 226 BoWFire photos (sunsets, lamps) and 320 fire-free photos, so the model learns what is not fire.",
+            "2,683枚の動画フレームに、夕焼けや照明を含むBoWFireの写真226枚と炎のない写真320枚を加え、炎でないものを学習させました。",
+          ),
+        },
+        {
+          title: t("PyTorch U-Net + EfficientNet-B0 encoder", "PyTorch U-Net + EfficientNet-B0エンコーダー"),
+          description: t(
+            "RGB input and an ImageNet-pretrained encoder (6.3M parameters) instead of grayscale, so colour helps tell fire from bright light.",
+            "グレースケールではなくRGB入力と、ImageNetで事前学習したエンコーダー（パラメーター数630万）を使い、色で炎と明るい光を見分けられるようにしました。",
+          ),
+        },
+        {
+          title: t("Whole-video holdout", "動画単位のホールドアウト"),
+          description: t(
+            "Entire videos stay out of training, so near-duplicate frames cannot leak into validation.",
+            "動画ごと学習から外し、ほぼ同じフレームが検証に漏れないようにしました。",
+          ),
+        },
+        {
+          title: t("ONNX Runtime + Streamlit", "ONNX Runtime + Streamlit"),
+          description: t(
+            "The app needs no deep-learning framework and runs on CPU; the same app is on Streamlit Community Cloud and on my VPS (fire.farisznafis.my.id).",
+            "アプリにディープラーニングのフレームワークは不要で、CPUで動きます。同じアプリをStreamlit Community Cloudと自前のVPS（fire.farisznafis.my.id）で公開しています。",
+          ),
+        },
+      ],
       sections: [
         {
-          id: "results",
-          kicker: t("Results", "結果"),
+          id: "evaluation",
+          kicker: t("Evaluation", "評価"),
           heading: t("v1 vs v2 on unseen data", "未知のデータでのv1とv2の比較"),
           facts: [
             {
@@ -2239,38 +1717,17 @@ approach: {
             "小さい炎や遠くの炎は見逃すことがあり、鮮やかな夕焼け雲が今も最も多い誤検出です。",
           ),
         },
-        {
-          id: "deployment",
-          kicker: t("Deployment", "デプロイ"),
-          heading: t("Two live versions", "2つの公開版"),
-          paragraphs: [
-            t(
-              "fire.farisznafis.my.id is the same Streamlit app, hosted on my own VPS instead of Streamlit Community Cloud.",
-              "fire.farisznafis.my.idは同じStreamlitアプリを、Streamlit Community Cloudではなく自分のVPSでホストしたものです。",
-            ),
-          ],
-        },
       ],
-      galleryLabel: t("Gallery", "ギャラリー"),
-      outcomes: {
-        kicker: t("Outcomes", "成果"),
-        heading: t("Result", "結果"),
-        items: [
-          t(
-            "Fire IoU on unseen photos went from 0.18 to 0.81.",
-            "未知の写真での炎のIoUが0.18から0.81に向上。",
-          ),
-          t(
-            "False alarms on fire-free photos dropped from 58% to 0%.",
-            "炎のない写真での誤検出が58%から0%に減少。",
-          ),
-          t(
-            "A lightweight web app anyone can try in the browser.",
-            "誰でもブラウザで試せる軽量なwebアプリ。",
-          ),
-        ],
-      },
-      nextLabel: t("Next project", "次のプロジェクト"),
+      results: [
+        t(
+          "Fire IoU on unseen photos: 0.18 → 0.81.",
+          "未知の写真での炎のIoU：0.18 → 0.81。",
+        ),
+        t(
+          "False alarms on fire-free photos: 58% → 0%.",
+          "炎のない写真での誤検出：58% → 0%。",
+        ),
+      ],
     },
   },
 ];

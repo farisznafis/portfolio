@@ -113,14 +113,6 @@ export type ProjectTone =
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-export type CaseStudyStep = {
-  tag: LocalizedText;
-
-  title: LocalizedText;
-
-  description: LocalizedText;
-};
-
 export type CaseStudyFeature = {
   title: LocalizedText;
 
@@ -180,70 +172,28 @@ export type CaseStudySection = {
 };
 
 /**
- * Full project case study.
+ * Full project case study. Every page answers the same questions, in order:
+ * what it is and my part (overview), why it exists (problem), what I used
+ * and why (decisions), what came of it (results). Each fact is said once.
  */
 export type CaseStudyContent = {
+  /** What the project is and what I did, 1–2 sentences. */
   overview: LocalizedText;
 
-  /**
-   * Accessibility label for project metadata.
-   */
-  atAGlance: LocalizedText;
+  /** Why the project exists / the main constraint, 1–2 sentences. */
+  problem: LocalizedText;
 
-  challenge: {
-    heading: LocalizedText;
+  /** General flow from input to output, one short step each. No metrics. */
+  howItWorks?: LocalizedText[];
 
-    lead: LocalizedText;
+  /** title = technology or decision, description = why, one sentence. */
+  decisions: CaseStudyFeature[];
 
-    body: LocalizedText;
-  };
-
-  approach: {
-    kicker: LocalizedText;
-
-    heading: LocalizedText;
-
-    steps: CaseStudyStep[];
-  };
-
-  features: {
-    heading: LocalizedText;
-
-    items: CaseStudyFeature[];
-  };
-
-  /**
-   * Optional long-form sections.
-   *
-   * Speech Emotion Recognition uses these for:
-   *
-   * - data
-   * - preprocessing
-   * - feature engineering
-   * - model architecture
-   * - evaluation
-   * - production engineering
-   * - limitations
-   */
+  /** Technical depth (ML data, model, evaluation). Facts over prose. */
   sections?: CaseStudySection[];
 
-  /**
-   * Accessibility / visual label for project gallery.
-   */
-  galleryLabel: LocalizedText;
-
-  outcomes: {
-    kicker: LocalizedText;
-
-    heading: LocalizedText;
-
-    items: LocalizedText[];
-  };
-
-  /**
-   * Accessibility label for next-project navigation.
-   */
-  nextLabel: LocalizedText;
+  /** Verifiable results only; never a restated feature. */
+  results: LocalizedText[];
 };
 
 /**

@@ -10,7 +10,6 @@ import {
 import {
   ArrowLeft,
   ArrowUpRight,
-  ChevronDown,
 } from "lucide-react";
 
 import {
@@ -86,42 +85,89 @@ export function CaseStudy({
     project.description;
 
   const atAGlance =
-    study?.atAGlance ||
     labels.atAGlance;
 
   const galleryLabel =
-    study?.galleryLabel ||
     labels.gallery;
 
   const nextLabel =
-    study?.nextLabel ||
     labels.nextProject;
 
   const gallery =
     project.gallery ??
     [];
 
-  const hasFeatures =
-    (study?.features.items.length ??
-      0) > 0;
-
-  const hasOutcomes =
-    (study?.outcomes.items.length ??
-      0) > 0;
-
   const hasSections =
     (study?.sections.length ??
       0) > 0;
 
-  const hasChallenge =
-    Boolean(
-      study?.challenge.lead ||
-        study?.challenge.body,
-    );
-
-  const hasApproach =
-    (study?.approach.steps.length ??
-      0) > 0;
+  // Problem → tech & why → results, numbered ahead of the technical sections.
+  const summary = study
+    ? [
+        study.problem
+          ? {
+              id: "problem",
+              label: labels.problem,
+              body: (
+                <p className="max-w-[75ch] text-base leading-relaxed text-ink">
+                  {study.problem}
+                </p>
+              ),
+            }
+          : null,
+        study.howItWorks.length > 0
+          ? {
+              id: "how-it-works",
+              label: labels.howItWorks,
+              body: (
+                <ol className="space-y-2">
+                  {study.howItWorks.map((step, index) => (
+                    <li key={step} className="flex gap-3 text-base leading-relaxed text-ink">
+                      <span aria-hidden="true" className="pt-1 font-mono text-xs text-accent">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              ),
+            }
+          : null,
+        study.decisions.length > 0
+          ? {
+              id: "decisions",
+              label: labels.decisions,
+              body: (
+                <dl className="grid gap-x-8 gap-y-5 md:grid-cols-2">
+                  {study.decisions.map((item) => (
+                    <div key={item.title} className="border-t border-line pt-4">
+                      <dt className="text-base font-semibold text-ink">{item.title}</dt>
+                      <dd className="mt-1 text-base leading-relaxed text-muted">
+                        {item.description}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              ),
+            }
+          : null,
+        study.results.length > 0
+          ? {
+              id: "results",
+              label: labels.results,
+              body: (
+                <ul className="list-disc space-y-2 pl-5 marker:text-accent">
+                  {study.results.map((item) => (
+                    <li key={item} className="pl-1 text-base leading-relaxed text-ink">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              ),
+            }
+          : null,
+      ].filter((row) => row !== null)
+    : [];
 
   const hasMeta =
     Boolean(
@@ -402,105 +448,26 @@ export function CaseStudy({
       ) : null}
 
       {/* ────────────────────────────────────────────────────────────────
-          WHAT SHIPPED + OUTCOMES
+          PROBLEM · TECH & WHY · RESULTS
       ──────────────────────────────────────────────────────────────── */}
-      {study &&
-      (hasFeatures ||
-        hasOutcomes) ? (
-        <div
-          className={`grid gap-8 border-t border-line pt-8 sm:gap-12 sm:pt-12 ${
-            hasFeatures &&
-            hasOutcomes
-              ? "lg:grid-cols-[1.2fr_1fr]"
-              : ""
-          }`}
-        >
-          {hasFeatures ? (
+      {summary.length > 0 ? (
+        <div className="space-y-10 border-t border-line pt-8 sm:space-y-14 sm:pt-12">
+          {summary.map((row, index) => (
             <section
-              aria-labelledby="cs-features"
-              className="min-w-0"
+              key={row.id}
+              aria-labelledby={`cs-${row.id}`}
+              className="grid gap-4 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12"
             >
               <h2
-                id="cs-features"
-                className={
-                  headingClass
-                }
+                id={`cs-${row.id}`}
+                className="font-mono text-xs uppercase tracking-[0.18em] text-accent"
               >
-                {
-                  study
-                    .features
-                    .heading
-                }
+                {`${String(index + 1).padStart(2, "0")} / ${row.label}`}
               </h2>
 
-              <ul className="mt-5 space-y-4">
-                {study.features.items.map(
-                  (
-                    feature,
-                  ) => (
-                    <li
-                      key={
-                        feature.title
-                      }
-                    >
-                      <h3 className="text-base font-semibold text-ink">
-                        {
-                          feature.title
-                        }
-                      </h3>
-
-                      {feature.description ? (
-                        <p className="mt-1 text-base leading-relaxed text-muted">
-                          {
-                            feature.description
-                          }
-                        </p>
-                      ) : null}
-                    </li>
-                  ),
-                )}
-              </ul>
+              <div className="min-w-0">{row.body}</div>
             </section>
-          ) : null}
-
-          {hasOutcomes ? (
-            <section
-              aria-labelledby="cs-outcomes"
-              className="min-w-0"
-            >
-              <h2
-                id="cs-outcomes"
-                className={
-                  headingClass
-                }
-              >
-                {
-                  study
-                    .outcomes
-                    .heading
-                }
-              </h2>
-
-              <ul className="mt-5 list-disc space-y-3 pl-5 marker:text-accent">
-                {study.outcomes.items.map(
-                  (
-                    outcome,
-                  ) => (
-                    <li
-                      key={
-                        outcome
-                      }
-                      className="pl-1 text-base leading-relaxed text-ink"
-                    >
-                      {
-                        outcome
-                      }
-                    </li>
-                  ),
-                )}
-              </ul>
-            </section>
-          ) : null}
+          ))}
         </div>
       ) : null}
 
@@ -547,7 +514,8 @@ export function CaseStudy({
                   <div>
                     <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
                       {String(
-                        index +
+                        summary.length +
+                          index +
                           1,
                       ).padStart(
                         2,
@@ -675,129 +643,6 @@ export function CaseStudy({
             ),
           )}
         </div>
-      ) : null}
-
-      {/* ────────────────────────────────────────────────────────────────
-          PROCESS DETAILS
-      ──────────────────────────────────────────────────────────────── */}
-      {study &&
-      (hasChallenge ||
-        hasApproach) ? (
-        <details
-          key={slug}
-          className="group border-y border-line"
-        >
-          <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-base font-semibold text-ink transition-colors hover:text-accent [&::-webkit-details-marker]:hidden">
-            {
-              labels.processDetails
-            }
-
-            <ChevronDown
-              size={20}
-              aria-hidden="true"
-              className="shrink-0 group-open:rotate-180 motion-safe:transition-transform"
-            />
-          </summary>
-
-          <div className="space-y-8 pb-6 pt-2">
-            {hasChallenge ? (
-              <section
-                aria-labelledby="cs-challenge"
-                className="max-w-[75ch]"
-              >
-                <h2
-                  id="cs-challenge"
-                  className={
-                    headingClass
-                  }
-                >
-                  {
-                    study
-                      .challenge
-                      .heading
-                  }
-                </h2>
-
-                {study.challenge
-                  .lead ? (
-                  <p className="mt-3 text-base leading-relaxed text-ink">
-                    {
-                      study
-                        .challenge
-                        .lead
-                    }
-                  </p>
-                ) : null}
-
-                {study.challenge
-                  .body ? (
-                  <p className="mt-3 text-base leading-relaxed text-muted">
-                    {
-                      study
-                        .challenge
-                        .body
-                    }
-                  </p>
-                ) : null}
-              </section>
-            ) : null}
-
-            {hasApproach ? (
-              <section
-                aria-labelledby="cs-approach"
-              >
-                <h2
-                  id="cs-approach"
-                  className={
-                    headingClass
-                  }
-                >
-                  {
-                    study
-                      .approach
-                      .heading
-                  }
-                </h2>
-
-                <ol className="mt-5 grid gap-5 md:grid-cols-2">
-                  {study.approach.steps.map(
-                    (
-                      step,
-                    ) => (
-                      <li
-                        key={
-                          step.title
-                        }
-                      >
-                        {step.tag ? (
-                          <p className="mb-1 text-base text-accent">
-                            {
-                              step.tag
-                            }
-                          </p>
-                        ) : null}
-
-                        <h3 className="text-base font-semibold text-ink">
-                          {
-                            step.title
-                          }
-                        </h3>
-
-                        {step.description ? (
-                          <p className="mt-2 max-w-[65ch] text-base leading-relaxed text-muted">
-                            {
-                              step.description
-                            }
-                          </p>
-                        ) : null}
-                      </li>
-                    ),
-                  )}
-                </ol>
-              </section>
-            ) : null}
-          </div>
-        </details>
       ) : null}
 
       {/* ────────────────────────────────────────────────────────────────

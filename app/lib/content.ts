@@ -77,7 +77,10 @@ export interface Content {
     year: string;
     fields: string;
     stack: string;
-    processDetails: string;
+    problem: string;
+    howItWorks: string;
+    decisions: string;
+    results: string;
     openImage: string;
     atAGlance: string;
     gallery: string;
@@ -266,7 +269,10 @@ export const en: Content = {
     year: "Year",
     fields: "Fields",
     stack: "Stack",
-    processDetails: "Process details",
+    problem: "Problem",
+    howItWorks: "How it works",
+    decisions: "Tech & why",
+    results: "Results",
     openImage: "Open original image",
     atAGlance: "Project at a glance",
     gallery: "Gallery",
@@ -658,8 +664,17 @@ export const ja: Content = {
     stack:
       "技術スタック",
 
-    processDetails:
-      "制作プロセスの詳細",
+    problem:
+      "課題",
+
+    howItWorks:
+      "仕組み",
+
+    decisions:
+      "技術と選定理由",
+
+    results:
+      "成果",
 
     openImage:
       "元の画像を開く",
