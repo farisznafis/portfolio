@@ -258,6 +258,24 @@ export const projects: StoredProject[] = [
     gallery: [
       {
         type: "image",
+        src: "/projects/kumamotalk/booth-tablet.jpg",
+        alt: t(
+          "The Kumamotalk tablet at the expo booth showing \"お話しください\" (please speak), with a shotgun microphone in front",
+          "EXPOブースのKumamotalkタブレット。「お話しください」と表示され、手前にショットガンマイクがある",
+        ),
+        caption: t("On site at the booth: the tablet asks the visitor to speak.", "会場のブースにて：タブレットが来場者に話しかけるよう促す。"),
+      },
+      {
+        type: "image",
+        src: "/projects/kumamotalk/booth-expo.jpg",
+        alt: t(
+          "The Kumamoto booth at the expo: a black wall with a white Kumamoto Castle outline and the kiosk screens",
+          "EXPOの熊本ブース：白い熊本城のシルエットが描かれた黒い壁と端末の画面",
+        ),
+        caption: t("The Kumamoto booth at the expo, where the bot ran.", "ボットが稼働したEXPOの熊本ブース。"),
+      },
+      {
+        type: "image",
         src: "/projects/kumamotalk/figma-01.svg",
         alt: t("Figma frame 01 (placeholder)", "Figmaフレーム01（仮画像）"),
         caption: t("Placeholder — Figma frame 01", "仮画像 — Figmaフレーム01"),

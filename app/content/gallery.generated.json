@@ -74,6 +74,398 @@
       "featured": true,
       "sortOrder": 2,
       "published": true
+    },
+    {
+      "id": "1742de8d-3443-4c39-8e91-cd0293f51f26",
+      "slug": "importedphoto-761222975-842978",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761222975-842978/e34a6402",
+      "width": 3024,
+      "height": 4032,
+      "blurDataURL": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAADwAQCdASoMABAAA4BaJYgCdAEf91mjB2AA4d7V9NIunIuWpP05oSTeAuDUfUCkgznWvzSfBr5229CF0jQOT9gwB8M8bfJHB+gXC0I9n9WVipwpVOb2E3hqzYAAAA==",
+      "dominantColor": "#988878",
+      "alt": {
+        "en": "Friends at a conveyor-belt sushi table",
+        "ja": "回転寿司のテーブルを囲む仲間たち"
+      },
+      "takenAt": "2025-02-14T19:48:12",
+      "camera": "Apple iPhone 14",
+      "exposure": {
+        "aperture": 2.4,
+        "shutter": 0.015873015873015872,
+        "iso": 125,
+        "focalLength": 1.54
+      },
+      "featured": false,
+      "sortOrder": 6,
+      "published": true
+    },
+    {
+      "id": "70b88658-d373-488c-8963-3fbeba90c8a4",
+      "slug": "importedphoto-761274722-724929",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761274722-724929/7b4da766",
+      "width": 3024,
+      "height": 4032,
+      "blurDataURL": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAQAgCdASoMABAAA4BaJYgCdAEX9C9lkKwAAPdOMLpUmnS76+YO08heE51EDzoLTIhU42Vf5TBwZIdUxes6HOWOTXkgtfRJTbkLZ+n4F817bmTGuPTB0KghVTQAAA==",
+      "dominantColor": "#080808",
+      "alt": {
+        "en": "Four friends in front of a tall waterfall",
+        "ja": "高い滝の前に立つ4人の仲間"
+      },
+      "takenAt": "2025-02-15T10:11:26",
+      "camera": "Apple iPhone X",
+      "exposure": {
+        "aperture": 1.8,
+        "shutter": 0.008333333333333333,
+        "iso": 25,
+        "focalLength": 4
+      },
+      "featured": false,
+      "sortOrder": 7,
+      "published": true
+    },
+    {
+      "id": "cd08a342-fc05-4212-b5f6-152053f697a9",
+      "slug": "importedphoto-761274722-73391",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761274722-73391/7f3740c0",
+      "width": 4032,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAABwAgCdASoQAAwAA4BaJQBOgP4EXqW8q7J9h+2AANzzCjswZyDovM0VF9qLHDxazh7N85O5dITXEnL1vQpE5TkP3QSw9vmjPNdyGwFZ6z0FkZvC9SNvLQ8E2yHAiMaW9cxIAA==",
+      "dominantColor": "#181818",
+      "alt": {
+        "en": "Posing below a waterfall framed by basalt cliffs",
+        "ja": "玄武岩の崖に囲まれた滝の前で"
+      },
+      "takenAt": "2025-02-15T10:11:22",
+      "camera": "Apple iPhone X",
+      "exposure": {
+        "aperture": 1.8,
+        "shutter": 0.008333333333333333,
+        "iso": 25,
+        "focalLength": 4
+      },
+      "featured": false,
+      "sortOrder": 8,
+      "published": true
+    },
+    {
+      "id": "401b046f-9f43-44b0-b027-f423e1401c95",
+      "slug": "importedphoto-761283971-19654",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761283971-19654/ee9ef1a3",
+      "width": 4032,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAABQAgCdASoQAAwAA4BaJbACdAYvhd1f/5HnSwAA/uuLvW8EXnXm/MB4qxdfo2WQSsMVvdtNqK/tRwL//aYrQg+6iAU86ejRqHUJxvHysuf/RMPK7dNuZfOUtY0ZkXvEeRHTXuuWc0aiAks6pXx4OrRYmvpMvhGBAAA=",
+      "dominantColor": "#f8f8f8",
+      "alt": {
+        "en": "Eating soba on tatami mats",
+        "ja": "畳の上でそばを食べる"
+      },
+      "takenAt": "2025-02-15T12:45:50",
+      "camera": "Apple iPhone X",
+      "exposure": {
+        "aperture": 1.8,
+        "shutter": 0.03333333333333333,
+        "iso": 25,
+        "focalLength": 4
+      },
+      "featured": false,
+      "sortOrder": 9,
+      "published": true
+    },
+    {
+      "id": "9afe4bbe-bd22-4d6c-9976-c53ac8d19d20",
+      "slug": "importedphoto-761284478-561558",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761284478-561558/15a3c8ac",
+      "width": 4032,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAABwAgCdASoQAAwAA4BaJZgCdAYr7uKiwdSWBkCAAP6mzv2xs6JrStrDLJxF8WXFW3ZvXAC5GsfQL4W7b6nGwbIMUzbSXihfcUqYFcyPWW/MX+wV33qzHm5jewQ/lMYLVztjyVWSm7lAxfzZm/Jy6gAA",
+      "dominantColor": "#080808",
+      "alt": {
+        "en": "Lunch by the window, mountains outside",
+        "ja": "山が見える窓辺での昼食"
+      },
+      "takenAt": "2025-02-15T12:54:18",
+      "camera": "Apple iPhone X",
+      "exposure": {
+        "aperture": 1.8,
+        "shutter": 0.008333333333333333,
+        "iso": 32,
+        "focalLength": 4
+      },
+      "featured": false,
+      "sortOrder": 10,
+      "published": true
+    },
+    {
+      "id": "6bb0bc85-4068-4e36-8549-130713e92e5b",
+      "slug": "importedphoto-761287067-076804",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761287067-076804/ba9cf81a",
+      "width": 4032,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADwAQCdASoQAAwAA4BaJYwC7ADp0B/zAQAA/idaF7tgy9jNJBmOT9wZcd9hlEtM1b7YkodvjeChBGo5rnK/PAjFZOGfAPi/BMMInxrE+zRK98kR8YAAAA==",
+      "dominantColor": "#181818",
+      "alt": {
+        "en": "Stone steps up to a shrine in a cedar forest",
+        "ja": "杉林の神社へ続く石段"
+      },
+      "takenAt": "2025-02-15T13:36:20",
+      "camera": "Apple iPhone X",
+      "exposure": {
+        "aperture": 1.8,
+        "shutter": 0.041666666666666664,
+        "iso": 40,
+        "focalLength": 4
+      },
+      "featured": false,
+      "sortOrder": 11,
+      "published": true
+    },
+    {
+      "id": "2d846349-044c-473f-bf47-a7089e2fb1cf",
+      "slug": "importedphoto-761308404-883337",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761308404-883337/1847493c",
+      "width": 4032,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAABQAgCdASoQAAwAA4BaJbAC7H8AFcyAT3jF9IAA/qNoctRQae6/uSw6BHgbYgAWhb/BWrUtDJmgVHyXsj6csYJ20Pz1JkBJmcFxQ9PtPOZP+CW7tOPu9eJysGjJegAA",
+      "dominantColor": "#f8f8f8",
+      "alt": {
+        "en": "Friends under winter illuminations",
+        "ja": "冬のイルミネーションの下で"
+      },
+      "takenAt": "2025-02-15T11:37:18",
+      "camera": "Apple iPhone X",
+      "exposure": {
+        "aperture": 1.8,
+        "shutter": 0.2,
+        "iso": 200,
+        "focalLength": 4
+      },
+      "featured": false,
+      "sortOrder": 12,
+      "published": true
+    },
+    {
+      "id": "292376e4-b861-4c24-ac29-a31e22941306",
+      "slug": "importedphoto-761659697-181862",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761659697-181862/ffb549ce",
+      "width": 4032,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAABQAgCdASoQAAwAA4BaJZACdAYu5lbsxuhZXYAA+XCJJO2kKAVjQYqzjE0+/luBmt3OIgUSPDlUaXdCn9b9wl0zMLY82TBiO3md2GxHA1aPFaZQ0AvBiGtTUA7YvhycOUlOntErN+0HDl3tEjnRIi3lNZFgAA==",
+      "dominantColor": "#181818",
+      "alt": {
+        "en": "Dinner with hosts at a station food court",
+        "ja": "駅のフードコートで迎えてくれた方々と夕食"
+      },
+      "takenAt": "2025-02-19T18:36:57",
+      "camera": "Apple iPhone X",
+      "exposure": {
+        "aperture": 1.8,
+        "shutter": 0.06666666666666667,
+        "iso": 80,
+        "focalLength": 4
+      },
+      "featured": false,
+      "sortOrder": 13,
+      "published": true
+    },
+    {
+      "id": "8d785c87-a32b-41aa-b984-0f20442f011c",
+      "slug": "importedphoto-761659697-76492",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761659697-76492/946bd1c3",
+      "width": 4032,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAABwAgCdASoQAAwAA4BaJQBOgMXX7a5qcP3cRfaAAPwpqxPonbwAoVr8W4OK3C2MPmYFb5/NWHcQvkydA3uXBvyRFRAjw0k5CPmAdZpNv8SHgCn6IosKQ60HNoDTDgAA",
+      "dominantColor": "#181818",
+      "alt": {
+        "en": "Group photo at the Kumamoto for SDGs sign",
+        "ja": "「Kumamoto for SDGs」の看板の前で集合写真"
+      },
+      "takenAt": "2025-02-19T11:39:17",
+      "camera": "Apple iPhone X",
+      "exposure": {
+        "aperture": 2.4,
+        "shutter": 0.016666666666666666,
+        "iso": 16,
+        "focalLength": 6
+      },
+      "featured": false,
+      "sortOrder": 14,
+      "published": true
+    },
+    {
+      "id": "cac620b5-6bc2-4af0-936a-008007505700",
+      "slug": "importedphoto-761659697-899821",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761659697-899821/c30d93b5",
+      "width": 4032,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAABQAgCdASoQAAwAA4BaJaACdAYtf2iTbNcRLAAA/I+taVWiWve+FlffpTPtA5CQBv3xeO3lwnNMVBpG6eZFIweDPn8WQ+g8GkAySJKroWAX1dXVdoXsZyLPqrcGFIqUpYu8089dEAAAAA==",
+      "dominantColor": "#786858",
+      "alt": {
+        "en": "Group photo in a university office",
+        "ja": "大学の事務室での集合写真"
+      },
+      "takenAt": "2025-02-19T11:32:09",
+      "camera": "Apple iPhone X",
+      "exposure": {
+        "aperture": 1.8,
+        "shutter": 0.03333333333333333,
+        "iso": 40,
+        "focalLength": 4
+      },
+      "featured": false,
+      "sortOrder": 15,
+      "published": true
+    },
+    {
+      "id": "e384a3e1-8659-45eb-a943-3e849e9db457",
+      "slug": "importedphoto-761659826-157575",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761659826-157575/1d3d9ca1",
+      "width": 3024,
+      "height": 4032,
+      "blurDataURL": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAwAgCdASoMABAAA4BaJQBOgCHelNFsHBYUIAD+kWztPNcqrDKjce2dvfxPkge/tUlOaqGizLplxMi343O5/h+2dZZ5NVXopZCwc3zO5bfO8XB+uf3fGrhGAB4278kiODTexAAA",
+      "dominantColor": "#181818",
+      "alt": {
+        "en": "Handing over a gift from Indonesia",
+        "ja": "インドネシアからの贈り物を手渡す"
+      },
+      "takenAt": "2025-02-19T11:30:09",
+      "camera": "Apple iPhone X",
+      "exposure": {
+        "aperture": 2.4,
+        "shutter": 0.016666666666666666,
+        "iso": 50,
+        "focalLength": 6
+      },
+      "featured": false,
+      "sortOrder": 16,
+      "published": true
+    },
+    {
+      "id": "882c54ae-bb97-4518-83e3-5495261abffa",
+      "slug": "importedphoto-761659826-185997",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761659826-185997/0f357140",
+      "width": 4032,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAQAgCdASoQAAwAA4BaJaACsAEJ0qkDXt7gAP7XtuJHQJa+3GZohGbvyT0MX+OVcJlvhvjUHVByg8APPvdi7BZuzpDlXgqnYZixmGbOI0eTt2CdgqpczHSzsu7RIiC7ZwrQfkSgAAA=",
+      "dominantColor": "#181818",
+      "alt": {
+        "en": "Exchanging gifts after the meeting",
+        "ja": "会議の後の贈り物の交換"
+      },
+      "takenAt": "2025-02-19T11:30:04",
+      "camera": "Apple iPhone X",
+      "exposure": {
+        "aperture": 2.4,
+        "shutter": 0.016666666666666666,
+        "iso": 64,
+        "focalLength": 6
+      },
+      "featured": false,
+      "sortOrder": 17,
+      "published": true
+    },
+    {
+      "id": "90acd028-4de3-48dc-968f-1b4c4e12006f",
+      "slug": "importedphoto-761659868-930101",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-761659868-930101/1d38f0a2",
+      "width": 3024,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAAAQAgCdASoQABAAA4BaJQBOgB+X+eulfj/cAN5ZKDXvYVqBJIf0jgyuBCrL6YzcS/T69m7pu8rUFHdA/cAQcxDUTztHCx7KD+Frva4VdGubSy9xvyRfmjTeoKYMpVypKSZoLZ/oAAA=",
+      "dominantColor": "#181818",
+      "alt": {
+        "en": "A meeting around office tables",
+        "ja": "オフィスでの打ち合わせ"
+      },
+      "takenAt": "2025-02-19T11:24:52",
+      "camera": "Apple iPhone X",
+      "exposure": {
+        "aperture": 1.8,
+        "shutter": 0.025,
+        "iso": 25,
+        "focalLength": 4
+      },
+      "featured": false,
+      "sortOrder": 18,
+      "published": true
+    },
+    {
+      "id": "2f55724e-aeb5-4a35-8836-b5f8be353fd1",
+      "slug": "importedphoto-762331303-548407",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-762331303-548407/63db5193",
+      "width": 4032,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAQAgCdASoQAAwAA4BaJbACdAEOPN6RawAAAPffUfD5rpWD/oaKJ/4wNOd/kaXcj0TOV5bVyWy/QJggVIe7S7VRDJdalqd0sHT0UswJWctp5CKzq94UvYBhCthZdOntqZo+fgAA",
+      "dominantColor": "#080808",
+      "alt": {
+        "en": "Delegation photo in batik with our hosts",
+        "ja": "バティック姿で受け入れ先の方々と記念撮影"
+      },
+      "takenAt": "2025-02-27T15:20:51",
+      "camera": "Apple iPhone 14",
+      "exposure": {
+        "aperture": 1.5,
+        "shutter": 0.008333333333333333,
+        "iso": 125,
+        "focalLength": 5.7
+      },
+      "featured": false,
+      "sortOrder": 19,
+      "published": true
+    },
+    {
+      "id": "48e9b748-3814-4343-aecf-84ca11cccc26",
+      "slug": "importedphoto-762335048-686586",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-762335048-686586/e0a5f299",
+      "width": 3024,
+      "height": 4032,
+      "blurDataURL": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADQAQCdASoMABAAA4BaJQAARbSH4lmMwAD+WgyKHxFOUSvWXvUAZWNMXzhMvDZ/SNjyOQGtg/Mly1Xm32D/43ADqtQhwsX0RWCGe4+IOwUktmgA",
+      "dominantColor": "#c8c8b8",
+      "alt": {
+        "en": "Beside the Monkey D. Luffy statue",
+        "ja": "モンキー・D・ルフィ像の横で"
+      },
+      "featured": false,
+      "sortOrder": 20,
+      "published": true
+    },
+    {
+      "id": "830636c1-704a-4a39-b257-e13667f9ca82",
+      "slug": "importedphoto-762431156-988915",
+      "seriesId": "428875a6-e0d9-4190-ae89-12bd2a91faf1",
+      "storagePath": "gallery/kumamoto/importedphoto-762431156-988915/a63437ed",
+      "width": 4032,
+      "height": 3024,
+      "blurDataURL": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAABQAgCdASoQAAwAA4BaJbACdH8Agri8JyktB/AAze7tDE5Q9+13AhkWi/DR37CjE3TPM/k/T4iJ3J03sYG8Np1hyLWG5b9MGEkbprTPgEl4LNqMIY7gI0EVSVBulXdp+vjbjXq9/JGKIAAA",
+      "dominantColor": "#888878",
+      "alt": {
+        "en": "Welcome to Kumamoto, with Kumamon",
+        "ja": "くまモンと「Welcome to Kumamoto」の前で"
+      },
+      "takenAt": "2025-02-28T19:17:21",
+      "camera": "Apple iPhone 14",
+      "exposure": {
+        "aperture": 1.5,
+        "shutter": 0.008333333333333333,
+        "iso": 100,
+        "focalLength": 5.7
+      },
+      "featured": false,
+      "sortOrder": 21,
+      "published": true
     }
   ]
 }
